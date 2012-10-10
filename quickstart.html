@@ -1,0 +1,369 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+      <title>Mulberry Technologies, Inc.: NISO JATS 1.0 Preview Stylesheets: Quick Start Guide</title>
+      <link rel="stylesheet" type="text/css" href="jats-preview.css">
+   </head>
+   <body>
+      <div id="article1-front" class="front">
+         <div class="metadata two-column table">
+            <div class="row">
+               <div class="cell">
+                  <h4 class="generated">Journal Information</h4>
+                  <div class="metadata-group">
+                     <p class="metadata-entry"><span class="generated">Journal ID: </span>N/A
+                     </p>
+                     <p class="metadata-entry"><span class="generated">ISSN: </span>N/A
+                     </p>
+                  </div>
+               </div>
+               <div class="cell">
+                  <h4 class="generated">Article Information</h4>
+                  <div class="metadata-group">
+                     <p class="metadata-entry"><span class="generated">Publication date: </span>2012
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <hr class="part-rule">
+         <div class="metadata centered">
+            <h1 class="document-title">NISO JATS 1.0 Preview Stylesheets: Quick Start Guide</h1>
+         </div>
+         <div class="metadata two-column table">
+            <div class="row">
+               <div class="cell" style="text-align: right">
+                  <div class="metadata-group">
+                     <p class="metadata-entry"><a id="d0e16">
+                           <!-- named anchor --></a>Mulberry Technologies, Inc.
+                     </p>
+                  </div>
+               </div>
+               <div class="cell">
+                  <div class="metadata-group"></div>
+               </div>
+            </div>
+         </div>
+         <hr class="part-rule">
+      </div>
+      <div id="article1-body" class="body">
+         <div class="section"><a id="d0e22">
+               <!-- named anchor --></a><h2 class="main-title">Introduction</h2>
+            <p id="d0e25">These stylesheets provide preview display of journal articles tagged using NISO JATS
+               version 1.0 (or any of several related tag sets). How you run them depends upon several
+                       things:
+            </p>
+            <div class="list"><a id="d0e27">
+                  <!-- named anchor --></a><ol style="list-style-type: decimal">
+                  <li>
+                     <p id="d0e29">How citations are tagged in your input. Are they provided with explicit punctuation and
+                                    formatting? Or are they unformatted? 
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e32">What kind of output you want: HTML (with CSS) or PDF? If your citations are
+                                    unformatted, do you want the citations in the output to have APA-style punctuation or
+                                    NLM/PubMed Central-style punctuation?
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e35">What kind of computing environment you want to run the stylesheets in: You can run
+                                    these stylesheets with a standalone XSLT processor; with an XProc pipeline engine; or
+                                    with Saxon PE or EE version 9.2 or later.
+                     </p>
+                  </li>
+               </ol>
+            </div>
+            <p id="d0e37">This document provides quick instructions on using the stylesheets in the most common ways,
+                       omitting some details for simplicity. It assumes that your input is in one of the following
+                       versions of the NLM / JATS vocabulary: 
+               <div class="list"><a id="d0e39">
+                     <!-- named anchor --></a><ul>
+                     <li>
+                        <p id="d0e41">NISO JATS (Journal article tag set) Publishing or Authoring, version 1.0.</p>
+                     </li>
+                     <li>
+                        <p id="d0e44">NLM/NCBI Journal Publishing or Authoring, version 3.0.</p>
+                     </li>
+                     <li>
+                        <p id="d0e47">NLM/NCBI Journal Publishing or Authoring, version 2.3.</p>
+                     </li>
+                     <li>
+                        <p id="d0e50">An older variant of the NLM/NCBI DTD (your mileage may vary).</p>
+                     </li>
+                  </ul>
+               </div> It also assumes you know how to invoke your XSLT or XProc processor on particular
+                       input and put the output where you want it to go. 
+            </p>
+            <p id="d0e53">For the full story on the limitations of these stylesheets and the assumptions they make
+                       about the input, see the <i>Users' Guide</i>.
+            </p>
+            <p id="d0e58">For technical details, including a more precise description of technical dependencies,
+                       alternative ways to deploy and apply the stylesheets, and how to extend and modify them, see
+                       the <i>Technical Documentation</i>. That document also includes a more precise
+                       specification of the formatted and unformatted citation formats supported by this
+                       package.
+            </p>
+         </div>
+         <div class="section"><a id="d0e63">
+               <!-- named anchor --></a><h2 class="main-title">Running the stylesheet</h2>
+            <div class="section"><a id="d0e66">
+                  <!-- named anchor --></a><h3 class="section-title">Standalone XSLT users</h3>
+               <p id="d0e69">Some of the stylesheets in this distribution require XSLT 2.0, but most are in XSLT 1.0
+                            and will work in any conformant XSLT processor. When running an XSLT 1.0 stylesheet with
+                            an XSLT 2.0 processor, it may give you warnings. Have no concern: They are designed to
+                            work correctly with either an XSLT 1.0 or XSLT 2.0 processor.
+               </p>
+               <p id="d0e71">If your input has unformatted citations, you will need to perform citation
+                            pre-processing. If your citations are formatted, you can skip this step.
+               </p>
+               <p id="d0e73">Note also that in the latter case (when no pre-processing is required), you can use an
+                            XSLT 1.0 processor in your web browser to perform the transformation and display the
+                            results dynamically. This scenario is described below as <a href="#example-1">Example
+                                 1</a>.
+                  <div class="list"><a id="d0e78">
+                        <!-- named anchor --></a><h4 class="block-title">Citation pre-processing</h4>
+                     <ul>
+                        <li>
+                           <p id="d0e82">Produce a temporary document with citations formatted in NLM / Pub Med Central
+                                              style by running <tt>xslt/citations-prep/jats-PMCcit.xsl</tt>. This is
+                                              an XSLT 1.0 stylesheet.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e88">Alternatively, you may use a similar stylesheet for APA style,
+                                                <tt>xslt/citations-prep/jats-APAcit.xsl</tt>. This is an XSLT 2.0
+                                              stylesheet and requires a 2.0 processor.
+                           </p>
+                        </li>
+                     </ul>
+                  </div>
+               </p>
+               <p id="d0e93">Then, on the temporary file you just created, or on your source file if your citations
+                            are already formatted:
+               </p>
+               <p id="d0e95"><b>For HTML output:</b>
+                            
+                  <div class="list"><a id="d0e99">
+                        <!-- named anchor --></a><ol style="list-style-type: decimal">
+                        <li>
+                           <p id="d0e101">Run <tt>xslt/main/jats-html.xsl</tt> on your input (or on the
+                                              temporary file, if you made one).
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e107">Copy <tt>jats-preview.css</tt> to the file system next to the result
+                                              file(s).
+                           </p>
+                        </li>
+                     </ol>
+                  </div>
+               </p>
+               <p id="d0e112"><b>For PDF output:</b>
+                            
+                  <div class="list"><a id="d0e116">
+                        <!-- named anchor --></a><ol style="list-style-type: decimal">
+                        <li>
+                           <p id="d0e118">Run <tt>xslt/main/jats-xslfo.xsl</tt> on your input (or on the
+                                              temporary file, if you made one).
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e124">Run an XSL-FO formatter on the XSLT output. These stylesheets have been tested
+                                              using AntennaHouse formatter, but they should work in any conformant XSL-FO
+                                              implementation.
+                           </p>
+                        </li>
+                     </ol>
+                  </div>
+               </p>
+            </div>
+            <div class="section"><a id="d0e126">
+                  <!-- named anchor --></a><h3 class="section-title">XProc users</h3>
+               <p id="d0e129">Pipelines of stylesheets may also be run using an XProc engine that supports XSLT 2.0,
+                            such as XML Calabash. (See the <i>Users' Guide</i> and the <i>Technical
+                                 Documentation</i> for more pipelines for specialized applications.)
+               </p>
+               <p id="d0e137">Run the appropriate pipeline from the following list: 
+                  <div class="list"><a id="d0e139">
+                        <!-- named anchor --></a><ul>
+                        <li>
+                           <p id="d0e141"><b>For HTML output with PMC-style citations:</b> run
+                                                <tt>shells/xproc/jats-PMCcit-html.xpl</tt>.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e149"><b>For HTML output with APA-style citations:</b> run
+                                                <tt>shells/xproc/jats-APAcit-html.xpl</tt>.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e157"><b>For PDF output with PMC-style citations:</b> run
+                                                <tt>shells/xproc/jats-PMCcit-xslfo.xpl</tt>.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e165"><b>For PDF output with APA-style citations:</b> run
+                                                <tt>shells/xproc/jats-APAcit-xslfo.xpl</tt>.
+                           </p>
+                        </li>
+                     </ul>
+                  </div>
+               </p>
+               <p id="d0e172">If the input citations are already formatted, either the PMC or the APA pipelines can be
+                            run. 
+               </p>
+            </div>
+            <div class="section"><a id="d0e174">
+                  <!-- named anchor --></a><h3 class="section-title">Saxon PE/EE users</h3>
+               <p id="d0e177">Special "wrapper" stylesheets (or "shells") are provided for the convenience of Saxon
+                            users; these wrappers call other stylesheets in the distribution in pipelines in order to
+                            run pre- or post-processes along with the main transformation. Since they use extended
+                            XSLT functionality in a syntax defined by Saxon, they require Saxon PE or EE, version 9.2
+                            or later. (Some older versions of Saxon also support the functionality.)
+               </p>
+               <p id="d0e179">In addition to those listed here, other wrapper stylesheets are given in the distribution
+                            to demonstrate more specialized applications; see the <i>Users' Guide</i> and
+                            the <i>Technical Documentation</i> for more details.
+               </p>
+               <p id="d0e187">Run the appropriate pipeline from the following list: 
+                  <div class="list"><a id="d0e189">
+                        <!-- named anchor --></a><ul>
+                        <li>
+                           <p id="d0e191"><b>For HTML output with PMC-style citations:</b> run
+                                                <tt>shells/saxon/jats-PMCcit-html.xsl</tt>.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e199"><b>For HTML output with APA-style citations:</b> run
+                                                <tt>shells/saxon/jats-APAcit-html.xsl</tt>.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e207"><b>For PDF output with PMC-style citations:</b> run
+                                                <tt>shells/saxon/jats-PMCcit-xslfo.xsl</tt>.
+                           </p>
+                        </li>
+                        <li>
+                           <p id="d0e215"><b>For PDF output with APA-style citations:</b> run
+                                                <tt>shells/saxon/jats-APAcit-xslfo.xsl</tt>.
+                           </p>
+                        </li>
+                     </ul>
+                  </div>
+               </p>
+               <p id="d0e222">If the input citations are already formatted, either the PMC or the APA wrapper
+                            stylesheets can be run. 
+               </p>
+            </div>
+         </div>
+         <div class="section"><a id="d0e224">
+               <!-- named anchor --></a><h2 class="main-title">Examples</h2>
+            <div class="list"><a id="example-1">
+                  <!-- named anchor --></a><h4 class="block-title">Example 1: HTML for display in a browser</h4>
+               <ol style="list-style-type: decimal">
+                  <li>
+                     <p id="d0e231">The user has no unformatted citations, and wishes to open the XML document to preview
+                                    directly in a web browser (such as Firefox, Safari, Chrome, Opera or Internet
+                                    Explorer)
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e234">The appropriate stylesheet to use is <tt>main/jats-html.xsl</tt>. The
+                                    user copies this stylesheet to the directory containing the XML source file, along with
+                                    the CSS stylesheet to be applied to the result,
+                                    <tt>jats-preview.css</tt></p>
+                  </li>
+                  <li>
+                     <p id="d0e242">The user edits the XML file, inserting a processing instruction at the top of the file
+                                    as
+                                    follows:<pre class="preformat">&lt;?xml-stylesheet type="text/xsl" href="jats-html.xsl"?&gt;</pre></p>
+                  </li>
+                  <li>
+                     <p id="d0e247">The user opens the XML file in the browser.</p>
+                  </li>
+               </ol>
+            </div>
+            <div class="list"><a id="d0e249">
+                  <!-- named anchor --></a><h4 class="block-title">Example 2: Saxon from the command line</h4>
+               <ol style="list-style-type: decimal">
+                  <li>
+                     <p id="d0e253">Again, HTML output is desired. The user has access to Saxon 9.4 PE, which supports
+                                    Saxon extension functions.
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e256">The user determines that the data includes unformatted citations (using the
+                                      <tt>element-citation</tt> element), and wishes them to be formatted
+                                    according to APA guidelines.
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e262">The appropriate stylesheet to use is
+                                      <tt>shells/saxon/jats-APAcit-html.xsl</tt>.
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e268">The user invokes Saxon to apply
+                                      <tt>shells/saxon/jats-APAcit-html.xsl</tt> to the source document or
+                                    documents (as described in Saxon documentation at <a target="xrefwindow" href="http://www.saxonica.com/documentation/using-xsl/commandline.xml" id="d0e273">http://www.saxonica.com/documentation/using-xsl/commandline.xml</a>)
+                                    generating a result file or set of files in HTML format
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e277">The user copies <tt>jats-preview.css</tt> into the subdirectory
+                                    containing the results
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e283">HTML file output is now ready to be opened in a browser</p>
+                  </li>
+               </ol>
+            </div>
+            <div class="list"><a id="d0e285">
+                  <!-- named anchor --></a><h4 class="block-title">Example 3: An XProc pipeline followed by XSL-FO formatting to produce PDF</h4>
+               <ol style="list-style-type: decimal">
+                  <li>
+                     <p id="d0e289">This time, PDF output is desired. The user does not have Saxon, but is able to download
+                                    and install XML Calabash, an open-source XProc engine supporting XSLT 2.0 (available at
+                                      <a target="xrefwindow" href="http://xmlcalabash.com/" id="d0e291">http://xmlcalabash.com/</a>).
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e295">The user determines that the data includes unformatted citations (using the
+                                      <tt>element-citation</tt> element), and wishes them to be formatted
+                                    according to NLM/PMC guidelines.
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e301">The appropriate pipeline file is
+                                      <tt>shells/xproc/jats-PMCcit-xslfo.xpl</tt>.
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e307">Following the Calabash documentation, the user generates a result file or set of files
+                                    in XSL-FO format.
+                     </p>
+                  </li>
+                  <li>
+                     <p id="d0e310">The XSL-FO file may now be opened and processed by an XSL-FO engine such as
+                                    AntennaHouse.
+                     </p>
+                  </li>
+               </ol>
+            </div>
+         </div>
+      </div>
+      <div id="article1-footer" class="footer">
+         <hr class="part-rule">
+         <div class="branding">
+            <p>This display is generated from NISO JATS XML with <b>jats-html.xsl</b>. The XSLT engine is SAXON 6.5.5 from Michael Kay.
+            </p>
+         </div>
+      </div>
+   </body>
+</html>
