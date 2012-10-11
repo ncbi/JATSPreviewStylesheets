@@ -56,55 +56,54 @@ the tool (to a copy distributed since the bug was reported and fixed).
 The following files are included in this distribution
 (as described in the documentation).  Directories are in **bold**.
 
-
-    * jats-preview.css
-    * quickstart.html
-    * quickstart.pdf
-    * quickstart.xml
-    * readme.txt
-    * README.md
-    * saxon-bug-readme.txt
-    * technical-docs.html
-    * technical-docs.pdf
-    * technical-docs.xml
-    * userguide.html
-    * userguide.pdf
-    * userguide.xml
-    * **shells**
-        * **saxon**
-            * jats-APAcit-html.xsl
-            * jats-APAcit-xslfo.xsl
-            * jats-oasis-PMCcit-fo.xsl
-            * jats-PMCcit-html.xsl
-            * jats-PMCcit-print-fo.xsl
-            * jats-PMCcit-web-html.xsl
-            * jats-PMCcit-xhtml.xsl
-            * jats-PMCcit-xslfo.xsl
-        * **xproc**
-            * jats-APAcit-html.xpl
-            * jats-APAcit-xslfo.xpl
-            * jats-oasis-PMCcit-fo.xpl
-            * jats-PMCcit-html.xpl
-            * jats-PMCcit-print-fo.xpl
-            * jats-PMCcit-web-html.xpl
-            * jats-PMCcit-xhtml.xpl
-            * jats-PMCcit-xslfo.xpl
-    * **xslt**
-        * **citations-prep**
-            * jats-APAcit.xsl
-            * jats-PMCcit.xsl
-        * **main**
-            * jats-html.xsl
-            * jats-xslfo.xsl
-            * shell-utility.xsl
-             *xhtml-tables-fo.xsl
+* jats-preview.css
+* quickstart.html
+* quickstart.pdf
+* quickstart.xml
+* readme.txt
+* README.md
+* saxon-bug-readme.txt
+* technical-docs.html
+* technical-docs.pdf
+* technical-docs.xml
+* userguide.html
+* userguide.pdf
+* userguide.xml
+* **shells**
+    * **saxon**
+        * jats-APAcit-html.xsl
+        * jats-APAcit-xslfo.xsl
+        * jats-oasis-PMCcit-fo.xsl
+        * jats-PMCcit-html.xsl
+        * jats-PMCcit-print-fo.xsl
+        * jats-PMCcit-web-html.xsl
+        * jats-PMCcit-xhtml.xsl
+        * jats-PMCcit-xslfo.xsl
+    * **xproc**
+        * jats-APAcit-html.xpl
+        * jats-APAcit-xslfo.xpl
+        * jats-oasis-PMCcit-fo.xpl
+        * jats-PMCcit-html.xpl
+        * jats-PMCcit-print-fo.xpl
+        * jats-PMCcit-web-html.xpl
+        * jats-PMCcit-xhtml.xpl
+        * jats-PMCcit-xslfo.xpl
+* **xslt**
+    * **citations-prep**
+        * jats-APAcit.xsl
+        * jats-PMCcit.xsl
+    * **main**
+        * jats-html.xsl
+        * jats-xslfo.xsl
+        * shell-utility.xsl
+         *xhtml-tables-fo.xsl
         * **oasis-tables**
-            * oasis-table-html.xsl
-            * oasis-table-support.xsl
-            * oasis-table.sch
-        * **post**
-            * xhtml-ns.xsl
-        * **prep**
-            * jats-printfilter.xsl
-            * jats-webfilter.xsl
-            * asis-tables-html.xsl
+        * oasis-table-html.xsl
+        * oasis-table-support.xsl
+        * oasis-table.sch
+* **post**
+        * xhtml-ns.xsl
+    * **prep**
+        * jats-printfilter.xsl
+        * jats-webfilter.xsl
+        * oasis-tables-html.xsl
