@@ -101,7 +101,7 @@ The following files are included in this distribution
         * oasis-table-html.xsl
         * oasis-table-support.xsl
         * oasis-table.sch
-* **post**
+    * **post**
         * xhtml-ns.xsl
     * **prep**
         * jats-printfilter.xsl
