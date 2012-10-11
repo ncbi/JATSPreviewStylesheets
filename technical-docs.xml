@@ -27,7 +27,9 @@
     </article-meta>
   </front>
   <body>
-    <p>This document provides technical information regarding the HTML and PDF Preview stylesheets
+    <sec>
+      <title>Introduction</title>
+      <p>This document provides technical information regarding the HTML and PDF Preview stylesheets
       for the NISO Journal Article Tag Suite Publishing 1.0 tag set. (See <ext-link
         xlink:href="http://dtd.nlm.nih.gov/publishing/"
         >http://dtd.nlm.nih.gov/publishing/</ext-link>.) It is intended for technical users, that
@@ -36,6 +38,18 @@
       these stylesheets, see the <italic>Users' Guide</italic> in this distribution. For
       instructions on how to run these stylesheets on Journal Publishing content using a basic
       configuration, see the <italic>Quick Start Guide</italic>.</p>
+    <sec>
+      <title>Copyright and disclaimer information for JATS preview software</title>
+      <p>The XSL stylesheets and other code (CSS, XProc, and Schematron) provided at the NCBITools/JATSPreviewStylesheets github repository (<ext-link xlink:href="https://github.com/NCBITools/JATSPreviewStylesheets">https://github.com/NCBITools/JATSPreviewStylesheets</ext-link>) is work is in the public domain and may be reproduced, published or 
+        otherwise used without the permission of the National Library of Medicine (NLM).</p>
+      <p>We request only that the NLM is cited as the source of the work.</p>
+      <p>Although all reasonable efforts have been taken to ensure the accuracy and 
+        reliability of the software and data, the NLM and the U.S. Government  do 
+        not and cannot warrant the performance or results that may be obtained  by
+        using this software or data. The NLM and the U.S. Government disclaim all 
+        warranties, express or implied, including warranties of performance, 
+        merchantability or fitness for any particular purpose.</p>
+    </sec></sec>
     <sec>
       <title>General overview</title>
       <p>The various tasks performed by stylesheets in this distribution have been distinguished so

@@ -62,6 +62,18 @@
         modify them, users should consult the <italic>Technical Documentation</italic>. That
         document also includes a fuller specification of the formatted and unformatted citation
         formats supported by this package.</p>
+      <sec>
+        <title>Copyright and disclaimer information for JATS preview software</title>
+        <p>The XSL stylesheets and other code (CSS, XProc, and Schematron) provided at the NCBITools/JATSPreviewStylesheets github repository (<ext-link xlink:href="https://github.com/NCBITools/JATSPreviewStylesheets">https://github.com/NCBITools/JATSPreviewStylesheets</ext-link>) is work is in the public domain and may be reproduced, published or 
+          otherwise used without the permission of the National Library of Medicine (NLM).</p>
+        <p>We request only that the NLM is cited as the source of the work.</p>
+        <p>Although all reasonable efforts have been taken to ensure the accuracy and 
+          reliability of the software and data, the NLM and the U.S. Government  do 
+          not and cannot warrant the performance or results that may be obtained  by
+          using this software or data. The NLM and the U.S. Government disclaim all 
+          warranties, express or implied, including warranties of performance, 
+          merchantability or fitness for any particular purpose.</p>
+      </sec>
     </sec>
     <sec>
       <title>Getting started</title>
