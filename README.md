@@ -56,7 +56,7 @@ the tool (to a copy distributed since the bug was reported and fixed).
 The following files are included in this distribution
 (as described in the documentation).  Directories are in **bold**.
 
-* **jats-preview-stylesheets**
+
     * jats-preview.css
     * quickstart.html
     * quickstart.pdf
