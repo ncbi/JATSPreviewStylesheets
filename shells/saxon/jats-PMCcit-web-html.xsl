@@ -3,7 +3,6 @@
 <!--  MODULE:    Saxon shell (pipelining) stylesheet               -->
 <!--             HTML Preview with NLM/Pubmed citations and        -->
 <!--             specific-use filtering                            -->
-<!--  VERSION:   1.0                                               -->
 <!--  DATE:      January 2009                                      -->
 <!--                                                               -->
 <!-- ============================================================= -->

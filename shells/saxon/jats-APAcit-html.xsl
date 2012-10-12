@@ -2,7 +2,6 @@
 <!-- ============================================================= -->
 <!--  MODULE:    Saxon shell (pipelining) stylesheet               -->
 <!--             HTML Preview with APA-like citations              -->
-<!--  VERSION:   1.0                                               -->
 <!--  DATE:      January 2009                                      -->
 <!--                                                               -->
 <!-- ============================================================= -->
