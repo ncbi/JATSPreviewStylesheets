@@ -1,1 +1,96 @@
-My GitHub Page
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset='utf-8' />
+		<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+		<meta name="description" content="Slate is a responsive theme for GitHub Pages" />
+
+		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+		<title>JATSPreviewStylesheets - a project of NCBITools</title>
+	</head>
+	
+	<body>
+
+		<!-- HEADER -->
+		<div id="header_wrap" class="outer">
+			<header class="inner">
+				<a id="forkme_banner" href="https://github.com/NCBITools/DtdAnalyzer">View on GitHub</a>
+
+				<h1 id="project_title">JATSPreviewStylesheets</h1>
+				<h2 id="project_tagline"></span></h2>
+
+				<section id="downloads">
+					<a class="zip_download_link" href="https://github.com/NCBITools/JATSPreviewStylesheets/zipball/release.2012-10-12">Download this version as a .zip file</a>
+				</section>
+ 			</header>
+		</div>
+
+		<!-- MAIN CONTENT -->
+		<!--<div id="main_content_wrap" class="outer">
+			<section id="main_content" class="inner">
+				<h1><a name="dtdanalyzer" class="anchor" href="#dtdanalyzer"><span class="mini-icon mini-icon-link"></span></a>DtdAnalyzer</h1>
+
+				<p>DtdAnalyzer provides a set of tools:</p>
+
+				<ul>
+					<li><strong>dtdanalyzer</strong> - creates an XML representation (using elements and attributes) 
+				of an XML DTD</li>
+					<li><strong>dtddocumentor</strong> - generates pretty HTML documentation, including annotations (if 
+				present) from specially-formatted comments of the DTD</li>
+					<li><strong>compare-dtds.xsl</strong> - compares two DTDs and generate a report of differences</li>
+					<li><strong>scaffold.xsl</strong> - generates XSLT scaffolding that can be used as a starting point 
+				for writing a transform from one schema to another</li>
+					<li><strong>dtdschematron.xsl</strong> - generates a schematron file from the DTD, including extra 
+				schematron rules (if present) from specially-formatted comments of the DTD</li>
+				</ul>
+				
+				<h2><a name="quick-start" class="anchor" href="#quick-start"><span class="mini-icon mini-icon-link"></span></a>Quick start</h2>
+				<ul>
+					<li>Download the latest release, either as a zip file:	<a href="https://github.com/downloads/NCBITools/DtdAnalyzer/DtdAnalyzer-0.1.zip">DtdAnalyzer-0.1.zip</a>; or as a gzipped tar: <a href="https://github.com/downloads/NCBITools/DtdAnalyzer/DtdAnalyzer-0.1.tar.gz">DtdAnalyzer-0.1.tar.gz</a>.
+						<p><em><strong>Note:</strong>  Do not use the "Zip" download button on the main GitHub page, or the "Download as zip" or "Download as tar.gz" buttons on the <a href="https://github.com/NCBITools/DtdAnalyzer/downloads">downloads page</a>! Any of those buttons downloads the <em>source files</em>, not the pre-built packages. They are different!</em></p>
+					</li>
+					<li>Unzip that file on your machine.</li>
+					<li>Open up a Windows command or a bash shell window.  Add the path to the package root
+				to your PATH environment variable.
+						<p>On Windows:</p>
+						<pre><code>set PATH=%PATH%;-path-to-dtdanalyzer-package-</code></pre>
+						<p>On Unix:</p>
+						<pre><code>export PATH=$PATH:-path-to-dtdanalyzer-package-</code></pre>
+					</li>
+					<li>Try the following command (which analyzes the <a href="http://jats.nlm.nih.gov/archiving/1.0/dtd.html">Journal Archiving and Interchange</a> flavor of the <a href="http://jats.nlm.nih.gov/">NLM/NISO Journal Article Tag Suite</a>, and writes the output to a file):
+						<pre><code>dtdanalyzer -s http://jats.nlm.nih.gov/archiving/1.0/JATS-archivearticle1.dtd JATS-archivearticle1.daz.xml</code></pre>
+					</li>
+					<li>Check that you have sensible results in the output file, <code>JATS-archivearticle1.daz.xml</code>.</li>
+					<li>As another example, the next command produces HTML documentation for that DTD.  It should run for a little while and then announce that it's done, and that the documentation is in the <code>doc</code> subdirectory.
+						<pre><code>dtddocumentor -s http://jats.nlm.nih.gov/archiving/1.0/JATS-archivearticle1.dtd --exclude mml: --exclude-except mml:math</code></pre>
+					</li>
+					<li>Open the <code>doc/index.html</code> file there in a browser, and check that it looks correct.</li>
+					<li>Run <code>dtdanalyzer --help</code> or <code>dtddocumentor --help</code> for more complete usage information, or continue by visiting the documentation pages on the <a href="https://github.com/NCBITools/DtdAnalyzer/wiki">GitHub wiki</a>.</li>
+				</ul>
+				
+				<h2><a name="documentation" class="anchor" href="#documentation"><span class="mini-icon mini-icon-link"></span></a>Documentation</h2>
+				<p>Detailed documentation is available on the <a href="https://github.com/NCBITools/DtdAnalyzer/wiki">GitHub 
+				wiki</a>.</p>
+				
+				<h2><a name="discussion-forum--mailing-list" class="anchor" href="#discussion-forum--mailing-list"><span class="mini-icon mini-icon-link"></span></a>Discussion forum / mailing list</h2>
+				<p>This software is in alpha stage. </p>
+				<p>Join the <a href="https://groups.google.com/d/forum/dtdanalyzer">DtdAnalyzer Google group</a> for discussions.</p>
+				<p>File bug reports at the <a href="https://github.com/NCBITools/DtdAnalyzer/issues">GitHub issues page</a>.</p>
+				
+				<h2><a name="public-domain" class="anchor" href="#public-domain"><span class="mini-icon mini-icon-link"></span></a>Public domain</h2>
+				<p>This work is in the public domain and may be reproduced, published or otherwise used without permission of the National Library of Medicine (NLM).</p>
+				<p>Although all reasonable efforts have been taken to ensure the accuracy and reliability of the software and data, the NLM and the U.S. Government do not and cannot warrant the performance or results that may be obtained by using this software or data. The NLM and the U.S. Government disclaim all warranties, express or implied, including warranties of performance, merchantability or fitness for any	particular purpose.</p>
+			</section>
+		</div>-->
+
+		<!-- FOOTER  -->
+		<div id="footer_wrap" class="outer">
+			<footer class="inner">
+ 				<p class="copyright">JATSPreviewStylesheets maintained by <a href="https://github.com/NCBITools">NCBITools</a></p>
+				<p>Published with <a href="http://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jsncostello/slate">Slate Theme</a></p>
+			</footer>
+		</div>
+	</body>
+</html>
