@@ -1,4 +1,4 @@
-# NISO Journal Article Tag Set (JATS) version 1.0
+# NISO Journal Article Tag Suite (JATS) version 1.0
 ## Preview XSLT stylesheets
 
 For documentation on these stylesheets, see:
