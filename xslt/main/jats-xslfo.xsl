@@ -905,21 +905,28 @@ CHANGES TO NLM JATS v3.0 stylesheet        (wap) v1.0 (2009-12-08)
   <!-- Builds a table listing journal-level metadata
        Don't be confused: this entire table fits into a table
        cell on the cover page -->
-  <xsl:for-each select="/article/front/journal-meta">
-    <!-- start the table -->
-    <fo:table border-style="solid" border-width="1pt" width="2.75in">
-      <fo:table-body>
-        <xsl:call-template name="make-metadata-cell">
-          <xsl:with-param name="contents">
-            <fo:wrapper xsl:use-attribute-sets="coverpage-heading">
-              <xsl:text>Journal Information</xsl:text>
-            </fo:wrapper>
-          </xsl:with-param>
-        </xsl:call-template>
-        <xsl:apply-templates mode="metadata"/>
-      </fo:table-body>
-    </fo:table>
-  </xsl:for-each>
+  <xsl:choose>
+    <xsl:when test="/article/front/journal-meta">
+      <xsl:for-each select="/article/front/journal-meta">
+        <!-- start the table -->
+        <fo:table border-style="solid" border-width="1pt" width="2.75in">
+          <fo:table-body>
+            <xsl:call-template name="make-metadata-cell">
+              <xsl:with-param name="contents">
+                <fo:wrapper xsl:use-attribute-sets="coverpage-heading">
+                  <xsl:text>Journal Information</xsl:text>
+                </fo:wrapper>
+              </xsl:with-param>
+            </xsl:call-template>
+            <xsl:apply-templates mode="metadata"/>
+          </fo:table-body>
+        </fo:table>
+      </xsl:for-each>
+    </xsl:when>
+    <xsl:otherwise>
+      <fo:block>No journal metadata</fo:block>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="make-article-metadata-table">
