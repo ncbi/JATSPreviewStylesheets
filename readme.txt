@@ -122,6 +122,27 @@ The following files are included in this distribution
             oasis-tables-html.xsl
             
 ----------------------------------------------------------------------------------------------------
+
+Our policy on merging changes:
+
+These stylesheets are provided as a point of entry for JATS users who may not have 
+the resources to create them from scratch. Because there are many varied 
+implementations of JATS, you should have no expectation that these stylesheets will 
+create production ready files in any arbitrary system. Instead, the stylesheets should be 
+customized for your particular needs. 
+
+Because we view these stylesheets as a template for a customized solution, not 
+the solution itself, we will accept changes that fix an actual bug, but we will 
+not merge in changes that we view as “customization”. For example, we will accept 
+changes that fix a problem which otherwise leads to failure in creating a final output 
+file, but we will not accept changes that focus on presentational aspects of the final 
+output (such as font changes, margin changes, graphics sizing, etc).  
+
+If you believe that you have a customization of the stylesheets that would benefit 
+other users please fork this repository and announce your fork on the JATS mailing list, 
+http://www.mulberrytech.com/JATS/JATS-List/.
+            
+----------------------------------------------------------------------------------------------------
  
 This work is in the public domain and may be reproduced, published or 
 otherwise used without the permission of the National Library of Medicine (NLM).
