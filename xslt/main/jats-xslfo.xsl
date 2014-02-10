@@ -309,7 +309,7 @@ CHANGES TO NLM JATS v3.0 stylesheet        (wap) v1.0 (2009-12-08)
   <xsl:attribute name="margin-left">
     <xsl:value-of select="$mainindent"/>
   </xsl:attribute>
-  <xsl:attribute name="font-size">
+  <xsl:attribute name="font-family">
     <xsl:value-of select="$textfont"/>
   </xsl:attribute>
   <xsl:attribute name="font-size">
