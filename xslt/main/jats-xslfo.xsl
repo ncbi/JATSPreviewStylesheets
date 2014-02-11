@@ -70,8 +70,9 @@
 <!--                                                               -->
 <!--  CREATED FOR:                                                 -->
 <!--             Digital Archive of Journal Articles               -->
-  <!--             National Center for Biotechnology Information (NCBI)     -->
-  <!--             National Library of Medicine (NLM)                -->
+<!--             National Center for Biotechnology Information     -->
+<!--                (NCBI)                                         -->
+<!--             National Library of Medicine (NLM)                -->
 <!--                                                               -->
 <!--  CREATED BY:                                                  -->
 <!--             Wendell Piez (based on PDF design by              -->
@@ -171,17 +172,11 @@ CHANGES TO NLM JATS v3.0 stylesheet        (wap) v1.0 (2009-12-08)
      stylesheet. -->
 
 
-  <!-- These affect the operation of the stylesheet as a whole. They
-     can be overridden at runtime, if desired (use an empty
-     string for a false() value), or (better) by an importing
-     stylesheet. -->
-
-
   <xsl:param name="mathml-support" select="true()"/>
   <!-- If mathml-support is turned off, MathML will be removed from
        the output (while its content is passed through). This allows
        the stylesheet to be used with an XSL-FO engine that does not
-       support MathML (while also disabling MathML, of course -->
+       support MathML (while also disabling MathML, of course). -->
 
 
   <xsl:param name="base-dir" select="false()"/>
@@ -309,7 +304,7 @@ CHANGES TO NLM JATS v3.0 stylesheet        (wap) v1.0 (2009-12-08)
   <xsl:attribute name="margin-left">
     <xsl:value-of select="$mainindent"/>
   </xsl:attribute>
-  <xsl:attribute name="font-size">
+  <xsl:attribute name="font-family">
     <xsl:value-of select="$textfont"/>
   </xsl:attribute>
   <xsl:attribute name="font-size">
