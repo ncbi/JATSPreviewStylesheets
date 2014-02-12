@@ -2091,15 +2091,17 @@ CHANGES TO NLM JATS v3.0 stylesheet        (wap) v1.0 (2009-12-08)
   <!-- This note is set as a first-page footnote, 
        and has no number or other device.
        The context node is /article/front/article-meta -->
-  <xsl:call-template name="make-footnote">
-    <xsl:with-param name="contents">
-      <!-- v2.3 has copyright-statement, copyright-year, license -->
-      <xsl:if test="copyright-statement | copyright-year | license ">
-        <xsl:call-template name="permissions"/>
-      </xsl:if>
-      <xsl:apply-templates select="permissions"/>
-    </xsl:with-param>
-  </xsl:call-template>   
+  <!-- v2.3 has copyright-statement, copyright-year, license -->
+  <xsl:if test="permissions | copyright-statement | copyright-year | license ">
+    <xsl:call-template name="make-footnote">
+      <xsl:with-param name="contents">
+        <xsl:if test="copyright-statement | copyright-year | license ">
+          <xsl:call-template name="permissions"/>
+        </xsl:if>
+        <xsl:apply-templates select="permissions"/>
+      </xsl:with-param>
+    </xsl:call-template>
+  </xsl:if>
 </xsl:template>
 
 
