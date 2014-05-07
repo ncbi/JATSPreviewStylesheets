@@ -513,7 +513,9 @@ CHANGES TO NLM JATS v3.0 stylesheet        (wap) v1.0 (2009-12-08)
 
 <xsl:attribute-set name="chem-struct-inline"/>
 
-<xsl:attribute-set name="fig-box" use-attribute-sets="box"/>
+<xsl:attribute-set name="fig-box" use-attribute-sets="box">
+  <xsl:attribute name="keep-together.within-page">10</xsl:attribute>
+</xsl:attribute-set>
 
 <xsl:attribute-set name="fig" use-attribute-sets="panel"/>
 
