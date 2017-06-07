@@ -5,12 +5,18 @@
   xmlns:saxon="http://saxon.sf.net/"
   exclude-result-prefixes="#all">
   
-  <xsl:output method="xhtml" omit-xml-declaration="no"
+  <!-- <xsl:output method="xhtml" omit-xml-declaration="no"
     encoding="utf-8" indent="no"
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
-    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
+    doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/> -->
 
-  
+  <!-- set include-content-type="no" to get rid of <meta http-equiv> stuff -->
+
+  <xsl:output method="xhtml" omit-xml-declaration="yes"
+    encoding="utf-8" indent="no"
+    include-content-type="no"
+    doctype-system="about:legacy-compat"/>
+
   <xsl:param name="runtime-params">
     <base-dir>
       <xsl:value-of
