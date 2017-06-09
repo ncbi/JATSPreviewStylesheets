@@ -200,8 +200,17 @@ or pipeline) parameterized.
         </xsl:variable>
         <xsl:value-of select="normalize-space(string($authors))"/>
         <xsl:if test="normalize-space(string($authors))">: </xsl:if>
-        <xsl:value-of
-          select="/article/front/article-meta/title-group/article-title[1]"/>
+        <!-- <xsl:value-of
+          select="/article/front/article-meta/title-group/article-title[1]"/> -->
+	<xsl:value-of select="/book/book-meta/book-title-group/book-title"/>
+	<xsl:if test="/book/book-meta/book-title-group/subtitle">
+	  <xsl:text>: </xsl:text><xsl:value-of select="/book/book-meta/book-title-group/subtitle"/>
+	</xsl:if>
+	<xsl:if test="/book-part/book-part-meta/title-group/label">
+	  <xsl:value-of select="/book-part/book-part-meta/title-group/label"/><xsl:text>: </xsl:text>
+	</xsl:if>
+	<xsl:value-of select="/book-part/book-part-meta/title-group/title[1]"/>
+	<xsl:value-of select="/sec/title[1]"/>
       </title>
       <link rel="stylesheet" type="text/css" href="{$css}"/>
       <!-- XXX check: any other header stuff? XXX -->
@@ -290,7 +299,7 @@ or pipeline) parameterized.
 
   </xsl:template>
 
-  <xsl:template match="front | front-stub">
+  <xsl:template match="front | front-stub | book-meta">
     <!-- First Table: journal and article metadata -->
     <div class="metadata two-column table">
       <div class="row">
@@ -1363,11 +1372,11 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="title-group" mode="metadata">
+  <xsl:template match="book-title-group" mode="metadata">
     <!-- content model:
     article-title, subtitle*, trans-title-group*, alt-title*, fn-group? -->
     <!-- trans-title and trans-subtitle included for 2.3 -->
-    <xsl:apply-templates select="article-title | subtitle | trans-title-group |
+    <xsl:apply-templates select="book-title | subtitle | trans-title-group |
       trans-title | trans-subtitle"
       mode="metadata"/>
     <xsl:if test="alt-title | fn-group">
@@ -1378,7 +1387,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="title-group/article-title" mode="metadata">
+  <xsl:template match="book-title-group/book-title" mode="metadata">
     <h1 class="document-title">
       <xsl:apply-templates/>
       <xsl:if test="../subtitle">:</xsl:if>
@@ -1386,7 +1395,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="title-group/subtitle | trans-title-group/subtitle"
+  <xsl:template match="book-title-group/subtitle | trans-title-group/subtitle"
     mode="metadata">
     <h2 class="document-title">
       <xsl:apply-templates/>
@@ -1990,7 +1999,7 @@ or pipeline) parameterized.
 
   <xsl:template name="section-title"
     match="abstract/*/title | body/*/*/title |
-		       back[title]/*/title | back[not(title)]/*/*/title">
+		       back[title]/*/title | back[not(title)]/*/*/title | sec/title">
     <xsl:param name="contents">
       <xsl:apply-templates/>
     </xsl:param>   
@@ -2034,7 +2043,7 @@ or pipeline) parameterized.
 
 
   <!-- default: any other titles found -->
-  <xsl:template match="title">
+  <xsl:template match="book-title">
     <xsl:if test="normalize-space(string(.))">
       <h3 class="title">
         <xsl:apply-templates/>
@@ -2119,9 +2128,9 @@ or pipeline) parameterized.
     <div class="{$gi} panel">
       <xsl:if test="not(@position != 'float')">
         <!-- the test respects @position='float' as the default -->
-        <xsl:attribute name="style">display: float; clear: both</xsl:attribute>
+        <!-- <xsl:attribute name="style">display: float; clear: both</xsl:attribute> -->
       </xsl:if>
-      <xsl:call-template name="named-anchor"/>
+      <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates select="." mode="label"/>
       <xsl:apply-templates/>
       <xsl:apply-templates mode="footnote"
@@ -2312,7 +2321,7 @@ or pipeline) parameterized.
     <xsl:apply-templates select="copyright-statement"/>
     <xsl:if test="copyright-year | copyright-holder">
       <p class="copyright">
-        <span class="generated">Copyright</span>
+        <span class="generated">Copyright </span>
         <xsl:for-each select="copyright-year | copyright-holder">
             <xsl:apply-templates/>
             <xsl:if test="not(position()=last())">
@@ -2580,20 +2589,32 @@ or pipeline) parameterized.
   
   
   <xsl:template match="table | thead | tbody | tfoot |
-      col | colgroup | tr | th | td">
+      col | tr | th | td">
     <xsl:copy>
-      <xsl:apply-templates select="@*" mode="table-copy"/>
-      <xsl:call-template name="named-anchor"/>
+      <xsl:apply-templates select="@* except (@frame,@rules,@border,@cellpadding,@cellspacing,@span,@align,@valign)" mode="table-copy"/>
+      <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
     </xsl:copy>
   </xsl:template>
-  
+ 
+
+  <xsl:template match="colgroup">
+    <colgroup>
+      <xsl:choose>
+	<xsl:when test="col"/>
+      	<xsl:otherwise>
+          <xsl:attribute name="span" select="@span"/>	
+        </xsl:otherwise>    
+      </xsl:choose>
+      <xsl:apply-templates/>
+    </colgroup>
+  </xsl:template> 
   
   <xsl:template match="array/tbody">
     <table>
       <xsl:copy>
       <xsl:apply-templates select="@*" mode="table-copy"/>
-      <xsl:call-template name="named-anchor"/>
+      <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
     </xsl:copy>
     </table>
@@ -3728,9 +3749,10 @@ or pipeline) parameterized.
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <a id="{$id}">
+    <!-- <a id="{$id}">
       <xsl:comment> named anchor </xsl:comment>
-    </a>
+    </a> -->
+    <span id="{$id}"></span>
   </xsl:template>
 
 
@@ -4015,6 +4037,16 @@ or pipeline) parameterized.
       <xsl:text>]</xsl:text>
     </xsl:if>
   </xsl:template>
+
+  <!-- bits-specific stuff added by HW -->
+
+  <xsl:template match="book-id"/>
+  <xsl:template match="subj-group"/>
+  <xsl:template match="toc"/>
+  <xsl:template match="contrib-group"/>
+  <xsl:template match="pub-date"/>
+  <xsl:template match="isbn"/>
+  <xsl:template match="publisher"/>
 
 
 <!-- ============================================================= -->
