@@ -66,8 +66,8 @@
   <xsl:output method="xml" indent="no" encoding="UTF-8"/>
 
   <xsl:template match="/">
-    <xsl:processing-instruction name="xml-stylesheet">type="text/xsl"
-      href="http://www.w3.org/Math/XSL/mathml.xsl"</xsl:processing-instruction>
+    <!-- <xsl:processing-instruction name="xml-stylesheet">type="text/xsl"
+      href="http://www.w3.org/Math/XSL/mathml.xsl"</xsl:processing-instruction> -->
     <xsl:apply-templates/>
   </xsl:template>
 
