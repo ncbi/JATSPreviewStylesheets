@@ -301,21 +301,23 @@ or pipeline) parameterized.
 
   <xsl:template match="front | front-stub | book-meta">
     <!-- First Table: journal and article metadata -->
-    <div class="metadata two-column table">
+    <!-- HW NOTE: for now we're going to forget all this 'two-column table' stuff.
+                  skip down to the contrib-group template for the good stuff. SPRINGRSC3-213. Dax 7/18/17 -->
+    <!-- <div class="metadata two-column table">
       <div class="row">
-        <!-- Cell 1: journal information -->
+        <!-/- Cell 1: journal information -/->
         <xsl:for-each select="journal-meta">
-          <!-- (journal-id+, journal-title-group*, (contrib-group | aff | aff-alternatives)*,
-                issn+, issn-l?, isbn*, publisher?, notes*, self-uri*)         -->
+          <!-/- (journal-id+, journal-title-group*, (contrib-group | aff | aff-alternatives)*,
+                issn+, issn-l?, isbn*, publisher?, notes*, self-uri*)         -/->
           <div class="cell">
             <h4 class="generated">
               <xsl:text>Journal Information</xsl:text>
             </h4>
             <div class="metadata-group">
               <xsl:apply-templates select="journal-id | journal-title-group" mode="metadata"/>
-              <!-- the following may appear in 2.3 -->
+              <!-/- the following may appear in 2.3 -/->
               <xsl:apply-templates mode="metadata" select="journal-title | journal-subtitle | trans-title | trans-subtitle | abbrev-journal-title"/>
-              <!-- contrib-group, aff, aff-alternatives, author-notes -->
+              <!-/- contrib-group, aff, aff-alternatives, author-notes -/->
               <xsl:apply-templates mode="metadata"
                 select="contrib-group"/>
               <xsl:if test="aff | aff-alternatives | author-notes">
@@ -329,9 +331,9 @@ or pipeline) parameterized.
           </div>
         </xsl:for-each>
 
-        <!-- Cell 2: Article information -->
+        <!-/- Cell 2: Article information -/->
         <xsl:for-each select="article-meta | self::front-stub">
-          <!-- content model:
+          <!-/- content model:
 				    (article-id*, article-categories?, title-group,
 				     (contrib-group | aff)*, 
              author-notes?, pub-date+, volume?, volume-id*,
@@ -390,7 +392,7 @@ or pipeline) parameterized.
               counts
               custom-meta-group
 
-				  -->
+				  -/->
 
           <div class="cell">
             <h4 class="generated">
@@ -403,7 +405,7 @@ or pipeline) parameterized.
 
               <xsl:apply-templates mode="metadata" select="product"/>
 
-              <!-- only in 2.3 -->
+              <!-/- only in 2.3 -/->
               <xsl:apply-templates mode="metadata" select="copyright-statement |
                 copyright-year | license"/>
               
@@ -414,16 +416,16 @@ or pipeline) parameterized.
               <xsl:apply-templates mode="metadata" select="pub-date"/>
 
               <xsl:call-template name="volume-info">
-                <!-- handles volume?, volume-id*, volume-series? -->
+                <!-/- handles volume?, volume-id*, volume-series? -/->
               </xsl:call-template>
 
               <xsl:call-template name="issue-info">
-                <!-- handles issue?, issue-id*, issue-title*,
-                     issue-sponsor*, issue-part? -->
+                <!-/- handles issue?, issue-id*, issue-title*,
+                     issue-sponsor*, issue-part? -/->
               </xsl:call-template>
 
               <xsl:call-template name="page-info">
-                <!-- handles (fpage, lpage?, page-range?) -->
+                <!-/- handles (fpage, lpage?, page-range?) -/->
               </xsl:call-template>
 
               <xsl:apply-templates mode="metadata" select="elocation-id"/>
@@ -435,20 +437,23 @@ or pipeline) parameterized.
 
               <xsl:apply-templates mode="metadata" select="article-id"/>
 
-              <!-- only in 2.3 -->
+              <!-/- only in 2.3 -/->
               <xsl:apply-templates mode="metadata" select="contract-num | contract-sponsor |
                 grant-num | grant-sponsor"/>
                 
               <xsl:apply-templates mode="metadata" select="funding-group/*">
-                <!-- includes (award-group*, funding-statement*,
-                     open-access?) -->
+                <!-/- includes (award-group*, funding-statement*,
+                     open-access?) -/->
               </xsl:apply-templates>
             </div>
           </div>
         </xsl:for-each>
       </div>
-    </div>
-    
+    </div> -->
+
+    <!-- the good stuff -->
+    <xsl:apply-templates select="contrib-group[parent::book-meta]"/>
+
     <hr class="part-rule"/>
     
       <!-- change context to front/article-meta (again) -->
@@ -513,6 +518,49 @@ or pipeline) parameterized.
     <!-- end of big front-matter pull -->
   </xsl:template>
 
+  <!-- HW addition -->
+  <xsl:template match="contrib-group[@content-type eq 'authorgroup'][parent::book-meta]">
+    <div class="contrib-group-authors">
+      <ul class="contributor-list">
+        <xsl:apply-templates select="contrib[@contrib-type eq 'author']"/>
+      </ul>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="contrib-group[@content-type eq 'editorgroup'][parent::book-meta]">
+    <div class="contrib-group-editors">
+      <span class="contributor-list-label">Edited by:</span>
+      <ul class="contributor-list">
+        <xsl:apply-templates select="contrib[@contrib-type eq 'editor']"/>
+      </ul>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]">
+    <li class="contrib">
+      <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
+        <xsl:attribute name="data-content"><xsl:apply-templates select="bio"/></xsl:attribute>
+        <xsl:attribute name="data-original-title" select="'Author Bio'"/>
+        <xsl:value-of select="name/surname"/><xsl:text>, </xsl:text><xsl:value-of select="name/given-names"/><xsl:text>, </xsl:text><xsl:value-of select="degrees"/>
+      </a>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="bio">
+    <xsl:apply-templates mode="bio"/>
+  </xsl:template>
+
+  <xsl:template match="p" mode="bio">
+    <xsl:apply-templates mode="bio"/>
+  </xsl:template>
+
+  <xsl:template match="bold" mode="bio">
+    <xsl:text>&lt;strong&gt;</xsl:text>
+      <xsl:apply-templates/>
+    <xsl:text>&lt;/strong&gt;</xsl:text>
+  </xsl:template>
+
+  <!-- HERE -->
  
   <xsl:template name="footer-metadata">
     <!-- handles: article-categories, kwd-group, counts, 
