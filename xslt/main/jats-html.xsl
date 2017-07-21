@@ -519,7 +519,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <!-- HW addition -->
-  <xsl:template match="contrib-group[@content-type eq 'authorgroup'][parent::book-meta]">
+  <xsl:template match="contrib-group[parent::book-meta][contrib[@contrib-type eq 'author']]">
     <div class="contrib-group-authors">
       <ul class="contributor-list">
         <xsl:apply-templates select="contrib[@contrib-type eq 'author']"/>
@@ -527,7 +527,7 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
-  <xsl:template match="contrib-group[@content-type eq 'editorgroup'][parent::book-meta]">
+  <xsl:template match="contrib-group[parent::book-meta][contrib[@contrib-type eq 'editor']]">
     <div class="contrib-group-editors">
       <span class="contributor-list-label">Edited by:</span>
       <ul class="contributor-list">
@@ -541,9 +541,27 @@ or pipeline) parameterized.
       <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
         <xsl:attribute name="data-content"><xsl:apply-templates select="bio"/></xsl:attribute>
         <xsl:attribute name="data-original-title" select="'Author Bio'"/>
-        <xsl:value-of select="name/surname"/><xsl:text>, </xsl:text><xsl:value-of select="name/given-names"/><xsl:text>, </xsl:text><xsl:value-of select="degrees"/>
+	<xsl:apply-templates select="* except (bio, x)" mode="contrib-group"/>
       </a>
     </li>
+  </xsl:template>
+
+  <xsl:template match="name" mode="contrib-group">
+    <xsl:apply-templates mode="#current" select="* except (x)"/>
+  </xsl:template>
+
+  <xsl:template match="surname" mode="contrib-group">
+    <xsl:apply-templates select="node() except (x)"/>
+    <xsl:text>, </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="given-names" mode="contrib-group">
+    <xsl:apply-templates/>
+    <xsl:text>, </xsl:text>
+  </xsl:template>
+
+  <xsl:template match="degrees" mode="contrib-group">
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="bio">
@@ -4089,12 +4107,13 @@ or pipeline) parameterized.
   <!-- bits-specific stuff added by HW -->
 
   <xsl:template match="book-id"/>
+  <xsl:template match="contrib-group"/>
+  <xsl:template match="front-matter-part"/>
+  <xsl:template match="isbn"/>
+  <xsl:template match="pub-date"/>
+  <xsl:template match="publisher"/>
   <xsl:template match="subj-group"/>
   <xsl:template match="toc"/>
-  <xsl:template match="contrib-group"/>
-  <xsl:template match="pub-date"/>
-  <xsl:template match="isbn"/>
-  <xsl:template match="publisher"/>
 
 
 <!-- ============================================================= -->
