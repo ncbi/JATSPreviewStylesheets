@@ -578,6 +578,25 @@ or pipeline) parameterized.
     <xsl:text>&lt;/strong&gt;</xsl:text>
   </xsl:template>
 
+  <xsl:template match="abstract">
+    <div class="abstract">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="kwd-group">
+    <div>
+      <xsl:attribute name="class" separator=" " select="'kwd-group', if (@kwd-group-type) then @kwd-group-type else ()"/>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="kwd">
+    <span class="kwd">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
   <!-- HERE -->
  
   <xsl:template name="footer-metadata">
@@ -1474,6 +1493,14 @@ or pipeline) parameterized.
     <xsl:apply-templates mode="metadata"/>
   </xsl:template>
 
+  <xsl:template match="title-group[parent::book-part-meta]/title">
+    <h4 class="title">
+      <xsl:apply-templates/>
+    </h4>
+  </xsl:template>
+
+  <xsl:template match="fpage[parent::book-part-meta]"/>
+  <xsl:template match="lpage[parent::book-part-meta]"/>
 
 
   <xsl:template match="title-group/alt-title" mode="metadata">
@@ -2509,9 +2536,9 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </p>
   </xsl:template>
+    
   
-  
-  <xsl:template match="ref/note" priority="2">
+<xsl:template match="ref/note" priority="2">
     <xsl:param name="label" select="''"/>
     <xsl:if test="normalize-space(string($label))
       and not(preceding-sibling::*[not(self::label)])">
@@ -2582,12 +2609,12 @@ or pipeline) parameterized.
   </xsl:template>
   
 
-	<xsl:template match="tex-math">
-		<span class="tex-math">
-			<span class="generated">[TeX:] </span>
-			<xsl:apply-templates/>
-		</span>
-	</xsl:template>
+  <xsl:template match="tex-math">
+    <span class="tex-math">
+      <span class="generated">[TeX:] </span>
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
 
   
   <xsl:template match="mml:*">
@@ -2756,14 +2783,12 @@ or pipeline) parameterized.
     </a>
   </xsl:template>
 
-  
+  <xsl:template match="uri[ext-link]">
+    <xsl:apply-templates select="ext-link"/>
+  </xsl:template>
+
   <xsl:template match="ext-link | uri | inline-supplementary-material">
     <a target="xrefwindow">
-      <xsl:attribute name="href">
-        <xsl:value-of select="."/>
-      </xsl:attribute>
-      <!-- if an @href is present, it overrides the href
-           just attached -->
       <xsl:call-template name="assign-href"/>
       <xsl:call-template name="assign-id"/>
       <xsl:apply-templates/>
@@ -2922,6 +2947,7 @@ or pipeline) parameterized.
 
   <xsl:template match="italic">
     <i>
+      <xsl:apply-templates select="@* except (@toggle)"/>
       <xsl:apply-templates/>
     </i>
   </xsl:template>
