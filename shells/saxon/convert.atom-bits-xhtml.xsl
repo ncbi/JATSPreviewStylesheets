@@ -29,18 +29,18 @@
       <xsl:when test="atom:entry">
         <xsl:variable name="source" as="document-node()" select="doc(resolve-uri(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,base-uri(.)))"/>
         <!-- format citations in NLM/PMC format -->
-        <xsl:variable name="step1" as="document-node()"
+        <!-- <xsl:variable name="step1" as="document-node()"
           select="
           saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/citations-prep/jats-PMCcit.xsl')),
           $source,
-          $runtime-params/* )"/>
+          $runtime-params/* )"/> -->
         <!-- convert into HTML for display -->
         <xsl:variable name="step2" as="document-node()"
           select="
           saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/jats-html.xsl')),
-          $step1,
+          $source,
           $runtime-params/* )"/>
         <!-- cast into XHTML namespace
            (for example, if MathML is included)
