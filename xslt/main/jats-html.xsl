@@ -519,7 +519,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <!-- HW addition -->
-  <xsl:template match="contrib-group[parent::book-meta][contrib[@contrib-type eq 'author']]">
+  <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta][contrib[@contrib-type eq 'author']]">
     <div class="contrib-group-authors">
       <ul class="contributor-list">
         <xsl:apply-templates select="contrib[@contrib-type eq 'author']"/>
@@ -538,11 +538,18 @@ or pipeline) parameterized.
 
   <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]">
     <li class="contrib">
-      <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
-        <xsl:attribute name="data-content"><xsl:apply-templates select="bio"/></xsl:attribute>
-        <xsl:attribute name="data-original-title" select="'Author Bio'"/>
-	<xsl:apply-templates select="* except (bio, x)" mode="contrib-group"/>
-      </a>
+      <xsl:choose>
+        <xsl:when test="bio">
+          <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
+            <xsl:attribute name="data-content"><xsl:apply-templates select="bio"/></xsl:attribute>
+            <xsl:attribute name="data-original-title" select="'Author Bio'"/>
+	    <xsl:apply-templates select="* except (bio, x)" mode="contrib-group"/>
+          </a>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="* except (x)" mode="contrib-group"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </li>
   </xsl:template>
 
@@ -557,10 +564,11 @@ or pipeline) parameterized.
 
   <xsl:template match="given-names" mode="contrib-group">
     <xsl:apply-templates/>
-    <xsl:text>, </xsl:text>
+    <!-- <xsl:text>, </xsl:text> -->
   </xsl:template>
 
   <xsl:template match="degrees" mode="contrib-group">
+    <xsl:text>, </xsl:text>
     <xsl:apply-templates/>
   </xsl:template>
 
