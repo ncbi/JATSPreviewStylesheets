@@ -28,32 +28,25 @@
     <xsl:choose>
       <xsl:when test="atom:entry">
         <xsl:variable name="source" as="document-node()" select="doc(resolve-uri(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,base-uri(.)))"/>
-        <!-- format citations in NLM/PMC format -->
+        <!-- convert into HTML for display -->
         <xsl:variable name="step1" as="document-node()"
           select="
           saxon:transform(
-          saxon:compile-stylesheet(doc('../../xslt/citations-prep/jats-PMCcit.xsl')),
-          $source,
-          $runtime-params/* )"/>
-        <!-- convert into HTML for display -->
-        <xsl:variable name="step2" as="document-node()"
-          select="
-          saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/abstract-html.xsl')),
-          $step1,
+          $source,
           $runtime-params/* )"/>
         <!-- cast into XHTML namespace
            (for example, if MathML is included)
          if this step is run, the output file should be
            named with suffix .xml or .xhtml, and served
            with MIME type application/xhtml+xml -->
-        <xsl:variable name="step3" as="document-node()"
+        <xsl:variable name="step2" as="document-node()"
           select="
           saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/post/xhtml-ns.xsl')),
-          $step2,
+          $step1,
           $runtime-params/* )"/>
-        <xsl:sequence select="$step3"/>
+        <xsl:sequence select="$step2"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-imports/>
