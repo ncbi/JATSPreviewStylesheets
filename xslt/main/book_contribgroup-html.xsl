@@ -9,7 +9,7 @@
   <xsl:output encoding="UTF-8"/>
 
   <xsl:template match="/">
-    <xsl:apply-templates select="//contrib-group[parent::book-meta]"/>
+    <xsl:apply-templates select="//contrib-group[parent::book-meta]" mode="contrib-group"/>
   </xsl:template>
 
 </xsl:stylesheet>
