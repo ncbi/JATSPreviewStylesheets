@@ -519,42 +519,42 @@ or pipeline) parameterized.
   </xsl:template>
 
   <!-- HW addition -->
-  <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta][contrib[@contrib-type eq 'author']]">
+  <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta][contrib[@contrib-type eq 'author']]" mode="contrib-group">
     <div class="contrib-group-authors">
       <ul class="contributor-list">
-        <xsl:apply-templates select="contrib[@contrib-type eq 'author']"/>
+        <xsl:apply-templates select="contrib[@contrib-type eq 'author']" mode="#current"/>
       </ul>
     </div>
   </xsl:template>
 
-  <xsl:template match="contrib-group[parent::book-meta][contrib[@contrib-type eq 'editor']]">
+  <xsl:template match="contrib-group[parent::book-meta][contrib[@contrib-type eq 'editor']]" mode="contrib-group">
     <div class="contrib-group-editors">
       <span class="contributor-list-label">Edited by:</span>
       <ul class="contributor-list">
-        <xsl:apply-templates select="contrib[@contrib-type eq 'editor']"/>
+        <xsl:apply-templates select="contrib[@contrib-type eq 'editor']" mode="contrib-group"/>
       </ul>
     </div>
   </xsl:template>
 
-  <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]">
+  <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]" mode="contrib-group">
     <li class="contrib">
       <xsl:choose>
         <xsl:when test="bio">
           <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
-            <xsl:attribute name="data-content"><xsl:apply-templates select="bio"/></xsl:attribute>
+            <xsl:attribute name="data-content"><xsl:apply-templates select="bio" mode="#current"/></xsl:attribute>
             <xsl:attribute name="data-original-title" select="'Author Bio'"/>
-	    <xsl:apply-templates select="* except (bio, x)" mode="contrib-group"/>
+	    <xsl:apply-templates select="* except (bio, x)" mode="#current"/>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="* except (x)" mode="contrib-group"/>
+          <xsl:apply-templates select="* except (x)" mode="#current"/>
         </xsl:otherwise>
       </xsl:choose>
     </li>
   </xsl:template>
 
   <xsl:template match="name" mode="contrib-group">
-    <xsl:apply-templates mode="#current" select="* except (x)"/>
+    <xsl:apply-templates select="* except (x)" mode="#current"/>
   </xsl:template>
 
   <xsl:template match="surname" mode="contrib-group">
@@ -572,7 +572,7 @@ or pipeline) parameterized.
     <xsl:apply-templates/>
   </xsl:template>
 
-  <xsl:template match="bio">
+  <xsl:template match="bio" mode="contrib-group">
     <xsl:apply-templates mode="bio"/>
   </xsl:template>
 
@@ -586,13 +586,13 @@ or pipeline) parameterized.
     <xsl:text>&lt;/strong&gt;</xsl:text>
   </xsl:template>
 
-  <xsl:template match="abstract">
+  <xsl:template match="abstract" mode="abstract">
     <div class="abstract">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
-  <xsl:template match="kwd-group">
+  <xsl:template match="kwd-group[parent::book-meta]">
     <div>
       <xsl:attribute name="class" separator=" " select="'kwd-group', if (@kwd-group-type) then @kwd-group-type else ()"/>
       <xsl:apply-templates/>
@@ -2050,9 +2050,9 @@ or pipeline) parameterized.
       <xsl:apply-templates select="." mode="label"/>
       <xsl:apply-templates select="*[not(self::ref | self::ref-list)]"/>
       <xsl:if test="ref">
-        <div class="ref-list table">
+        <!-- <div class="ref-list table"> -->
           <xsl:apply-templates select="ref"/>
-        </div>
+        <!-- </div> -->
       </xsl:if>
       <xsl:apply-templates select="ref-list"/>
     </div>
@@ -2084,8 +2084,7 @@ or pipeline) parameterized.
   <!-- ============================================================= -->
 
   <xsl:template name="main-title"
-    match="abstract/title | body/*/title |
-           back/title | back[not(title)]/*/title">
+                match="abstract/title | back/title | back[not(title)]/*/title">
     <xsl:param name="contents">
       <xsl:apply-templates/>
     </xsl:param>
@@ -2099,8 +2098,7 @@ or pipeline) parameterized.
 
 
   <xsl:template name="section-title"
-    match="abstract/*/title | body/*/*/title |
-		       back[title]/*/title | back[not(title)]/*/*/title | sec/title">
+                match="abstract/*/title | back[title]/*/title | back[not(title)]/*/*/title" >
     <xsl:param name="contents">
       <xsl:apply-templates/>
     </xsl:param>   
@@ -2112,10 +2110,32 @@ or pipeline) parameterized.
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="sec[@disp-level eq 'level1']/title">
+    <h2 class="section-title">
+      <xsl:apply-templates/>
+    </h2>
+  </xsl:template>
+
+  <xsl:template match="sec[@disp-level eq 'level2']/title">
+    <h3 class="section-title">
+      <xsl:apply-templates/>
+    </h3>
+  </xsl:template>
+
+  <xsl:template match="sec[@disp-level eq 'level3']/title">
+    <h4 class="section-title">
+      <xsl:apply-templates/>
+    </h4>
+  </xsl:template>
+
+  <xsl:template match="sec[@disp-level eq 'level4']/title">
+    <h5 class="section-title">
+      <xsl:apply-templates/>
+    </h5>
+  </xsl:template>
 
   <xsl:template name="subsection-title"
-    match="abstract/*/*/title | body/*/*/*/title |
-		       back[title]/*/*/title | back[not(title)]/*/*/*/title">
+    match="abstract/*/*/title | back[title]/*/*/title | back[not(title)]/*/*/*/title">
     <xsl:param name="contents">
       <xsl:apply-templates/>
     </xsl:param>   
@@ -2215,8 +2235,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="boxed-text | chem-struct-wrap | fig |
-                       table-wrap | chem-struct-wrapper">
+  <xsl:template match="boxed-text | chem-struct-wrap | fig | table-wrap | chem-struct-wrapper">
     <!-- chem-struct-wrapper is from NLM 2.3 -->
     <xsl:variable name="gi">
       <xsl:choose>
@@ -2232,16 +2251,29 @@ or pipeline) parameterized.
         <!-- <xsl:attribute name="style">display: float; clear: both</xsl:attribute> -->
       </xsl:if>
       <!-- <xsl:call-template name="named-anchor"/> -->
-      <xsl:apply-templates select="." mode="label"/>
+      <!-- <xsl:apply-templates select="." mode="label"/> -->
+      <xsl:if test="label">
+        <div class="label">
+	  <xsl:apply-templates select="label" mode="hw-label"/>
+	</div>
+      </xsl:if>
       <xsl:apply-templates/>
-      <xsl:apply-templates mode="footnote"
-        select="self::table-wrap//fn[not(ancestor::table-wrap-foot)]"/>
+      <xsl:apply-templates mode="footnote" select="self::table-wrap//fn[not(ancestor::table-wrap-foot)]"/>
     </div>
   </xsl:template>
   
+  <xsl:template match="label" mode="hw-label">
+    <xsl:apply-templates/>
+  </xsl:template>
 
   <xsl:template match="caption">
     <div class="caption">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="caption/title">
+    <div class="caption-title">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -2518,35 +2550,41 @@ or pipeline) parameterized.
   </xsl:template>
   
   
-  <xsl:template match="ref">
+  <!-- <xsl:template match="ref">
       <div class="row">
         <div class="ref-label cell">
           <p class="ref-label">
             <xsl:apply-templates select="." mode="label"/>
-            <xsl:text>&#xA0;</xsl:text>
-            <!-- space forces vertical alignment of the paragraph -->
-            <xsl:call-template name="named-anchor"/>
+             <xsl:call-template name="named-anchor"/>
           </p>
         </div>
         <div class="ref-content cell">
           <xsl:apply-templates/>
         </div>
       </div>
+  </xsl:template> -->
+
+
+  <xsl:template match="ref">
+    <div class="ref" id="{@id}">
+     <!-- <xsl:if test="mixed-citation/label"><span class="ref-label"><xsl:value-of select="label"/></span></xsl:if> -->
+     <xsl:apply-templates/>
+    </div>
   </xsl:template>
     
   
-  <xsl:template match="ref/* | ref/citation-alternatives/*" priority="0">
-    <!-- should match mixed-citation, element-citation, nlm-citation,
-         or citation (in 2.3); note and label should be matched below;
-         citation-alternatives is handled elsewhere -->
-    <p class="citation">
+  <xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
+    <!-- <p class="citation">
       <xsl:call-template name="named-anchor"/>
       <xsl:apply-templates/>
-    </p>
+    </p> -->
+    <div class="citation">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
     
-  
-<xsl:template match="ref/note" priority="2">
+   
+  <xsl:template match="ref/note" priority="2">
     <xsl:param name="label" select="''"/>
     <xsl:if test="normalize-space(string($label))
       and not(preceding-sibling::*[not(self::label)])">
@@ -2650,8 +2688,7 @@ or pipeline) parameterized.
   </xsl:template>
   
   
-  <xsl:template match="aff/label | corresp/label | chem-struct/label |
-    element-citation/label | mixed-citation/label | citation/label">
+  <xsl:template match="aff/label | corresp/label | chem-struct/label">
     <!-- these labels appear in line -->
     <span class="generated">[</span>
     <xsl:apply-templates/>
@@ -2676,9 +2713,19 @@ or pipeline) parameterized.
   
   <xsl:template match="label" name="label">
     <!-- other labels are displayed as blocks -->
-    <h5 class="label">
-      <xsl:apply-templates/>
-    </h5>
+    <xsl:choose>
+      <xsl:when test="parent::fig or parent::table-wrap">
+        <div class="label">
+	  <xsl:apply-templates/>
+	</div>
+      </xsl:when>
+      <xsl:otherwise>
+        <span class="label">
+          <xsl:apply-templates/>
+	  <xsl:if test="following-sibling::x"><xsl:value-of select="following-sibling::x"/><xsl:text> </xsl:text></xsl:if>
+        </span>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   
@@ -2954,10 +3001,10 @@ or pipeline) parameterized.
 
 
   <xsl:template match="italic">
-    <i>
+    <span class="italic">
       <xsl:apply-templates select="@* except (@toggle)"/>
       <xsl:apply-templates/>
-    </i>
+    </span>
   </xsl:template>
 
 
@@ -3129,7 +3176,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </xsl:param>
     <div class="back-section">
-      <xsl:call-template name="named-anchor"/>
+      <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:if test="not(title) and $generated-title">
         <xsl:choose>
           <!-- The level of title depends on whether the back matter itself
@@ -3286,25 +3333,33 @@ or pipeline) parameterized.
       </xsl:apply-templates>
     </xsl:param>
     <xsl:if test="normalize-space(string($contents))">
-      <!-- not to create an h5 for nothing -->
-      <h5 class="label">
-        <xsl:copy-of select="$contents"/>
-      </h5>
+      <xsl:choose>
+        <xsl:when test="parent::fig or parent::table-wrap">
+	  <div class="label">
+	    <xsl:apply-templates/>
+	  </div>
+	</xsl:when>
+	<xsl:otherwise>
+          <spaNN class="label">
+            <xsl:copy-of select="$contents"/>
+          </spaNN>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:if>
   </xsl:template>
 
 
-  <xsl:template mode="label" match="ref">
+  <!-- <xsl:template mode="label" match="ref">
     <xsl:param name="contents">
       <xsl:apply-templates select="." mode="label-text"/>
     </xsl:param>
     <xsl:if test="normalize-space(string($contents))">
-      <!-- we're already in a p -->
+      <!-/- we're already in a p -/->
         <span class="label">
           <xsl:copy-of select="$contents"/>
         </span>
     </xsl:if>
-  </xsl:template>
+  </xsl:template> -->
 
   
   <xsl:template match="app" mode="label-text">
@@ -3537,10 +3592,10 @@ or pipeline) parameterized.
   <xsl:template match="fn/@fn-type"/>
   
   
-  <xsl:template match="ref" mode="label-text">
+  <!-- <xsl:template match="ref" mode="label-text">
     <xsl:param name="warning" select="true()"/>
-    <!-- pass $warning in as false() if a warning string is not wanted
-         (for example, if generating autonumbered labels) -->
+    <!-/- pass $warning in as false() if a warning string is not wanted
+         (for example, if generating autonumbered labels) -/->
     <xsl:call-template name="make-label-text">
       <xsl:with-param name="auto" select="$auto-label-ref"/>
       <xsl:with-param name="warning" select="$warning"/>
@@ -3548,7 +3603,7 @@ or pipeline) parameterized.
         <xsl:number level="any"/>
       </xsl:with-param>
     </xsl:call-template>
-  </xsl:template>
+  </xsl:template> -->
 
 
   <xsl:template match="statement" mode="label-text">
@@ -3612,11 +3667,11 @@ or pipeline) parameterized.
   </xsl:template>
   
   
-  <xsl:template match="text()" mode="inline-label-text">
-    <!-- when displaying labels, space characters become non-breaking spaces -->
+  <!-- <xsl:template match="text()" mode="inline-label-text">
+    <!-/- when displaying labels, space characters become non-breaking spaces -/->
     <xsl:value-of select="translate(normalize-space(string(.)),' &#xA;&#x9;','&#xA0;&#xA0;&#xA0;')"/>
-  </xsl:template>
-  
+  </xsl:template> -->
+ 
 
 <!-- ============================================================= -->
 <!--  Writing a name                                               -->
@@ -4148,6 +4203,7 @@ or pipeline) parameterized.
   <xsl:template match="publisher"/>
   <xsl:template match="subj-group"/>
   <xsl:template match="toc"/>
+  <xsl:template match="x"/>
 
 
 <!-- ============================================================= -->
