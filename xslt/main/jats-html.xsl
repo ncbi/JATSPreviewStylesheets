@@ -543,11 +543,11 @@ or pipeline) parameterized.
           <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content"><xsl:apply-templates select="bio" mode="#current"/></xsl:attribute>
             <xsl:attribute name="data-original-title" select="'Author Bio'"/>
-	    <xsl:apply-templates select="* except (bio, x)" mode="#current"/>
+	    <xsl:apply-templates select="* except (bio, x, aff)" mode="#current"/>
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="* except (x)" mode="#current"/>
+          <xsl:apply-templates select="* except (x, aff)" mode="#current"/>
         </xsl:otherwise>
       </xsl:choose>
     </li>
@@ -564,6 +564,7 @@ or pipeline) parameterized.
 
   <xsl:template match="given-names" mode="contrib-group">
     <xsl:apply-templates/>
+    <xsl:if test="x[matches(.,'.')]"><xsl:value-of select="x"/></xsl:if>
     <!-- <xsl:text>, </xsl:text> -->
   </xsl:template>
 
@@ -2045,14 +2046,14 @@ or pipeline) parameterized.
   
   
   <xsl:template match="ref-list" name="ref-list">
-    <div class="section ref-list">
+    <div class="section references">
       <xsl:call-template name="named-anchor"/>
       <xsl:apply-templates select="." mode="label"/>
       <xsl:apply-templates select="*[not(self::ref | self::ref-list)]"/>
       <xsl:if test="ref">
-        <!-- <div class="ref-list table"> -->
+        <ol class="ref-list table">
           <xsl:apply-templates select="ref"/>
-        <!-- </div> -->
+        </ol>
       </xsl:if>
       <xsl:apply-templates select="ref-list"/>
     </div>
@@ -2067,7 +2068,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="sec-meta/contrib-group">
+  <xsl:template match="sec-meta[not(ancestor::ack)]/contrib-group">
     <xsl:apply-templates mode="metadata"/>
   </xsl:template>
 
@@ -2083,8 +2084,7 @@ or pipeline) parameterized.
   <!--  Titles                                                       -->
   <!-- ============================================================= -->
 
-  <xsl:template name="main-title"
-                match="abstract/title | back/title | back[not(title)]/*/title">
+  <xsl:template name="main-title" match="abstract/title">
     <xsl:param name="contents">
       <xsl:apply-templates/>
     </xsl:param>
@@ -2097,8 +2097,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template name="section-title"
-                match="abstract/*/title | back[title]/*/title | back[not(title)]/*/*/title" >
+  <xsl:template name="section-title" match="abstract/*/title | back[title]/*/title | back[not(title)]/*/*/title" >
     <xsl:param name="contents">
       <xsl:apply-templates/>
     </xsl:param>   
@@ -2497,30 +2496,30 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-	<xsl:template match="def-item">
-		<div class="def-item row">
-			<xsl:call-template name="assign-id"/>
-			<xsl:apply-templates/>
-		</div>
-	</xsl:template>
+  <xsl:template match="def-item">
+    <div class="def-item row">
+      <xsl:call-template name="assign-id"/>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
 
 
-	<xsl:template match="term">
-		<div class="def-term cell">
-			<xsl:call-template name="assign-id"/>
-		  <p>
-				<xsl:apply-templates/>
-		  </p>
-		</div>
-	</xsl:template>
+  <xsl:template match="term[parent::def-item]">
+    <div class="def-term cell">
+      <xsl:call-template name="assign-id"/>
+        <p>
+	  <xsl:apply-templates/>
+        </p>
+    </div>
+  </xsl:template>
 
 
-	<xsl:template match="def">
-		<div class="def-def cell">
-			<xsl:call-template name="assign-id"/>
-			<xsl:apply-templates/>
-		</div>
-	</xsl:template>
+  <xsl:template match="def">
+    <div class="def-def cell">
+      <xsl:call-template name="assign-id"/>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
 
 
   <xsl:template match="disp-quote">
@@ -2550,40 +2549,55 @@ or pipeline) parameterized.
   </xsl:template>
   
   
-  <!-- <xsl:template match="ref">
-      <div class="row">
+  <xsl:template match="ref">
+      <li class="row" id="{@id}">
         <div class="ref-label cell">
-          <p class="ref-label">
-            <xsl:apply-templates select="." mode="label"/>
-             <xsl:call-template name="named-anchor"/>
-          </p>
+	  <xsl:apply-templates select="mixed-citation/label" mode="label"/>
         </div>
         <div class="ref-content cell">
           <xsl:apply-templates/>
         </div>
-      </div>
-  </xsl:template> -->
-
-
-  <xsl:template match="ref">
-    <div class="ref" id="{@id}">
-     <!-- <xsl:if test="mixed-citation/label"><span class="ref-label"><xsl:value-of select="label"/></span></xsl:if> -->
-     <xsl:apply-templates/>
-    </div>
+      </li>
   </xsl:template>
-    
-  
+
+
   <xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
-    <!-- <p class="citation">
-      <xsl:call-template name="named-anchor"/>
-      <xsl:apply-templates/>
-    </p> -->
     <div class="citation">
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="* except (label)"/>
     </div>
   </xsl:template>
-    
-   
+
+
+  <xsl:template match="x[parent::mixed-citation]">
+    <xsl:choose>
+      <xsl:when test="preceding-sibling::*[1][self::label]"/>
+      <xsl:when test="preceding-sibling::*[1][self::string-name or self::etal]">
+        <xsl:apply-templates/><xsl:text> </xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <xsl:template match="year[parent::mixed-citation]">
+    <xsl:text> </xsl:text>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+
+  <xsl:template match="article-title[parent::mixed-citation]">
+    <xsl:if test="not(preceding-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="source[parent::mixed-citation]">
+    <xsl:text> </xsl:text>
+    <xsl:apply-templates/>
+  </xsl:template>
+
+
   <xsl:template match="ref/note" priority="2">
     <xsl:param name="label" select="''"/>
     <xsl:if test="normalize-space(string($label))
@@ -2736,8 +2750,7 @@ or pipeline) parameterized.
         through                                                      -->
   
   
-  <xsl:template match="table | thead | tbody | tfoot |
-      col | tr | th | td">
+  <xsl:template match="table | thead | tbody | tfoot | col | tr | th | td">
     <xsl:copy>
       <xsl:apply-templates select="@* except (@frame,@rules,@border,@cellpadding,@cellspacing,@span,@align,@valign)" mode="table-copy"/>
       <!-- <xsl:call-template name="named-anchor"/> -->
@@ -3118,12 +3131,40 @@ or pipeline) parameterized.
   </xsl:template>
   
   
-  <xsl:template match="ack">
+  <!-- <xsl:template match="ack">
     <xsl:call-template name="backmatter-section">
       <xsl:with-param name="generated-title">Acknowledgements</xsl:with-param>
     </xsl:call-template>
+  </xsl:template> -->
+
+  <xsl:template match="ack">
+    <div class="ack">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
-  
+
+  <xsl:template match="ack/title">
+    <h2>
+      <xsl:apply-templates/>
+    </h2>
+  </xsl:template>
+
+  <xsl:template match="contrib-group[ancestor::ack]">
+    <ul class="ack contrib-group">
+     <xsl:apply-templates/>
+    </ul>
+  </xsl:template>
+
+  <xsl:template match="contrib[ancestor::ack]">
+    <li class="ack contrib">
+      <xsl:value-of select="name/surname"/>
+      <xsl:if test="(name/surname/x)"><xsl:text> </xsl:text></xsl:if>
+      <xsl:if test="not(name/surname/x)"><xsl:text>, </xsl:text></xsl:if>
+      <xsl:value-of select="name/given-names"/>
+      <xsl:if test="degrees"><xsl:text>, </xsl:text><xsl:value-of select="degrees"/></xsl:if>
+      <xsl:if test="aff"><xsl:text>, </xsl:text><xsl:value-of select="aff"/></xsl:if>
+    </li>
+  </xsl:template>
 
   <xsl:template match="app-group">
     <xsl:call-template name="backmatter-section">
@@ -3340,9 +3381,10 @@ or pipeline) parameterized.
 	  </div>
 	</xsl:when>
 	<xsl:otherwise>
-          <spaNN class="label">
+          <span class="label">
             <xsl:copy-of select="$contents"/>
-          </spaNN>
+	    <xsl:value-of select="following-sibling::x"/>
+          </span>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
@@ -4195,9 +4237,63 @@ or pipeline) parameterized.
 
   <!-- bits-specific stuff added by HW -->
 
+  <xsl:template match="dedication">
+    <div class="dedication">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="front-matter-part">
+    <div>
+      <xsl:attribute name="class" select="concat('front-matter-part',' ',lower-case(@book-part-type))"/>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="preface">
+    <div class="preface">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="index">
+    <div class="index">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="index-title-group/title">
+    <h2>
+      <xsl:apply-templates/>
+    </h2>
+  </xsl:template>
+
+  <xsl:template match="index-entry">
+    <div class="index-entry">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="term[parent::index-entry]">
+    <span class="term">
+      <xsl:apply-templates/>
+      <xsl:if test="following-sibling::x"><xsl:value-of select="following-sibling::x"/><xsl:text> </xsl:text></xsl:if>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="nav-pointer-group">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="nav-pointer">
+    <span rid="{@rid}">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
   <xsl:template match="book-id"/>
   <xsl:template match="contrib-group"/>
-  <xsl:template match="front-matter-part"/>
+  <!-- <xsl:template match="front-matter-part"/> -->
   <xsl:template match="isbn"/>
   <xsl:template match="pub-date"/>
   <xsl:template match="publisher"/>
