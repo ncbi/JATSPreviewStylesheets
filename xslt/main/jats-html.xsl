@@ -2027,6 +2027,13 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
+  <xsl:template match="boxed-text/sec">
+    <div class="section">
+      <xsl:call-template name="named-anchor"/>
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
 
   <xsl:template match="*" mode="drop-title">
     <xsl:apply-templates select="."/>
@@ -2234,7 +2241,7 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="boxed-text | chem-struct-wrap | fig | table-wrap | chem-struct-wrapper">
+  <xsl:template match="chem-struct-wrap | fig | table-wrap | chem-struct-wrapper">
     <!-- chem-struct-wrapper is from NLM 2.3 -->
     <xsl:variable name="gi">
       <xsl:choose>
@@ -2258,6 +2265,12 @@ or pipeline) parameterized.
       </xsl:if>
       <xsl:apply-templates/>
       <xsl:apply-templates mode="footnote" select="self::table-wrap//fn[not(ancestor::table-wrap-foot)]"/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="boxed-text">
+    <div class="boxed-text panel" id="{@id}">
+      <xsl:apply-templates/>
     </div>
   </xsl:template>
   
