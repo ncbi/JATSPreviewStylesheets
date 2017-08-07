@@ -2669,7 +2669,7 @@ or pipeline) parameterized.
     <b>
       <xsl:apply-templates/>
     </b>
-    <span class="generated">: </span>
+    <!-- <span class="generated">: </span> -->
   </xsl:template>
   
   
