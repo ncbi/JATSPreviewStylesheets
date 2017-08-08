@@ -16,15 +16,26 @@
 	  <xsl:apply-templates select="//book-back"/>
 	</div>
       </xsl:when>
-      <xsl:when test="book-part">
-        <div>
-	  <xsl:attribute name="class" select="book-part/@book-part-type"/>
-	  <xsl:apply-templates select="//body"/>
-	  <xsl:apply-templates select="//back"/>
+      <xsl:when test="book-part[@book-part-type eq 'part']">
+        <div class="part">
+	  <xsl:apply-templates select="//book-part[@book-part-type eq 'chapter']"/>
 	</div>
       </xsl:when>
-      <xsl:otherwise/>
+      <xsl:when test="book-part[@book-part-type eq 'chapter']">
+        <div class="chapter">
+          <xsl:apply-templates select="//body"/>
+          <xsl:apply-templates select="//back"/>
+	</div>
+      </xsl:when>
+      <xsl:otherwise/> <!-- @book-part-type=section -->
     </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="book-part[@book-part-type eq 'chapter']">
+    <div class="chapter">
+      <xsl:apply-templates select="body"/>
+      <xsl:apply-templates select="back"/>
+    </div>
   </xsl:template>
 
   <xsl:template match="front-matter">
