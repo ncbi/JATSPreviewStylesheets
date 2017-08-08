@@ -2028,7 +2028,8 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="boxed-text/sec">
-    <div class="section">
+    <div>
+      <xsl:attribute name="class" select="if (question-wrap-group) then 'section qna' else 'section'"/>
       <xsl:call-template name="named-anchor"/>
       <xsl:apply-templates/>
     </div>
@@ -2269,7 +2270,8 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="boxed-text">
-    <div class="boxed-text panel" id="{@id}">
+    <div class="boxed-text panel">
+      <xsl:apply-templates select="@id"/>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -2584,18 +2586,24 @@ or pipeline) parameterized.
   <xsl:template match="x[parent::mixed-citation]">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][self::label]"/>
+      <xsl:when test="matches(.,'\(')"><xsl:text> </xsl:text><xsl:apply-templates/></xsl:when>
       <xsl:when test="preceding-sibling::*[1][self::string-name or self::etal]">
         <xsl:apply-templates/><xsl:text> </xsl:text>
       </xsl:when>
+      <xsl:when test="matches(.,'[\.:,]$') and following-sibling::*"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="x[parent::given-names or parent::surname][ancestor::mixed-citation]">
+    <xsl:apply-templates/>
+    <!-- <xsl:if test="not(matches(.,'\.'))"><xsl:text> </xsl:text></xsl:if> -->
+  </xsl:template>
 
   <xsl:template match="year[parent::mixed-citation]">
-    <xsl:text> </xsl:text>
+    <!-- <xsl:text> </xsl:text> -->
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -2606,7 +2614,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="source[parent::mixed-citation]">
-    <xsl:text> </xsl:text>
+    <!-- <xsl:text> </xsl:text> -->
     <xsl:apply-templates/>
   </xsl:template>
 
@@ -2670,6 +2678,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </b>
     <!-- <span class="generated">: </span> -->
+    <xsl:text> </xsl:text>
   </xsl:template>
   
   
@@ -2811,7 +2820,9 @@ or pipeline) parameterized.
 
 
   <xsl:template match="abbrev">
-    <xsl:apply-templates/>
+    <abbrev>
+      <xsl:apply-templates/>
+    </abbrev>
   </xsl:template>
   
   <xsl:template match="abbrev[normalize-space(string(@xlink:href))]">
@@ -3020,9 +3031,9 @@ or pipeline) parameterized.
 
 
   <xsl:template match="bold">
-    <b>
+    <strong>
       <xsl:apply-templates/>
-    </b>
+    </strong>
   </xsl:template>
 
 
@@ -4302,6 +4313,105 @@ or pipeline) parameterized.
     <span rid="{@rid}">
       <xsl:apply-templates/>
     </span>
+  </xsl:template>
+
+  <xsl:template match="question-wrap-group">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="question-wrap">
+    <div class="question" id="{question/@id}">
+      <xsl:apply-templates select="question/label"/>
+      <xsl:if test="question/p or question/option or answer-set">
+        <div class="qatext">
+	  <xsl:apply-templates select="question/p"/>
+	  <xsl:if test="question/option">
+	    <ol class="answers-list">
+	      <xsl:apply-templates select="question/option"/>
+	    </ol>
+	  </xsl:if>
+	  <xsl:apply-templates select="answer-set"/>
+	</div>
+      </xsl:if>
+    </div>
+  </xsl:template>
+
+  <!-- <xsl:template match="question">
+    <xsl:apply-templates select="label"/>
+    <xsl:if test="p">
+      <div class="qatext">
+        <xsl:apply-templates select="p"/>
+ 	<xsl:if test="option">
+          <ol class="answers-list">
+            <xsl:apply-templates select="option"/>
+          </ol>
+        </xsl:if>
+	<xsl:if test="$has-answer-set">
+          <xsl:apply-templates select="answer-set"/>
+	</xsl:if>
+      </div>
+    </xsl:if>
+  </xsl:template> -->
+
+  <xsl:template match="question/label">
+    <div class="questionid">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="question/p">
+    <p>
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="option">
+    <li>
+      <xsl:apply-templates/>
+    </li>
+  </xsl:template>
+
+  <xsl:template match="option/label">
+    <span class="answer-label">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="option/p">
+    <xsl:text> </xsl:text>
+    <p>
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="answer-set">
+    <div class="answer" id="{preceding-sibling::question/@id}-answer">
+    <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="answer">
+    <!-- <div class="answer" id="{@pointer-to-question}-answer"> -->
+      <xsl:apply-templates/>
+    <!-- </div> -->
+  </xsl:template>
+
+  <xsl:template match="answer/label">
+    <div class="answer-label">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="answer/p[not(normalize-space(text()))][not(node())]"/>
+
+  <xsl:template match="answer/p[normalize-space(text())][node()]">
+    <p>
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
+
+  <xsl:template match="@id">
+    <xsl:attribute name="id" select="."/>
   </xsl:template>
 
   <xsl:template match="book-id"/>
