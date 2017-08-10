@@ -9,7 +9,16 @@
   <xsl:output encoding="UTF-8"/>
 
   <xsl:template match="/">
-    <xsl:apply-templates select="//abstract"/>
+    <xsl:choose>
+      <xsl:when test="book-part[@book-part-type eq 'part']">
+        <div class="part">
+	  <xsl:apply-templates select="//abstract"/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="//abstract"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="abstract">
