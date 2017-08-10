@@ -4387,8 +4387,9 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="answer-set">
-    <div class="answer" id="{preceding-sibling::question/@id}-answer">
-    <xsl:apply-templates/>
+    <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{preceding-sibling::question/@id}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
+    <div class="answer collapse" id="{preceding-sibling::question/@id}-answer" aria-expanded="false">
+      <xsl:apply-templates/>
     </div>
   </xsl:template>
 
