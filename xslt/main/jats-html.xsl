@@ -565,9 +565,8 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="given-names" mode="contrib-group">
-    <xsl:apply-templates/>
-    <xsl:if test="x[matches(.,'.')]"><xsl:value-of select="x"/></xsl:if>
-    <!-- <xsl:text>, </xsl:text> -->
+    <xsl:apply-templates select="node() except (x)"/>
+    <xsl:if test="x[matches(.,'\.')]"><xsl:value-of select="x"/></xsl:if>
   </xsl:template>
 
   <xsl:template match="degrees" mode="contrib-group">
@@ -4379,9 +4378,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="answer">
-    <!-- <div class="answer" id="{@pointer-to-question}-answer"> -->
-      <xsl:apply-templates/>
-    <!-- </div> -->
+    <xsl:apply-templates/>
   </xsl:template>
 
   <xsl:template match="answer/label">
