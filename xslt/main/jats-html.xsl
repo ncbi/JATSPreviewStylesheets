@@ -4323,37 +4323,20 @@ or pipeline) parameterized.
 
   <xsl:template match="question-wrap">
     <div class="question" id="{question/@id}">
-      <xsl:apply-templates select="question/label"/>
       <xsl:if test="question/p or question/option or answer-set">
-        <div class="qatext">
+        <div class="question-text">
+          <xsl:apply-templates select="question/label"/>
 	  <xsl:apply-templates select="question/p"/>
 	  <xsl:if test="question/option">
 	    <ol class="answers-list">
 	      <xsl:apply-templates select="question/option"/>
 	    </ol>
 	  </xsl:if>
-	  <xsl:apply-templates select="answer-set"/>
-	</div>
+        </div>
+	<xsl:apply-templates select="answer-set"/>
       </xsl:if>
     </div>
   </xsl:template>
-
-  <!-- <xsl:template match="question">
-    <xsl:apply-templates select="label"/>
-    <xsl:if test="p">
-      <div class="qatext">
-        <xsl:apply-templates select="p"/>
- 	<xsl:if test="option">
-          <ol class="answers-list">
-            <xsl:apply-templates select="option"/>
-          </ol>
-        </xsl:if>
-	<xsl:if test="$has-answer-set">
-          <xsl:apply-templates select="answer-set"/>
-	</xsl:if>
-      </div>
-    </xsl:if>
-  </xsl:template> -->
 
   <xsl:template match="question/label">
     <div class="questionid">
@@ -4387,9 +4370,11 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="answer-set">
-    <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{preceding-sibling::question/@id}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
-    <div class="answer collapse" id="{preceding-sibling::question/@id}-answer" aria-expanded="false">
-      <xsl:apply-templates/>
+    <div class="answer-text">
+      <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{preceding-sibling::question/@id}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
+      <div class="answer collapse" id="{preceding-sibling::question/@id}-answer" aria-expanded="false">
+        <xsl:apply-templates/>
+      </div>
     </div>
   </xsl:template>
 
