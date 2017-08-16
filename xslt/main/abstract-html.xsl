@@ -16,7 +16,7 @@
         </div>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-templates select="//abstract"/>
+        <xsl:apply-templates select="//abstract[not(ancestor::book-back)]"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
