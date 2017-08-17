@@ -540,7 +540,7 @@ or pipeline) parameterized.
     <li class="contrib">
       <xsl:choose>
         <xsl:when test="bio">
-          <a href="javascript://" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
+          <a href="javascript://" role="button" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content"><xsl:apply-templates select="bio" mode="#current"/></xsl:attribute>
             <xsl:attribute name="data-original-title" select="'Author Bio'"/>
 	    <!-- <xsl:apply-templates select="* except (bio, x, aff)" mode="#current"/> -->
