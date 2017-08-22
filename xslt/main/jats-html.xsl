@@ -3019,7 +3019,8 @@ or pipeline) parameterized.
 
 
   <xsl:template match="xref">
-    <a href="#{@rid}">
+    <a>
+      <xsl:attribute name="href" select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>
       <xsl:apply-templates/>
     </a>
   </xsl:template>
