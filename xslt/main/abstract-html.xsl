@@ -10,7 +10,7 @@
 
   <xsl:template match="/">
     <xsl:choose>
-      <xsl:when test="book-part[@book-part-type eq 'part']">
+      <xsl:when test="book-part[@book-part-type eq 'part'][chapter]">
         <div class="part">
 	  <xsl:apply-templates select="//abstract"/>
         </div>
