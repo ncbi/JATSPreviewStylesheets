@@ -17,16 +17,16 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="fig">
+  <!-- <xsl:template match="fig">
     <div class="fig">
       <xsl:apply-templates/>
     </div>
-  </xsl:template>
+  </xsl:template> -->
 
-  <xsl:template match="table-wrap">
+  <!-- <xsl:template match="table-wrap">
     <div class="table">
       <xsl:apply-templates/>
     </div>
-  </xsl:template>
+  </xsl:template> -->
 
 </xsl:stylesheet>
