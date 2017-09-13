@@ -11,8 +11,14 @@
   <xsl:template match="/">
     <xsl:if test="//fig | //table-wrap">
       <div class="floats">
-        <xsl:apply-templates select="//fig"/>
-	<xsl:apply-templates select="//table-wrap"/>
+        <xsl:if test="//fig">
+	  <h2 class="section-title">Figures</h2>
+	  <xsl:apply-templates select="//fig"/>
+	</xsl:if>
+	<xsl:if test="//table-wrap">
+	  <h2 class="section-title">Tables</h2>
+	  <xsl:apply-templates select="//table-wrap"/>
+	</xsl:if>
       </div>
     </xsl:if>
   </xsl:template>
