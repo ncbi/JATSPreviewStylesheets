@@ -29,6 +29,12 @@
           <xsl:apply-templates select="//back"/>
 	</div>
       </xsl:when>
+      <xsl:when test="article">
+        <div class="article">
+	  <xsl:apply-templates select="//body"/>
+          <xsl:apply-templates select="//back"/>
+	</div>
+      </xsl:when>
       <xsl:otherwise/> <!-- @book-part-type=section -->
     </xsl:choose>
   </xsl:template>
