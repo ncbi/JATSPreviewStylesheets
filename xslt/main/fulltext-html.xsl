@@ -29,6 +29,12 @@
           <xsl:apply-templates select="//back"/>
 	</div>
       </xsl:when>
+      <xsl:when test="book-part[@book-part-type eq 'case study']">
+        <div class="case-study">
+	  <xsl:apply-templates select="//body"/>
+          <xsl:apply-templates select="//back"/>
+	</div>
+      </xsl:when>
       <xsl:when test="article">
         <div class="article">
 	  <xsl:apply-templates select="//body"/>
@@ -39,12 +45,12 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="book-part[@book-part-type eq 'chapter']">
+  <!-- <xsl:template match="book-part[@book-part-type eq 'chapter']">
     <div class="chapter">
       <xsl:apply-templates select="body"/>
       <xsl:apply-templates select="back"/>
     </div>
-  </xsl:template>
+  </xsl:template> -->
 
   <xsl:template match="front-matter">
     <div class="front-matter">
