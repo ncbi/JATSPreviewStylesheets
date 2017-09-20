@@ -452,7 +452,7 @@ or pipeline) parameterized.
     </div> -->
 
     <!-- the good stuff -->
-    <xsl:apply-templates select="contrib-group[parent::book-meta]"/>
+    <xsl:apply-templates select="contrib-group[parent::book-meta or parent::article-meta]"/>
 
     <hr class="part-rule"/>
     
@@ -519,7 +519,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <!-- HW addition -->
-  <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta][contrib[@contrib-type eq 'author']]" mode="contrib-group">
+  <xsl:template match="contrib-group[parent::book-meta or parent::book-part-meta or parent::article-meta][contrib[@contrib-type eq 'author']]" mode="contrib-group">
     <div class="contrib-group-authors">
       <ul class="contributor-list">
         <xsl:apply-templates select="contrib[@contrib-type eq 'author']" mode="#current"/>
@@ -527,7 +527,7 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
-  <xsl:template match="contrib-group[parent::book-meta][contrib[@contrib-type eq 'editor']]" mode="contrib-group">
+  <xsl:template match="contrib-group[parent::book-meta or parent::article-meta][contrib[@contrib-type eq 'editor']]" mode="contrib-group">
     <div class="contrib-group-editors">
       <span class="contributor-list-label">Edited by:</span>
       <ul class="contributor-list">
@@ -581,6 +581,8 @@ or pipeline) parameterized.
   <xsl:template match="p" mode="bio">
     <xsl:apply-templates mode="bio"/>
   </xsl:template>
+
+  <xsl:template match="fig" mode="bio"/>
 
   <xsl:template match="bold" mode="bio">
     <xsl:text>&lt;strong&gt;</xsl:text>
@@ -2068,6 +2070,11 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
   
+  <xsl:template match="ref-list[ancestor::article]/title">
+    <h2 class="ref-list title">
+      <xsl:apply-templates/>
+    </h2>
+  </xsl:template>
   
   <xsl:template match="sec-meta">
    <div class="section-metadata">
@@ -2118,28 +2125,34 @@ or pipeline) parameterized.
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="sec[@disp-level eq 'level1']/title">
+  <xsl:template match="sec[@disp-level eq 'level1' or not(ancestor::sec)]/title">
     <h2 class="section-title">
       <xsl:apply-templates/>
     </h2>
   </xsl:template>
 
-  <xsl:template match="sec[@disp-level eq 'level2']/title">
+  <xsl:template match="sec[@disp-level eq 'level2' or count(ancestor::sec) eq 1]/title">
     <h3 class="section-title">
       <xsl:apply-templates/>
     </h3>
   </xsl:template>
 
-  <xsl:template match="sec[@disp-level eq 'level3']/title">
+  <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
     <h4 class="section-title">
       <xsl:apply-templates/>
     </h4>
   </xsl:template>
 
-  <xsl:template match="sec[@disp-level eq 'level4']/title">
+  <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
     <h5 class="section-title">
       <xsl:apply-templates/>
     </h5>
+  </xsl:template>
+
+  <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
+    <h6 class="section-title unmatched">
+      <xsl:apply-templates/>
+    </h6>
   </xsl:template>
 
   <xsl:template name="subsection-title"
@@ -2567,9 +2580,11 @@ or pipeline) parameterized.
   
   <xsl:template match="ref">
       <li class="row" id="{@id}">
-        <div class="ref-label cell">
-	  <xsl:apply-templates select="mixed-citation/label" mode="label"/>
-        </div>
+        <xsl:if test="mixed-citation/label or note/label">
+          <div class="ref-label cell">
+	    <xsl:apply-templates select="mixed-citation/label | note/label" mode="label"/>
+          </div>
+	</xsl:if>
         <div class="ref-content cell">
           <xsl:apply-templates/>
         </div>
@@ -2622,15 +2637,16 @@ or pipeline) parameterized.
 
   <xsl:template match="ref/note" priority="2">
     <xsl:param name="label" select="''"/>
-    <xsl:if test="normalize-space(string($label))
+    <!-- we'll get the label in the ref template above -->
+    <!-- <xsl:if test="normalize-space(string($label))
       and not(preceding-sibling::*[not(self::label)])">
       <p class="label">
           <xsl:copy-of select="$label"/>
       </p>
-    </xsl:if>
+    </xsl:if> -->
     <div class="note">
       <xsl:call-template name="named-anchor"/>
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="* except label"/>
     </div>
   </xsl:template>
   
@@ -2703,7 +2719,7 @@ or pipeline) parameterized.
   <xsl:template match="mml:*">
     <!-- this stylesheet simply copies MathML through. If your browser
          supports it, you will get it -->
-    <xsl:copy>
+    <xsl:copy copy-namespaces="no">
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates/>
     </xsl:copy>
@@ -2774,7 +2790,7 @@ or pipeline) parameterized.
   
   
   <xsl:template match="table | thead | tbody | tfoot | col | tr | th | td">
-    <xsl:copy>
+    <xsl:copy copy-namespaces="no">
       <xsl:apply-templates select="@* except (@frame,@rules,@border,@cellpadding,@cellspacing,@span,@align,@valign)" mode="table-copy"/>
       <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
@@ -2930,11 +2946,12 @@ or pipeline) parameterized.
   </xsl:template>
   
 
-  <xsl:template match="object-id">
+  <!-- don't need this - freebird-100 -->
+  <!-- <xsl:template match="object-id">
     <span class="{local-name()}">
       <xsl:apply-templates/>
     </span>
-  </xsl:template>
+  </xsl:template> -->
   
 
   <!-- preformat is handled above -->
