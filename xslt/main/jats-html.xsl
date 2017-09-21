@@ -111,6 +111,7 @@ or pipeline) parameterized.
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  xmlns:hwp="http://schema.highwire.org/Journal"
   exclude-result-prefixes="xlink mml">
 
 
@@ -2952,6 +2953,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
   </xsl:template> -->
+  <xsl:template match="object-id"/>
   
 
   <!-- preformat is handled above -->
@@ -3950,6 +3952,11 @@ or pipeline) parameterized.
   <xsl:template name="assign-src">
     <xsl:for-each select="@xlink:href">
       <xsl:attribute name="src">
+        <xsl:if test="../../object-id[@hwp:sub-type eq 'pisa']">
+	  <xsl:text>sass://</xsl:text>
+	  <xsl:value-of select="translate(../../object-id[@hwp:sub-type eq 'pisa'],';','/')"/>
+	  <xsl:value-of select="../../object-id[@hwp:sub-type eq 'slug']"/>
+	</xsl:if>
         <xsl:value-of select="."/>
       </xsl:attribute>
     </xsl:for-each>
