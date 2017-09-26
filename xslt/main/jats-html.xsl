@@ -1512,6 +1512,12 @@ or pipeline) parameterized.
     </h4>
   </xsl:template>
 
+  <xsl:template match="title-group[parent::book-part-meta]/label">
+    <h3 class="label">
+      <xsl:apply-templates/>
+    </h3>
+  </xsl:template>
+
   <xsl:template match="fpage[parent::book-part-meta]"/>
   <xsl:template match="lpage[parent::book-part-meta]"/>
 
@@ -2603,8 +2609,11 @@ or pipeline) parameterized.
   <xsl:template match="x[parent::mixed-citation]">
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][self::label]"/>
-      <xsl:when test="matches(.,'\(')"><xsl:text> </xsl:text><xsl:apply-templates/></xsl:when>
-      <xsl:when test="preceding-sibling::*[1][self::string-name or self::etal]">
+      <!-- <xsl:when test="matches(.,'\(')"><xsl:text> </xsl:text><xsl:apply-templates/></xsl:when> -->
+      <xsl:when test="matches(.,'^\(')"><xsl:text> </xsl:text><xsl:apply-templates/></xsl:when>
+      <xsl:when test="matches(.,'\($')"><xsl:apply-templates/></xsl:when>
+      <xsl:when test="matches(.,'^&amp;$')"><xsl:text> </xsl:text><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
+      <xsl:when test="preceding-sibling::*[1][self::string-name or self::etal or self::collab]">
         <xsl:apply-templates/><xsl:text> </xsl:text>
       </xsl:when>
       <xsl:when test="matches(.,'[\.:,]$') and following-sibling::*"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
@@ -2633,6 +2642,11 @@ or pipeline) parameterized.
   <xsl:template match="source[parent::mixed-citation]">
     <!-- <xsl:text> </xsl:text> -->
     <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="comment[parent::mixed-citation]">
+    <xsl:apply-templates/>
+    <xsl:text> </xsl:text>
   </xsl:template>
 
 
@@ -4420,11 +4434,18 @@ or pipeline) parameterized.
     </p>
   </xsl:template>
 
+  <xsl:template match="book-app">
+    <div class="appendix">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
   <xsl:template match="@id">
     <xsl:attribute name="id" select="."/>
   </xsl:template>
 
   <xsl:template match="book-id"/>
+  <xsl:template match="book-part-id"/>
   <xsl:template match="contrib-group"/>
   <!-- <xsl:template match="front-matter-part"/> -->
   <xsl:template match="isbn"/>
