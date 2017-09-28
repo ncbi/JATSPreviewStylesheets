@@ -1506,13 +1506,15 @@ or pipeline) parameterized.
     <xsl:apply-templates mode="metadata"/>
   </xsl:template>
 
-  <xsl:template match="title-group[parent::book-part-meta]/title">
+  <xsl:template match="title-group[parent::book-part-meta]/title[not(/book-part)]"/>
+  <xsl:template match="title-group[parent::book-part-meta]/title[/book-part]">
     <h4 class="title">
       <xsl:apply-templates/>
     </h4>
   </xsl:template>
 
-  <xsl:template match="title-group[parent::book-part-meta]/label">
+  <xsl:template match="title-group[parent::book-part-meta]/label[not(/book-part)]"/>
+  <xsl:template match="title-group[parent::book-part-meta]/label[/book-part]">
     <h3 class="label">
       <xsl:apply-templates/>
     </h3>
@@ -2076,7 +2078,8 @@ or pipeline) parameterized.
       <xsl:apply-templates select="ref-list"/>
     </div>
   </xsl:template>
-  
+
+  <xsl:template match="/ref-list/title"/> <!-- ignore title if ref-list is root element (springrsc3-526) -->
   <xsl:template match="ref-list[ancestor::article]/title">
     <h2 class="ref-list title">
       <xsl:apply-templates/>
@@ -3202,7 +3205,8 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
-  <xsl:template match="ack/title">
+  <xsl:template match="/ack/title"/> <!-- ignore title if ack is root element (springrsc3-526) -->
+  <xsl:template match="ack/title[not(/ack)]">
     <h2>
       <xsl:apply-templates/>
     </h2>
