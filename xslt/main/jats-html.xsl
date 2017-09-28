@@ -2331,13 +2331,13 @@ or pipeline) parameterized.
     <div class="glossary">
       <xsl:call-template name="named-anchor"/>
       <xsl:apply-templates select="label | title"/>
-      <xsl:if test="not(normalize-space(string(title)))">
+      <!-- <xsl:if test="not(normalize-space(string(title)))">
         <xsl:call-template name="block-title">
           <xsl:with-param name="contents">
             <span class="generated">Glossary</span>
           </xsl:with-param>
         </xsl:call-template>
-      </xsl:if>
+      </xsl:if> -->
       <xsl:apply-templates select="*[not(self::label|self::title)]"/>
     </div>
   </xsl:template>
