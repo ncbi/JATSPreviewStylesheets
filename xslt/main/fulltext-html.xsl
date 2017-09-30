@@ -29,11 +29,17 @@
           <xsl:apply-templates select="//back"/>
 	</div>
       </xsl:when>
-      <xsl:when test="book-part[@book-part-type eq 'case study']">
+      <xsl:when test="book-part[matches(@book-part-type,'^case[\s-]study$')]">
         <div class="case-study">
 	  <xsl:apply-templates select="//body"/>
           <xsl:apply-templates select="//back"/>
 	</div>
+      </xsl:when>
+      <xsl:when test="book-part[@book-part-type eq 'introduction']">
+        <div class="introduction">
+          <xsl:apply-templates select="//body"/>
+          <xsl:apply-templates select="//back"/>
+        </div>
       </xsl:when>
       <xsl:when test="article">
         <div class="article">
