@@ -2619,6 +2619,7 @@ or pipeline) parameterized.
       <xsl:when test="preceding-sibling::*[1][self::string-name or self::etal or self::collab]">
         <xsl:apply-templates/><xsl:text> </xsl:text>
       </xsl:when>
+      <xsl:when test="following-sibling::*[1][self::uri]"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
       <xsl:when test="matches(.,'[\.:,]$') and following-sibling::*"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates/>
