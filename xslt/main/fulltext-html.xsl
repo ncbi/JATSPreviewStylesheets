@@ -41,6 +41,12 @@
           <xsl:apply-templates select="//back"/>
         </div>
       </xsl:when>
+      <xsl:when test="book-part[@book-part-type eq 'conclusion']">
+        <div class="conclusion">
+          <xsl:apply-templates select="//body"/>
+          <xsl:apply-templates select="//back"/>
+        </div>
+      </xsl:when>
       <xsl:when test="article">
         <div class="article">
 	  <xsl:apply-templates select="//body"/>
