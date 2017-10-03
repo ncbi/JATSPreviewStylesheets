@@ -4414,10 +4414,19 @@ or pipeline) parameterized.
 
   <xsl:template match="answer-set">
     <div class="answer-text">
-      <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{preceding-sibling::question/@id}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
-      <div class="answer collapse" id="{preceding-sibling::question/@id}-answer" aria-expanded="false">
-        <xsl:apply-templates/>
-      </div>
+      <xsl:choose>
+        <xsl:when test="answer/@pointer-to-question = //question/@id">
+          <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{preceding-sibling::question/@id}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
+          <div class="answer collapse" id="{preceding-sibling::question/@id}-answer" aria-expanded="false">
+            <xsl:apply-templates/>
+          </div>
+	</xsl:when>
+	<xsl:otherwise>
+	  <div class="answer" id="{answer/@pointer-to-question}-answer" aria-expanded="false">
+            <xsl:apply-templates/>
+          </div>
+	</xsl:otherwise>
+      </xsl:choose>
     </div>
   </xsl:template>
 
