@@ -4414,10 +4414,10 @@ or pipeline) parameterized.
 
   <xsl:template match="answer-set">
     <div class="answer-text">
-      <xsl:choose>
+      <!-- <xsl:choose>
         <xsl:when test="answer/@pointer-to-question = //question/@id">
-          <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{preceding-sibling::question/@id}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
-          <div class="answer collapse" id="{preceding-sibling::question/@id}-answer" aria-expanded="false">
+          <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{answer/@pointer-to-question}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
+          <div class="answer collapse" id="{answer/@pointer-to-question}-answer" aria-expanded="false">
             <xsl:apply-templates/>
           </div>
 	</xsl:when>
@@ -4426,12 +4426,26 @@ or pipeline) parameterized.
             <xsl:apply-templates/>
           </div>
 	</xsl:otherwise>
-      </xsl:choose>
+      </xsl:choose> -->
+      <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="answer">
-    <xsl:apply-templates/>
+    <!-- <xsl:apply-templates/> -->
+    <xsl:choose>
+      <xsl:when test="@pointer-to-question = //question/@id">
+        <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{@pointer-to-question}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
+        <div class="answer collapse" id="{@pointer-to-question}-answer" aria-expanded="false">
+          <xsl:apply-templates/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="answer" id="{@pointer-to-question}-answer" aria-expanded="false">
+          <xsl:apply-templates/>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="answer/label">
