@@ -19,7 +19,8 @@
         <xsl:apply-templates select="//abstract[parent::book-part-meta][1]"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:apply-templates select="//abstract[not(ancestor::book-back)]"/>
+        <!-- <xsl:apply-templates select="//abstract[not(ancestor::book-back)]"/> -->
+        <xsl:apply-templates select="/descendant::abstract[1]"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
