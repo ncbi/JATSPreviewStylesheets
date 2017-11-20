@@ -2810,6 +2810,9 @@ or pipeline) parameterized.
   
   <xsl:template match="table | thead | tbody | tfoot | col | tr | th | td">
     <xsl:copy copy-namespaces="no">
+      <xsl:if test="local-name(.) eq 'table' and //@rowspan >= '2'">
+        <xsl:attribute name="class" select="'no-striping'"/> 
+      </xsl:if>
       <xsl:apply-templates select="@* except (@frame,@rules,@border,@cellpadding,@cellspacing,@span,@align,@valign)" mode="table-copy"/>
       <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
