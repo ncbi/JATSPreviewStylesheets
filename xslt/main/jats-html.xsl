@@ -4315,6 +4315,12 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
+  <xsl:template match="foreword">
+    <div class="foreword">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
+
   <xsl:template match="front-matter-part">
     <div>
       <xsl:attribute name="class" select="concat('front-matter-part',' ',lower-case(@book-part-type))"/>
