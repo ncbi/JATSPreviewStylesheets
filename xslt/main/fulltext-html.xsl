@@ -53,7 +53,7 @@
           <xsl:apply-templates select="//back"/>
 	</div>
       </xsl:when>
-      <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list"> 
+      <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword"> 
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise/> <!-- @book-part-type=section -->
