@@ -2613,7 +2613,9 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="preceding-sibling::*[1][self::label]"/>
       <!-- <xsl:when test="matches(.,'\(')"><xsl:text> </xsl:text><xsl:apply-templates/></xsl:when> -->
+      <xsl:when test="matches(.,'^doi:$')"><xsl:text>. </xsl:text><xsl:apply-templates/></xsl:when>
       <xsl:when test="matches(.,'^\(')"><xsl:text> </xsl:text><xsl:apply-templates/></xsl:when>
+      <xsl:when test="matches(.,'^In$')"><xsl:text> </xsl:text><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
       <xsl:when test="matches(.,'\($')"><xsl:apply-templates/></xsl:when>
       <xsl:when test="matches(.,'^&amp;$')"><xsl:text> </xsl:text><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
       <xsl:when test="preceding-sibling::*[1][self::string-name or self::etal or self::collab]">
@@ -2621,6 +2623,7 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="following-sibling::*[1][self::uri]"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
       <xsl:when test="matches(.,'[\.:,]$') and following-sibling::*"><xsl:apply-templates/><xsl:text> </xsl:text></xsl:when>
+      <xsl:when test="matches(.,'^nd$')"><xsl:apply-templates/><xsl:text>. </xsl:text></xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates/>
       </xsl:otherwise>
@@ -2635,24 +2638,66 @@ or pipeline) parameterized.
   <xsl:template match="year[parent::mixed-citation]">
     <!-- <xsl:text> </xsl:text> -->
     <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x or self::article-title])"><xsl:text>. </xsl:text></xsl:if>
   </xsl:template>
-
 
   <xsl:template match="article-title[parent::mixed-citation]">
     <xsl:if test="not(preceding-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
     <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
   </xsl:template>
 
   <xsl:template match="source[parent::mixed-citation]">
     <!-- <xsl:text> </xsl:text> -->
     <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
   </xsl:template>
 
   <xsl:template match="comment[parent::mixed-citation]">
+    <xsl:if test="preceding-sibling::*[1][self::issue]"><xsl:text>. </xsl:text></xsl:if>
+    <xsl:if test="preceding-sibling::*[1][self::lpage]"><xsl:text> </xsl:text></xsl:if>
     <xsl:apply-templates/>
     <xsl:text> </xsl:text>
   </xsl:template>
 
+  <xsl:template match="collab[parent::mixed-citation]">
+    <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
+  </xsl:template>
+
+  <xsl:template match="surname[ancestor::mixed-citation]">
+    <xsl:apply-templates/>
+    <!-- <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>, </xsl:text></xsl:if> -->
+    <xsl:if test="not(x)"><xsl:text>, </xsl:text></xsl:if>
+  </xsl:template>
+
+  <xsl:template match="string-name[parent::mixed-citation]">
+    <xsl:apply-templates/>
+    <xsl:if test="following-sibling::*[1][self::string-name]"><xsl:text>, </xsl:text></xsl:if>
+    <xsl:if test="not(following-sibling::*[1][self::string-name or self::x])"><xsl:text> </xsl:text></xsl:if>
+  </xsl:template>
+
+  <xsl:template match="volume[parent::mixed-citation]">
+    <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>, </xsl:text></xsl:if>    
+  </xsl:template>
+
+  <xsl:template match="lpage[parent::mixed-citation]">
+    <xsl:if test="not(preceding-sibling::*[1][self::x])"><xsl:text>-</xsl:text></xsl:if>
+    <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>.</xsl:text></xsl:if>
+  </xsl:template>
+
+  <xsl:template match="chapter-title[parent::mixed-citation]">
+    <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
+  </xsl:template>
+
+  <xsl:template match="publisher-loc[parent::mixed-citation]">
+    <xsl:if test="not(preceding-sibling::*[1][self::x])"><xsl:text> </xsl:text></xsl:if>
+    <xsl:apply-templates/>
+    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
+  </xsl:template>
 
   <xsl:template match="ref/note" priority="2">
     <xsl:param name="label" select="''"/>
@@ -3843,7 +3888,7 @@ or pipeline) parameterized.
   </xsl:template>
   
   
-  <xsl:template match="string-name/*">
+  <xsl:template match="string-name[not(parent::mixed-citation)]/*">
     <xsl:apply-templates/>
   </xsl:template>
   
