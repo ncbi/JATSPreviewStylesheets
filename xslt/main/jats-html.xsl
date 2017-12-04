@@ -2277,6 +2277,7 @@ or pipeline) parameterized.
       </xsl:choose>
     </xsl:variable>
     <div class="{$gi} panel">
+      <xsl:apply-templates select="@id"/>
       <xsl:if test="not(@position != 'float')">
         <!-- the test respects @position='float' as the default -->
         <!-- <xsl:attribute name="style">display: float; clear: both</xsl:attribute> -->
