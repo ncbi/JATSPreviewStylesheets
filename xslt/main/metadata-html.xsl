@@ -19,22 +19,22 @@
       <!-- hw metadata -->
       <meta name="HW.identifier" content="{$atom-id}"/>
       <meta name="citation_publication_date" content="{$released}"/>
-      <meta name="citation_access" content=""/>
-      <meta name="citation_fulltext_world_readable" content=""/>
+      <!-- <meta name="citation_access" content=""/> -->
+      <!-- <meta name="citation_fulltext_world_readable" content=""/> -->
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="hw"/>
       <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="hw"/>
       <xsl:apply-templates select="//title-group" mode="hw"/>
       <xsl:apply-templates select="//contrib/name" mode="hw"/>
       <xsl:apply-templates select="//abstract" mode="hw"/>
       <!-- dublin core metadata -->
-      <meta name="DC.Created" content=""/>
+      <meta name="DC.Created" content="{$released}"/>
       <meta name="DC.Format" content="text/html"/>
-      <meta name="DC.Type" content=""/>
+      <meta name="DC.Type" content="text"/>
       <xsl:apply-templates select="//abstract" mode="dc"/>
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="dc"/>
       <!-- open graph metadata -->
       <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="og"/>
-      <meta name="book:release_date" content="{$released}"/>
+      <meta property="book:release_date" content="{$released}"/>
     </html>
   </xsl:template>
 
@@ -55,7 +55,7 @@
 
   <xsl:template match="nlm:pub-id[@pub-id-type eq 'isbn']" mode="og">
     <xsl:variable name="isbn" select="."/>
-    <meta name="book:isbn" content="{$isbn}"/>
+    <meta property="book:isbn" content="{$isbn}"/>
   </xsl:template>
 
   <xsl:template match="title-group" mode="hw">
