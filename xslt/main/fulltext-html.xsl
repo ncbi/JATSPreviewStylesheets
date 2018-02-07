@@ -23,6 +23,11 @@
 	  <!-- <xsl:apply-templates select="//book-part[@book-part-type eq 'chapter']"/> -->
 	</div>
       </xsl:when>
+      <xsl:when test="book-part[@book-part-type eq 'section']">
+        <div class="section">
+          <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'section']]"/>
+        </div>
+      </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'chapter']">
         <div class="chapter">
           <xsl:apply-templates select="//body"/>
@@ -56,7 +61,7 @@
       <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword"> 
         <xsl:apply-templates/>
       </xsl:when>
-      <xsl:otherwise/> <!-- @book-part-type=section -->
+      <xsl:otherwise/>
     </xsl:choose>
   </xsl:template>
 
