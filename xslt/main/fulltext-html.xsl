@@ -28,7 +28,8 @@
           <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'section']]"/>
         </div>
       </xsl:when>
-      <xsl:when test="book-part[@book-part-type eq 'chapter']">
+      <!-- <xsl:when test="book-part[@book-part-type eq 'chapter']"> -->
+      <xsl:when test="book-part[matches(@book-part-type, '^[Cc]hapter$')]">
         <div class="chapter">
           <xsl:apply-templates select="//body"/>
           <xsl:apply-templates select="//back"/>
