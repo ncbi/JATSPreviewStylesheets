@@ -112,7 +112,12 @@ or pipeline) parameterized.
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:hwp="http://schema.highwire.org/Journal"
-  exclude-result-prefixes="xlink mml">
+  xmlns:l="http://schema.highwire.org/Linking"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  exclude-result-prefixes="xlink mml xs">
+
+  <xsl:import href="../../../xml-tech/publishing/batch/library.link.xsl"/>
 
 
   <!--<xsl:output method="xml" indent="no" encoding="UTF-8"
@@ -608,6 +613,62 @@ or pipeline) parameterized.
     <span class="kwd">
       <xsl:apply-templates/>
     </span>
+  </xsl:template>
+
+  <xsl:template match="contrib">
+    <div class="contrib">
+      <xsl:if test="name | degrees">
+        <p><xsl:apply-templates select="name,degrees"/></p>
+      </xsl:if>
+      <xsl:if test="role">
+        <p><xsl:apply-templates select="role"/></p>
+      </xsl:if>
+      <xsl:apply-templates select="* except (name,degrees,role,addr-line[italic/xref[matches(@xlink:href,'atom')]])"/>
+      <xsl:if test="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]">
+        <p><xsl:apply-templates select="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]"/></p>
+      </xsl:if>
+    </div>
+  </xsl:template>
+
+  <!-- <xsl:template match="name">
+    <span class="name">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template> -->
+
+  <xsl:template match="surname">
+    <xsl:apply-templates/>
+    <xsl:if test="following-sibling::given-names"><xsl:text>, </xsl:text></xsl:if>
+  </xsl:template>
+
+  <xsl:template match="given-names">
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <xsl:template match="degrees">
+    <xsl:text>, </xsl:text>
+    <span class="degrees">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="role">
+    <span class="role">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="address">
+    <address>
+      <xsl:for-each select="* except addr-line[italic/xref[matches(@xlink:href,'atom')]]">
+        <xsl:if test="position() &gt; 1"><br/></xsl:if>
+        <xsl:apply-templates/>
+      </xsl:for-each>
+    </address>
+  </xsl:template>
+
+  <xsl:template match="addr-line[italic/xref[matches(@xlink:href,'atom')]]" priority="1">
+    <xsl:apply-templates/>
   </xsl:template>
 
   <!-- HERE -->
@@ -1727,14 +1788,14 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="address" mode="metadata">
-    <!-- when we have an addr-line we generate an unlabelled block -->
+  <!-- <xsl:template match="address" mode="metadata">
+    <!-/- when we have an addr-line we generate an unlabelled block -/->
     <xsl:call-template name="metadata-area">
       <xsl:with-param name="contents">
         <xsl:apply-templates mode="metadata"/>
       </xsl:with-param>
     </xsl:call-template>
-  </xsl:template>
+  </xsl:template> -->
 
 
   <xsl:template mode="metadata" priority="2" match="address/*">
@@ -2095,7 +2156,7 @@ or pipeline) parameterized.
 
 
   <xsl:template match="sec-meta[not(ancestor::ack)]/contrib-group">
-    <xsl:apply-templates mode="metadata"/>
+    <xsl:apply-templates/>
   </xsl:template>
 
 
@@ -2218,10 +2279,10 @@ or pipeline) parameterized.
 <!-- ============================================================= -->
   
   
-  <xsl:template match="address">
+  <!-- <xsl:template match="address">
     <xsl:choose>
-      <!-- address appears as a sequence of inline elements if
-           it has no addr-line and the parent may contain text -->
+      <!-/- address appears as a sequence of inline elements if
+           it has no addr-line and the parent may contain text -/->
       <xsl:when test="not(addr-line) and
         (parent::collab | parent::p | parent::license-p |
          parent::named-content | parent::styled-content)">
@@ -2233,7 +2294,7 @@ or pipeline) parameterized.
         </div>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>
+  </xsl:template> -->
 
 
   <xsl:template name="address-line">
@@ -3105,6 +3166,17 @@ or pipeline) parameterized.
     <a>
       <xsl:attribute name="href" select="if (@xlink:href) then @xlink:href else concat('#',@rid)"/>
       <xsl:attribute name="data-rid" select="@rid"/>
+      <!-- <xsl:attribute name="data">
+        <xsl:if test="matches(@xlink:href,'atom://')">
+	  <xsl:variable name="domain" select="http://atom-dev.highwire.org/sgrworks.atom"/>
+	  <xsl:variable name="atom-id" select="substring-after(@xlink:ref,'sgrworks/')"/>
+	  <xsl:variable name="stub" as="element(stub)">
+            <stub l:ref-type="atom" l:ref="{$atom-id}"/>
+          </xsl:variable>
+	  <xsl:variable name="query" select="concat($domain,l:stub-to-query($stub))"/>
+	  <xsl:sequence select="doc($query)/atom:feed/atom:entry/atom:link[@rel eq 'self']/@href"/>
+	</xsl:if>
+      </xsl:attribute> -->
       <xsl:apply-templates/>
     </a>
   </xsl:template>
@@ -3833,6 +3905,7 @@ or pipeline) parameterized.
   <!-- Called when displaying structured names in metadata         -->
 
   <xsl:template match="name">
+    <span class="name">
     <xsl:apply-templates select="prefix" mode="inline-name"/>
     <xsl:apply-templates select="surname[../@name-style='eastern']"
       mode="inline-name"/>
@@ -3840,6 +3913,7 @@ or pipeline) parameterized.
     <xsl:apply-templates select="surname[not(../@name-style='eastern')]"
       mode="inline-name"/>
     <xsl:apply-templates select="suffix" mode="inline-name"/>
+    </span>
   </xsl:template>
 
 
