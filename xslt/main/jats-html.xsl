@@ -3909,9 +3909,11 @@ or pipeline) parameterized.
     <xsl:apply-templates select="prefix" mode="inline-name"/>
     <xsl:apply-templates select="surname[../@name-style='eastern']"
       mode="inline-name"/>
-    <xsl:apply-templates select="given-names" mode="inline-name"/>
     <xsl:apply-templates select="surname[not(../@name-style='eastern')]"
       mode="inline-name"/>
+    <xsl:apply-templates select="given-names" mode="inline-name"/>
+    <!-- <xsl:apply-templates select="surname[not(../@name-style='eastern')]"
+      mode="inline-name"/> -->
     <xsl:apply-templates select="suffix" mode="inline-name"/>
     </span>
   </xsl:template>
@@ -3927,9 +3929,10 @@ or pipeline) parameterized.
 
   <xsl:template match="given-names" mode="inline-name">
     <xsl:apply-templates/>
-    <xsl:if test="../surname[not(../@name-style='eastern')] | ../suffix">
+    <!-- <xsl:if test="../surname[not(../@name-style='eastern')] | ../suffix">
       <xsl:text> </xsl:text>
-    </xsl:if>
+    </xsl:if> -->
+    <xsl:if test="x[matches(.,'\.')]"><xsl:value-of select="x"/></xsl:if>
   </xsl:template>
 
 
@@ -3938,6 +3941,9 @@ or pipeline) parameterized.
     <xsl:if test="../given-names[../@name-style='eastern'] | ../suffix">
       <xsl:text> </xsl:text>
     </xsl:if>
+    <xsl:if test="../given-names[not(../@name-style='eastern')] | ../suffix">
+      <xsl:text>, </xsl:text>
+    </xsl:if>
   </xsl:template>
 
 
@@ -3945,6 +3951,9 @@ or pipeline) parameterized.
     <xsl:apply-templates/>
     <xsl:if test="../given-names[../@name-style='eastern'] | ../suffix">
       <xsl:text> </xsl:text>
+    </xsl:if>
+    <xsl:if test="../given-names[not(../@name-style='eastern')] | ../suffix">
+      <xsl:text>, </xsl:text>
     </xsl:if>
   </xsl:template>
 
