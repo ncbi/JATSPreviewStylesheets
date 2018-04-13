@@ -107,7 +107,7 @@ Footer text is emended, with name of transformation (stylesheet
 or pipeline) parameterized.
 
 -->
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
@@ -661,8 +661,10 @@ or pipeline) parameterized.
   <xsl:template match="address">
     <address>
       <xsl:for-each select="* except addr-line[italic/xref[matches(@xlink:href,'atom')]]">
-        <xsl:if test="position() &gt; 1"><br/></xsl:if>
-        <xsl:apply-templates/>
+        <!-- <xsl:if test="position() &gt; 1"><br/></xsl:if> -->
+	<div>
+          <xsl:apply-templates/>
+	</div>
       </xsl:for-each>
     </address>
   </xsl:template>
