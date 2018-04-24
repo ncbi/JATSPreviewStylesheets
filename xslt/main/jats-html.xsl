@@ -625,7 +625,8 @@ or pipeline) parameterized.
       </xsl:if>
       <xsl:apply-templates select="* except (name,degrees,role,addr-line[italic/xref[matches(@xlink:href,'atom')]])"/>
       <xsl:if test="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]">
-        <p><xsl:apply-templates select="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]"/></p>
+        <!-- <p><xsl:apply-templates select="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]"/></p> -->
+	<xsl:apply-templates select="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]"/>
       </xsl:if>
     </div>
   </xsl:template>
@@ -661,7 +662,6 @@ or pipeline) parameterized.
   <xsl:template match="address">
     <address>
       <xsl:for-each select="* except addr-line[italic/xref[matches(@xlink:href,'atom')]]">
-        <!-- <xsl:if test="position() &gt; 1"><br/></xsl:if> -->
 	<div>
           <xsl:apply-templates/>
 	</div>
@@ -670,7 +670,9 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="addr-line[italic/xref[matches(@xlink:href,'atom')]]" priority="1">
-    <xsl:apply-templates/>
+    <div class="italic">
+      <xsl:apply-templates mode="addr-line"/>
+    </div>
   </xsl:template>
 
   <!-- HERE -->
@@ -3204,6 +3206,9 @@ or pipeline) parameterized.
     </span>
   </xsl:template>
 
+  <xsl:template match="italic" mode="addr-line">
+    <xsl:apply-templates/>
+  </xsl:template>
 
   <xsl:template match="monospace">
     <tt>
