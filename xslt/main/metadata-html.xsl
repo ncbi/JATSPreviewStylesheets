@@ -11,7 +11,16 @@
   <xsl:param name="atom-id" select="false()"/>
   <xsl:param name="released" select="false()"/>
   <xsl:param name="atom-sequence" select="tokenize($atom-id, '/')"/>
-  <xsl:param name="book-id" select="$atom-sequence[4]"/>
+  <xsl:param name="book-id">
+    <xsl:choose>
+      <xsl:when test="matches($atom-sequence[4],'.atom')">
+        <xsl:value-of select="substring-before($atom-sequence[4],'.atom')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$atom-sequence[4]"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:param>
   <xsl:param name="book-atom" select="document(concat('http://sass.highwire.org/sgrworks/book/',$book-id,'.atom'))"/>
 
   <xsl:template match="/">
@@ -23,17 +32,19 @@
       <!-- <meta name="citation_fulltext_world_readable" content=""/> -->
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="hw"/>
       <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="hw"/>
-      <xsl:apply-templates select="//title-group" mode="hw"/>
+      <xsl:apply-templates select="//book-title-group | //title-group" mode="hw"/>
       <xsl:apply-templates select="//contrib/name" mode="hw"/>
       <xsl:apply-templates select="//abstract" mode="hw"/>
       <!-- dublin core metadata -->
       <meta name="DC.Created" content="{$released}"/>
       <meta name="DC.Format" content="text/html"/>
       <meta name="DC.Type" content="text"/>
+      <xsl:apply-templates select="//book-title-group | //title-group" mode="dc"/>
       <xsl:apply-templates select="//abstract" mode="dc"/>
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="dc"/>
       <!-- open graph metadata -->
       <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="og"/>
+      <xsl:apply-templates select="//book-title-group | //title-group" mode="og"/>
       <meta property="book:release_date" content="{$released}"/>
     </html>
   </xsl:template>
@@ -58,14 +69,34 @@
     <meta property="book:isbn" content="{$isbn}"/>
   </xsl:template>
 
+  <xsl:template match="book-title-group" mode="hw">
+    <xsl:variable name="title" select="book-title"/>
+    <meta name="citation_title" content="{$title}"/>
+  </xsl:template>
+
   <xsl:template match="title-group" mode="hw">
     <xsl:variable name="title" select="title"/>
     <meta name="citation_title" content="{$title}"/>
   </xsl:template>
 
+  <xsl:template match="book-title-group" mode="dc">
+    <xsl:variable name="title" select="book-title"/>
+    <meta name="DC.Title" content="{$title}"/>
+  </xsl:template>
+
   <xsl:template match="title-group" mode="dc">
     <xsl:variable name="title" select="title"/>
     <meta name="DC.Title" content="{$title}"/>
+  </xsl:template>
+
+  <xsl:template match="book-title-group" mode="og">
+    <xsl:variable name="title" select="book-title"/>
+    <meta name="og:title" property="{$title}"/>
+  </xsl:template>
+
+  <xsl:template match="title-group" mode="og">
+    <xsl:variable name="title" select="title"/>
+    <meta name="og:title" poperty="{$title}"/>
   </xsl:template>
 
   <xsl:template match="name" mode="hw">
