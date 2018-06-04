@@ -715,7 +715,7 @@ or pipeline) parameterized.
       <div class="metadata one-column table">
         <!--<div class="row">
           <div class="cell spanning">
-            
+s            
           </div>
         </div>-->
         <div class="row">
@@ -2532,14 +2532,13 @@ or pipeline) parameterized.
 
   <xsl:template match="list-item/p[not(preceding-sibling::*[not(self::label)])]">
     <p>
-      <xsl:call-template name="assign-id"/>
-      <xsl:for-each select="preceding-sibling::label">
+      <!-- <xsl:call-template name="assign-id"/> -->
+      <!-- <xsl:for-each select="preceding-sibling::label">
         <span class="label">
           <xsl:apply-templates/>
         </span>
       <xsl:text> </xsl:text>
-      </xsl:for-each>
-      <xsl:apply-templates select="@content-type"/>
+      </xsl:for-each> -->
       <xsl:apply-templates/>
     </p>
   </xsl:template>
@@ -2694,11 +2693,17 @@ or pipeline) parameterized.
         <xsl:apply-templates/>
       </xsl:otherwise>
     </xsl:choose> -->
-    <xsl:apply-templates/>
+    <xsl:choose>
+      <xsl:when test="preceding-sibling::*[1][self::label]"/>
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="x[parent::given-names or parent::surname][ancestor::mixed-citation]">
     <xsl:apply-templates/>
+    <xsl:text> </xsl:text>
   </xsl:template>
 
   <xsl:template match="year[parent::mixed-citation]">
@@ -2707,7 +2712,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="article-title[parent::mixed-citation]">
-    <xsl:if test="not(preceding-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
+    <xsl:if test="not(preceding-sibling::*[1][self::x] or preceding-sibling::*[1][self::string-name[given-names[x]]])"><xsl:text>. </xsl:text></xsl:if>
     <xsl:apply-templates/>
     <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
   </xsl:template>
@@ -2902,7 +2907,7 @@ or pipeline) parameterized.
       <xsl:otherwise>
         <span class="label">
           <xsl:apply-templates/>
-	  <xsl:if test="following-sibling::x"><xsl:value-of select="following-sibling::x"/><xsl:text> </xsl:text></xsl:if>
+	  <!-- <xsl:if test="following-sibling::*[1][self::x]"><xsl:value-of select="following-sibling::*[1][self::x]"/><xsl:text> </xsl:text></xsl:if> -->
         </span>
       </xsl:otherwise>
     </xsl:choose>
@@ -3573,7 +3578,7 @@ or pipeline) parameterized.
 	<xsl:otherwise>
           <span class="label">
             <xsl:copy-of select="$contents"/>
-	    <xsl:value-of select="following-sibling::x"/>
+	    <xsl:value-of select="following-sibling::*[1][self::x]"/>
           </span>
         </xsl:otherwise>
       </xsl:choose>
