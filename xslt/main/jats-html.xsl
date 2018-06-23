@@ -117,8 +117,6 @@ or pipeline) parameterized.
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="xlink mml xs">
 
-  <xsl:import href="../../../xml-tech/publishing/batch/library.link.xsl"/>
-
 
   <!--<xsl:output method="xml" indent="no" encoding="UTF-8"
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
