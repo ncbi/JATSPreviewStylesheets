@@ -293,7 +293,6 @@ or pipeline) parameterized.
 
     <!-- more metadata goes in the footer -->
     <div id="{$this-article}-footer" class="footer">
-      <xsl:call-template name="footer-metadata"/>
       <xsl:call-template name="footer-branding"/>
     </div>
 
@@ -671,64 +670,6 @@ or pipeline) parameterized.
     <div class="italic">
       <xsl:apply-templates mode="addr-line"/>
     </div>
-  </xsl:template>
-
-  <!-- HERE -->
- 
-  <xsl:template name="footer-metadata">
-    <!-- handles: article-categories, kwd-group, counts, 
-           supplementary-material, custom-meta-group
-         Plus also generates a sheet of processing warnings
-         -->
-    <xsl:for-each select="front/article-meta | front-stub">
-      <xsl:if test="article-categories | kwd-group | counts |
-                    supplementary-material | custom-meta-group |
-                    custom-meta-wrap">
-        <!-- custom-meta-wrap is from NLM 2.3 -->
-       <hr class="part-rule"/>
-        <div class="metadata">
-            <h4 class="generated">
-              <xsl:text>Article Information (continued)</xsl:text>
-            </h4>
-            <div class="metadata-group">
-              <xsl:apply-templates mode="metadata"
-                select="supplementary-material"/>
-
-              <xsl:apply-templates mode="metadata"
-                select="article-categories | kwd-group | counts"/>
-
-              <xsl:apply-templates mode="metadata"
-                select="custom-meta-group | custom-meta-wrap"/>
-            </div>
-      </div>
-      </xsl:if>
-    </xsl:for-each>
-
-    <xsl:variable name="process-warnings">
-      <xsl:call-template name="process-warnings"/>
-    </xsl:variable>
-
-    <xsl:if test="normalize-space(string($process-warnings))">
-      <hr class="part-rule"/>
-      <div class="metadata one-column table">
-        <!--<div class="row">
-          <div class="cell spanning">
-s            
-          </div>
-        </div>-->
-        <div class="row">
-          <div class="cell spanning">
-            <h4 class="generated">
-              <xsl:text>Process warnings</xsl:text>
-            </h4>
-            <p>Warnings reported by the processor due to problematic markup follow:</p>
-            <div class="metadata-group">
-              <xsl:copy-of select="$process-warnings"/>
-            </div>
-          </div>
-        </div>
-      </div>
-    </xsl:if>
   </xsl:template>
 
 
@@ -2484,29 +2425,28 @@ s
   </xsl:template>
   
 
-	<xsl:template match="list-item">
-		<li>
-			<xsl:apply-templates/>
-		</li>
-	</xsl:template>
+  <xsl:template match="list-item">
+    <li>
+      <xsl:apply-templates/>
+    </li>
+  </xsl:template>
 
 
-	<xsl:template match="list-item/label">
-	  <!-- if the next sibling is a p, the label will be called as
-	       a run-in -->
-	  <xsl:if test="following-sibling::*[1][not(self::p)]">
-	    <xsl:call-template name="label"/>
-	  </xsl:if>
-	</xsl:template>
-  
-  
-	<xsl:template match="media">
-		<a>
-			<xsl:call-template name="assign-id"/>
-			<xsl:call-template name="assign-href"/>
-			<xsl:apply-templates/>
-		</a>
-	</xsl:template>
+  <xsl:template match="list-item/label">
+    <!-- if the next sibling is a p, the label will be called as a run-in -->
+    <xsl:if test="following-sibling::*[1][not(self::p)]">
+      <xsl:call-template name="label"/>
+    </xsl:if>
+  </xsl:template>
+
+
+  <xsl:template match="media">
+    <a>
+      <xsl:call-template name="assign-id"/>
+      <xsl:call-template name="assign-href"/>
+      <xsl:apply-templates/>
+    </a>
+  </xsl:template>
 
 
   <xsl:template match="p | license-p">
@@ -2519,8 +2459,8 @@ s
       <xsl:apply-templates/>
     </p>
   </xsl:template>
-  
-  
+
+
   <xsl:template match="@content-type">
     <!-- <span class="generated">[</span>
     <xsl:value-of select="."/>
@@ -3096,7 +3036,14 @@ s
   
 
   <xsl:template match="target">
-    <xsl:call-template name="named-anchor"/>
+    <xsl:choose>
+      <xsl:when test="@target-type eq 'page'">
+        <span class="page-number" data-page-number="{substring-after(@id,'pg')}" id="{@id}"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="named-anchor"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   
@@ -3556,6 +3503,7 @@ s
     select="not(//supplementary-material[not(ancestor::front)][label])"/>
   <xsl:variable name="auto-label-table-wrap" select="not(//table-wrap[label])"/>
 -->  
+
 
   <xsl:template mode="label" match="*" name="block-label">
     <xsl:param name="contents">
@@ -4163,81 +4111,6 @@ s
 
 
 <!-- ============================================================= -->
-<!--  Process warnings                                             -->
-<!-- ============================================================= -->
-<!-- Generates a list of warnings to be reported due to processing
-     anomalies. -->
-
-  <xsl:template name="process-warnings">
-    <!-- Only generate the warnings if set to $verbose -->
-    <xsl:if test="$verbose">
-    <!-- returns an RTF containing all the warnings -->
-    <xsl:variable name="xref-warnings">
-      <xsl:for-each select="//xref[not(normalize-space(string(.)))]">
-        <xsl:variable name="target-label">
-          <xsl:apply-templates select="key('element-by-id',@rid)"
-            mode="label-text">
-            <xsl:with-param name="warning" select="false()"/>
-          </xsl:apply-templates>
-        </xsl:variable>
-        <xsl:if test="not(normalize-space(string($target-label))) and
-          generate-id(.) = generate-id(key('xref-by-rid',@rid)[1])">
-          <!-- if we failed to get a label with no warning, and
-               this is the first cross-reference to this target
-               we ask again to get the warning -->
-          <li>
-            <xsl:apply-templates select="key('element-by-id',@rid)"
-              mode="label-text">
-              <xsl:with-param name="warning" select="true()"/>
-            </xsl:apply-templates>
-          </li>
-        </xsl:if>
-      </xsl:for-each>
-    </xsl:variable>
-
-    <xsl:if test="normalize-space(string($xref-warnings))">
-      <h4>Elements are cross-referenced without labels.</h4>
-      <p>Either the element should be provided a label, or their cross-reference(s) should
-        have literal text content.</p>
-      <ul>
-        <xsl:copy-of select="$xref-warnings"/>
-      </ul>
-    </xsl:if>
-    
-    
-    <xsl:variable name="alternatives-warnings">
-      <!-- for reporting any element with a @specific-use different
-           from a sibling -->
-      <xsl:for-each select="//*[@specific-use != ../*/@specific-use]/..">
-        <li>
-          <xsl:text>In </xsl:text>
-          <xsl:apply-templates select="." mode="xpath"/>
-          <ul>
-            <xsl:for-each select="*[@specific-use != ../*/@specific-use]">
-              <li>
-                <xsl:apply-templates select="." mode="pattern"/>
-              </li>
-            </xsl:for-each>
-          </ul>
-          <!--<xsl:text>: </xsl:text>
-          <xsl:call-template name="list-elements">
-            <xsl:with-param name="elements" select="*[@specific-use]"/>
-          </xsl:call-template>-->
-        </li>
-      </xsl:for-each>
-    </xsl:variable>
-    
-    <xsl:if test="normalize-space(string($alternatives-warnings))">
-      <h4>Elements with different 'specific-use' assignments appearing together</h4>
-      <ul>
-        <xsl:copy-of select="$alternatives-warnings"/>
-      </ul>
-    </xsl:if>
-    </xsl:if>
-    
-  </xsl:template>
-  
-<!-- ============================================================= -->
 <!--  id mode                                                      -->
 <!-- ============================================================= -->
 <!-- An id can be derived for any element. If an @id is given,
@@ -4560,25 +4433,11 @@ s
 
   <xsl:template match="answer-set">
     <div class="answer-text">
-      <!-- <xsl:choose>
-        <xsl:when test="answer/@pointer-to-question = //question/@id">
-          <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{answer/@pointer-to-question}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
-          <div class="answer collapse" id="{answer/@pointer-to-question}-answer" aria-expanded="false">
-            <xsl:apply-templates/>
-          </div>
-	</xsl:when>
-	<xsl:otherwise>
-	  <div class="answer" id="{answer/@pointer-to-question}-answer" aria-expanded="false">
-            <xsl:apply-templates/>
-          </div>
-	</xsl:otherwise>
-      </xsl:choose> -->
       <xsl:apply-templates/>
     </div>
   </xsl:template>
 
   <xsl:template match="answer">
-    <!-- <xsl:apply-templates/> -->
     <xsl:choose>
       <xsl:when test="@pointer-to-question = //question/@id">
         <button class="btn showhide-button collapsed" data-toggle="collapse" data-target="#{@pointer-to-question}-answer" aria-expanded="false">&#xA0;answer&#xA0;</button>
@@ -4600,9 +4459,11 @@ s
     </div>
   </xsl:template>
 
-  <xsl:template match="answer/p[not(normalize-space(text()))][not(node())]"/>
+  <!-- <xsl:template match="answer/p[not(normalize-space(text()))][not(node())]"/> -->
+  <xsl:template match="p[parent::answer][not(normalize-space(text()))][not(node())]"/>
 
-  <xsl:template match="answer/p[normalize-space(text())][node()]">
+  <!-- <xsl:template match="answer/p[normalize-space(text())][node()]"> -->
+  <xsl:template match="p[parent::answer][normalize-space(text())][node()]">
     <p>
       <xsl:apply-templates/>
     </p>
