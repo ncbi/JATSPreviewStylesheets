@@ -4,11 +4,14 @@
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:xi="https://www.w3.org/TR/xinclude/"
   xmlns:nlm="http://schema.highwire.org/NLM/Journal"
-  exclude-result-prefixes="xlink mml xi nlm">
+  xmlns:a="http://www.w3.org/2005/Atom"
+  xmlns:c="http://schema.highwire.org/Compound"
+  exclude-result-prefixes="#all">
 
   <xsl:output encoding="UTF-8"/>
  
   <xsl:param name="atom-id" select="false()"/>
+  <xsl:param name="atom" select="document(resolve-uri($atom-id,base-uri(.)))"/>
   <xsl:param name="released" select="false()"/>
   <xsl:param name="atom-sequence" select="tokenize($atom-id, '/')"/>
   <xsl:param name="book-id">
@@ -21,7 +24,8 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:param>
-  <xsl:param name="book-atom" select="document(concat('http://sass.highwire.org/sgrworks/book/',$book-id,'.atom'))"/>
+  <xsl:param name="book-atom" select="document(resolve-uri(concat('/sgrworks/book/',$book-id,'.atom'),base-uri(.)))"/>
+  <xsl:param name="cover-source" select="document(resolve-uri(concat('/sgrworks/book/',$book-id,'/cover/supplementary-material1.source.xml'),base-uri(.)))"/>
 
   <xsl:template match="/">
     <html>
@@ -32,20 +36,24 @@
       <!-- <meta name="citation_fulltext_world_readable" content=""/> -->
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="hw"/>
       <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="hw"/>
-      <xsl:apply-templates select="//book-title-group | //title-group" mode="hw"/>
+      <xsl:apply-templates select="(//book-title-group,//title-group)[1]" mode="hw"/>
       <xsl:apply-templates select="//contrib/name" mode="hw"/>
       <xsl:apply-templates select="//abstract" mode="hw"/>
       <!-- dublin core metadata -->
       <meta name="DC.Created" content="{$released}"/>
       <meta name="DC.Format" content="text/html"/>
       <meta name="DC.Type" content="text"/>
-      <xsl:apply-templates select="//book-title-group | //title-group" mode="dc"/>
+      <xsl:apply-templates select="(//book-title-group,//title-group)[1]" mode="dc"/>
       <xsl:apply-templates select="//abstract" mode="dc"/>
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="dc"/>
       <!-- open graph metadata -->
-      <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="og"/>
-      <xsl:apply-templates select="//book-title-group | //title-group" mode="og"/>
-      <meta property="book:release_date" content="{$released}"/>
+      <xsl:apply-templates select="(//book-title-group,//title-group)[1]" mode="og"/>		 <!-- og:title -->
+      <meta property="og:type" content="book"/>       		       		   		 <!-- og:type  -->
+      <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="og"/> 	 <!--    book:isbn -->
+      <meta property="book:release_date" content="{$released}"/>       	  	   		 <!--    book:release_date -->
+      <xsl:call-template name="og_image"/>							 <!-- og:image -->
+      <xsl:call-template name="og_url"/>							 <!-- og:url -->
+      <xsl:apply-templates select="//abstract" mode="og"/>					 <!-- og:description -->
     </html>
   </xsl:template>
 
@@ -91,12 +99,12 @@
 
   <xsl:template match="book-title-group" mode="og">
     <xsl:variable name="title" select="book-title"/>
-    <meta name="og:title" property="{$title}"/>
+    <meta property="og:title" content="{$title}"/>
   </xsl:template>
 
   <xsl:template match="title-group" mode="og">
     <xsl:variable name="title" select="title"/>
-    <meta name="og:title" poperty="{$title}"/>
+    <meta property="og:title" content="{$title}"/>
   </xsl:template>
 
   <xsl:template match="name" mode="hw">
@@ -120,6 +128,26 @@
   <xsl:template match="abstract" mode="dc">
     <xsl:variable name="abstract" select="."/>
     <meta name="DC.Description" content="{$abstract}"/>
+  </xsl:template>
+
+  <xsl:template match="abstract" mode="og">
+    <xsl:variable name="abstract" select="."/>
+    <meta property="og:description" content="{$abstract}"/>
+  </xsl:template>
+
+  <xsl:template name="og_image">
+    <!-- /sites/default/files/styles/cover_content_metadata/binary/sgrworks/0539b1496b12d864/99d2856a6f3fd74405c110115cc8ca7ecae287a90e73f80273334521b0183a4e/cover.jpg -->
+    <meta property="og:image">
+      <xsl:attribute name="content">
+        <xsl:text>/sites/default/files/styles/cover_content_metadata/binary/</xsl:text>
+	<xsl:value-of select="substring-after($cover-source/supplementary-material/@xlink:href,'binary://')"/>
+      </xsl:attribute>
+    </meta>
+  </xsl:template>
+
+  <xsl:template name="og_url">
+    <xsl:variable name="url" select="concat('/content/',substring-before(replace($atom-id,'^/\w+/',''),'.atom'))"/>
+    <meta property="og:url" content="{$url}"/>
   </xsl:template>
 
 </xsl:stylesheet>
