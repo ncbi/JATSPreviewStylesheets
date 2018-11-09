@@ -2641,7 +2641,12 @@ or pipeline) parameterized.
 
   <xsl:template match="x[parent::given-names or parent::surname][ancestor::mixed-citation]">
     <xsl:apply-templates/>
-    <xsl:text> </xsl:text>
+    <xsl:choose>
+      <xsl:when test="//@book-part-type eq 'reference-topic'"/>
+      <xsl:otherwise>
+        <xsl:text> </xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="year[parent::mixed-citation]">
@@ -2668,7 +2673,7 @@ or pipeline) parameterized.
 
   <xsl:template match="collab[parent::mixed-citation]">
     <xsl:apply-templates/>
-    <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>. </xsl:text></xsl:if>
+    <xsl:if test="not(following-sibling::*[1][self::x or self::uri])"><xsl:text>. </xsl:text></xsl:if>
   </xsl:template>
 
   <xsl:template match="surname[ancestor::mixed-citation]">
@@ -2677,10 +2682,19 @@ or pipeline) parameterized.
     <xsl:if test="not(x)"><xsl:text>,</xsl:text></xsl:if>
   </xsl:template>
 
+  <xsl:template match="given-names[ancestor::mixed-citation]">
+    <xsl:apply-templates/>
+  </xsl:template>
+
   <xsl:template match="string-name[parent::mixed-citation]">
     <xsl:apply-templates/>
-    <xsl:if test="following-sibling::*[1][self::string-name]"><xsl:text>, </xsl:text></xsl:if>
-    <xsl:if test="not(following-sibling::*[1][self::string-name or self::x])"><xsl:text> </xsl:text></xsl:if>
+    <xsl:choose>
+      <xsl:when test="//@book-part-type eq 'reference-topic'"/>
+      <xsl:otherwise>
+        <xsl:if test="following-sibling::*[1][self::string-name]"><xsl:text>, </xsl:text></xsl:if>
+        <xsl:if test="not(following-sibling::*[1][self::string-name or self::x])"><xsl:text> </xsl:text></xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="volume[parent::mixed-citation]">
