@@ -2983,7 +2983,7 @@ or pipeline) parameterized.
     <xsl:apply-templates select="ext-link"/>
   </xsl:template>
 
-  <xsl:template match="ext-link | uri | inline-supplementary-material">
+  <xsl:template match="ext-link[not(matches(@specific-use,'brightcove-(video|audio)'))] | uri | inline-supplementary-material">
     <a target="xrefwindow">
       <xsl:call-template name="assign-href"/>
       <xsl:call-template name="assign-id"/>
@@ -2994,6 +2994,25 @@ or pipeline) parameterized.
     </a>
   </xsl:template>
 
+  <xsl:template match="ext-link[@specific-use eq 'brightcove-video']">
+    <div class="videoobject">
+      <div class="media video-content">
+        <div class="player-container">
+          <object classid="Single Video Player" class="play-in-place" data="{@xlink:href}"></object>
+        </div>
+      </div>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="ext-link[@specific-use eq 'brightcove-audio']">
+    <div class="audioobject">
+      <div class="media audio-content">
+        <div class="player-container">
+          <object classid="Single Audio Player" class="play-in-place" data="{@xlink:href}"></object>
+        </div>
+      </div>
+    </div>
+  </xsl:template>
 
   <xsl:template match="funding-source">
     <span class="funding-source">
