@@ -2995,7 +2995,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="ext-link[@specific-use eq 'brightcove-video']">
-    <div class="videoobject">
+    <div class="videoobject" id="{generate-id(.)}">
       <div class="media video-content">
         <div class="player-container">
           <object classid="Single Video Player" class="play-in-place" data="{@xlink:href}"></object>
@@ -3005,7 +3005,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="ext-link[@specific-use eq 'brightcove-audio']">
-    <div class="audioobject">
+    <div class="audioobject" id="{generate-id(.)}">
       <div class="media audio-content">
         <div class="player-container">
           <object classid="Single Audio Player" class="play-in-place" data="{@xlink:href}"></object>
