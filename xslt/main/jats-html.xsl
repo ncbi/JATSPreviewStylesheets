@@ -542,6 +542,13 @@ or pipeline) parameterized.
   <xsl:template match="contrib[matches(@contrib-type, '(author|editor)')]" mode="contrib-group">
     <li class="contrib">
       <xsl:choose>
+        <xsl:when test="contrib-id[@contrib-id-type eq 'orcid']">
+          <a href="javascript://" class="orcid" role="button" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
+            <xsl:attribute name="data-content"><xsl:apply-templates select="contrib-id" mode="#current"/><xsl:apply-templates select="bio" mode="bio-and-orcid"/></xsl:attribute>
+            <xsl:attribute name="data-original-title" select="'Author Bio'"/>
+            <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+          </a>
+        </xsl:when>
         <xsl:when test="bio">
           <a href="javascript://" role="button" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
             <xsl:attribute name="data-content"><xsl:apply-templates select="bio" mode="#current"/></xsl:attribute>
@@ -577,9 +584,13 @@ or pipeline) parameterized.
     <xsl:apply-templates/>
   </xsl:template>
 
+  <xsl:template match="contrib-id" mode="contrib-group"><![CDATA[<div><a href="]]><xsl:value-of select="."/><![CDATA[" class="orcid" target="_blank">]]><xsl:apply-templates select="../name,../degrees" mode="#current"/><![CDATA[</a></div>]]></xsl:template>
+
   <xsl:template match="bio" mode="contrib-group">
     <xsl:apply-templates mode="bio"/>
   </xsl:template>
+
+  <xsl:template match="bio" mode="bio-and-orcid"><![CDATA[ <div>]]><xsl:apply-templates mode="bio"/><![CDATA[</div>]]></xsl:template>
 
   <xsl:template match="p" mode="bio">
     <xsl:apply-templates mode="bio"/>
