@@ -53,7 +53,7 @@
           <xsl:apply-templates select="//back"/>
         </div>
       </xsl:when>
-      <xsl:when test="book-part[@book-part-type eq 'reference-topic']">
+      <xsl:when test="book-part[@book-part-type eq 'reference']">
         <div class="reference-topic">
           <xsl:apply-templates select="//body"/>
           <xsl:apply-templates select="//back"/>
