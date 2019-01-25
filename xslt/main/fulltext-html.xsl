@@ -59,6 +59,11 @@
           <xsl:apply-templates select="//back"/>
         </div>
       </xsl:when>
+      <xsl:when test="book-part[@specific-use eq 'published-online']">
+        <div class="back-matter">
+          <xsl:apply-templates select="//body"/>
+        </div>
+      </xsl:when>
       <xsl:when test="article">
         <div class="article">
 	  <xsl:apply-templates select="//body"/>
