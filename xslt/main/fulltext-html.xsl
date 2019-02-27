@@ -53,10 +53,15 @@
           <xsl:apply-templates select="//back"/>
         </div>
       </xsl:when>
-      <xsl:when test="book-part[@book-part-type eq 'reference-topic']">
+      <xsl:when test="book-part[@book-part-type eq 'reference']">
         <div class="reference-topic">
           <xsl:apply-templates select="//body"/>
           <xsl:apply-templates select="//back"/>
+        </div>
+      </xsl:when>
+      <xsl:when test="book-part[@specific-use eq 'published-online']">
+        <div class="back-matter">
+          <xsl:apply-templates select="//body"/>
         </div>
       </xsl:when>
       <xsl:when test="article">
@@ -65,7 +70,7 @@
           <xsl:apply-templates select="//back"/>
 	</div>
       </xsl:when>
-      <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword"> 
+      <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword | front-matter-part"> 
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise/>
