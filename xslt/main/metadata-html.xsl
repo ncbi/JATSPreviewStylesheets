@@ -139,17 +139,19 @@
   </xsl:template>
 
   <xsl:template name="og_image">
-    <!-- /sites/default/files/styles/cover_content_metadata/binary/sgrworks/0539b1496b12d864/99d2856a6f3fd74405c110115cc8ca7ecae287a90e73f80273334521b0183a4e/cover.jpg -->
+    <!-- WRONG: /sites/default/files/styles/cover_content_metadata/binary/sgrworks/0539b1496b12d864/99d2856a6f3fd74405c110115cc8ca7ecae287a90e73f80273334521b0183a4e/cover.jpg -->
+    <!-- should be: http://connect.springerpub.com/binary/sgrworks/bad9880d2672e836/48dd71541a89768a73de708419493ab4c5ab35afa409c9511795c3cb3625ce1e/cover.jpg -->
     <meta property="og:image">
       <xsl:attribute name="content">
-        <xsl:text>/sites/default/files/styles/cover_content_metadata/binary/</xsl:text>
+        <!-- <xsl:text>/sites/default/files/styles/cover_content_metadata/binary/</xsl:text> -->
+	<xsl:text>binary/</xsl:text>
 	<xsl:value-of select="substring-after($cover-source/supplementary-material/@xlink:href,'binary://')"/>
       </xsl:attribute>
     </meta>
   </xsl:template>
 
   <xsl:template name="og_url">
-    <xsl:variable name="url" select="concat('/content/',substring-before(replace($atom-id,'^/\w+/',''),'.atom'))"/>
+    <xsl:variable name="url" select="concat('content/',substring-before(replace($atom-id,'^/\w+/',''),'.atom'))"/>
     <meta property="og:url" content="{$url}"/>
   </xsl:template>
 
