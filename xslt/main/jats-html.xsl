@@ -2300,9 +2300,7 @@ or pipeline) parameterized.
       <!-- <xsl:call-template name="named-anchor"/> -->
       <!-- <xsl:apply-templates select="." mode="label"/> -->
       <xsl:if test="label">
-        <div class="label">
-	  <xsl:apply-templates select="label" mode="hw-label"/>
-	</div>
+        <xsl:apply-templates select="label" mode="hw-label"/>
       </xsl:if>
       <xsl:apply-templates/>
       <xsl:apply-templates mode="footnote" select="self::table-wrap//fn[not(ancestor::table-wrap-foot)]"/>
@@ -2312,12 +2310,17 @@ or pipeline) parameterized.
   <xsl:template match="boxed-text">
     <div class="boxed-text panel">
       <xsl:apply-templates select="@id"/>
+      <xsl:if test="label">
+        <xsl:apply-templates select="label" mode="hw-label"/>
+      </xsl:if>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
   
   <xsl:template match="label" mode="hw-label">
-    <xsl:apply-templates/>
+    <div class="label">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
 
   <xsl:template match="caption">
