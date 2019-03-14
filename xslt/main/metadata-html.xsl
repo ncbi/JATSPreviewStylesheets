@@ -13,7 +13,6 @@
   <xsl:param name="atom-id" select="false()"/>
   <xsl:param name="atom" select="document(resolve-uri($atom-id,base-uri(.)))"/>
   <xsl:param name="released" select="false()"/>
-  <xsl:param name="category" select="false()"/>
   <xsl:param name="atom-sequence" select="tokenize($atom-id, '/')"/>
   <xsl:param name="book-id">
     <xsl:choose>
@@ -25,10 +24,10 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:param>
-  <xsl:param name="book-atom" select="if ($category eq 'reference-book') then document(resolve-uri(concat('/sgrworks/reference-book/',$book-id,'.atom'),base-uri(.)))
-  	     		      	      else document(resolve-uri(concat('/sgrworks/book/',$book-id,'.atom'),base-uri(.)))"/>
-  <xsl:param name="cover-source" select="if ($category eq 'reference-book') then document(resolve-uri(concat('/sgrworks/reference-book/',$book-id,'/cover/supplementary-material1.source.xml'),base-uri(.)))
-  	     			 	 else document(resolve-uri(concat('/sgrworks/book/',$book-id,'/cover/supplementary-material1.source.xml'),base-uri(.)))"/>
+  <xsl:param name="book-atom" select="if (matches($atom-id,'reference-book')) then document(resolve-uri(concat('/sgrworks/reference-book/',$book-id,'.atom'),base-uri(.)))
+                                      else document(resolve-uri(concat('/sgrworks/book/',$book-id,'.atom'),base-uri(.)))"/>
+  <xsl:param name="cover-source" select="if (matches($atom-id,'reference-book')) then document(resolve-uri(concat('/sgrworks/reference-book/',$book-id,'/cover/supplementary-material1.source.xml'),base-uri(.)))
+                                         else document(resolve-uri(concat('/sgrworks/book/',$book-id,'/cover/supplementary-material1.source.xml'),base-uri(.)))"/>
 
   <xsl:template match="/">
     <html>
