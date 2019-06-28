@@ -2448,10 +2448,11 @@ or pipeline) parameterized.
 
 
   <xsl:template match="list-item/label">
+    <!-- per HWPTRIAGE-4377, list-item/label was getting stripped out of fulltext, so removing conditional -->
     <!-- if the next sibling is a p, the label will be called as a run-in -->
-    <xsl:if test="following-sibling::*[1][not(self::p)]">
+    <!-- <xsl:if test="following-sibling::*[1][not(self::p)]"> -->
       <xsl:call-template name="label"/>
-    </xsl:if>
+    <!-- </xsl:if> -->
   </xsl:template>
 
 
