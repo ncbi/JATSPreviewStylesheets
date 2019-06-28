@@ -558,8 +558,19 @@ or pipeline) parameterized.
           </a>
         </xsl:when>
         <xsl:otherwise>
-          <!-- <xsl:apply-templates select="* except (x, aff)" mode="#current"/> -->
-	  <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+          <xsl:choose>
+            <xsl:when test="address">
+              <a href="javascript://" role="button" tabindex="0" data-container="body" data-toggle="popover" data-placement="right" data-trigger="focus" title="" data-html="true">
+                <xsl:attribute name="data-content"><xsl:apply-templates select="address" mode="#current"/></xsl:attribute>
+                <xsl:attribute name="data-original-title" select="'Author Bio'"/>
+                <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+              </a>            
+            </xsl:when>
+            <xsl:otherwise>
+              <!-- <xsl:apply-templates select="* except (x, aff)" mode="#current"/> -->
+	            <xsl:apply-templates select="name, string-name, degrees" mode="#current"/>
+            </xsl:otherwise>
+          </xsl:choose>
         </xsl:otherwise>
       </xsl:choose>
     </li>
@@ -678,6 +689,10 @@ or pipeline) parameterized.
     </address>
   </xsl:template>
 
+  <xsl:template match="address" mode="contrib-group">
+    <xsl:for-each select="*"><xsl:apply-templates /><![CDATA[<br />]]></xsl:for-each>
+  </xsl:template>
+  
   <xsl:template match="addr-line[italic/xref[matches(@xlink:href,'atom')]]" priority="1">
     <div class="italic">
       <xsl:apply-templates mode="addr-line"/>
