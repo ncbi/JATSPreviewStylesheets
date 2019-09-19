@@ -614,14 +614,6 @@ or pipeline) parameterized.
     <xsl:apply-templates mode="current"/>
   </xsl:template>
 
-  <xsl:template match="x" mode="contrib-group">
-    <xsl:apply-templates mode="current"/>
-  </xsl:template>
-  
-  <xsl:template match="x" mode="contrib-group">
-    <xsl:apply-templates/>
-  </xsl:template>
-
   <xsl:template match="contrib-id" mode="contrib-group"><![CDATA[<div><a href="]]><xsl:value-of
       select="."/><![CDATA[" class="orcid" target="_blank">]]><xsl:apply-templates
       select="../name, ../degrees" mode="#current"/><![CDATA[</a></div>]]></xsl:template>
@@ -4692,7 +4684,7 @@ or pipeline) parameterized.
   <xsl:template match="publisher"/>
   <xsl:template match="subj-group"/>
   <xsl:template match="toc"/>
-  <xsl:template match="x"/>
+  <!--<xsl:template match="x"/>-->
 
 
   <!-- ============================================================= -->
