@@ -3603,9 +3603,19 @@ or pipeline) parameterized.
     <p>
       <xsl:call-template name="assign-id"/>
       <xsl:if test="not(preceding-sibling::p)">
-        <!-- drop an inline label text into the first p -->
-        <xsl:apply-templates select="parent::fn" mode="label-text"/>
-        <xsl:text> </xsl:text>
+        <xsl:choose>
+          <xsl:when test="preceding-sibling::label">
+            <span class="label">
+              <xsl:value-of select="../label"/>
+              <xsl:text> </xsl:text>
+            </span>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- drop an inline label text into the first p -->
+            <xsl:apply-templates select="parent::fn" mode="label-text"/>
+            <xsl:text> </xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:if>
       <xsl:apply-templates/>
     </p>
@@ -4073,9 +4083,10 @@ or pipeline) parameterized.
     <!-- <xsl:if test="../surname[not(../@name-style='eastern')] | ../suffix">
       <xsl:text> </xsl:text>
     </xsl:if> -->
-    <xsl:if test="x[matches(., '\.')]">
+    <!--    <xsl:if test="x[matches(., '\.')]">
       <xsl:value-of select="x"/>
     </xsl:if>
+ -->
   </xsl:template>
 
 
