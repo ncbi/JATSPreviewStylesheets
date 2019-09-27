@@ -600,10 +600,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="given-names" mode="contrib-group">
-    <xsl:apply-templates select="node() except (x)"/>
-    <xsl:if test="x[matches(., '\.')]">
-      <xsl:value-of select="x"/>
-    </xsl:if>
+    <xsl:apply-templates/>
     <xsl:if test="following-sibling::suffix">
       <xsl:text> </xsl:text>
     </xsl:if>
