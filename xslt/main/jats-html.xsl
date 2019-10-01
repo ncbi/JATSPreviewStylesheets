@@ -2764,9 +2764,10 @@ or pipeline) parameterized.
   <xsl:template match="surname[ancestor::mixed-citation]">
     <xsl:apply-templates/>
     <!-- <xsl:if test="not(following-sibling::*[1][self::x])"><xsl:text>, </xsl:text></xsl:if> -->
-    <xsl:if test="not(x)">
+<!--    <xsl:if test="not(x)">
       <xsl:text>,</xsl:text>
     </xsl:if>
+-->
   </xsl:template>
 
   <xsl:template match="given-names[ancestor::mixed-citation]">
