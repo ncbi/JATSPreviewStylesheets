@@ -695,6 +695,9 @@ or pipeline) parameterized.
 
   <xsl:template match="given-names">
     <xsl:apply-templates/>
+    <xsl:if test="following-sibling::suffix">
+      <xsl:text> </xsl:text>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="degrees">
@@ -2708,7 +2711,7 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="//@book-part-type eq 'reference-topic'"/>
       <xsl:otherwise>
-        <xsl:text> </xsl:text>
+        <!-- <xsl:text> </xsl:text> -->
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -4081,6 +4084,9 @@ or pipeline) parameterized.
     <!-- <xsl:if test="../surname[not(../@name-style='eastern')] | ../suffix">
       <xsl:text> </xsl:text>
     </xsl:if> -->
+    <xsl:if test="../suffix">
+      <xsl:text> </xsl:text>
+    </xsl:if>
     <!--    <xsl:if test="x[matches(., '\.')]">
       <xsl:value-of select="x"/>
     </xsl:if>
@@ -4090,9 +4096,10 @@ or pipeline) parameterized.
 
   <xsl:template match="contrib/name/surname" mode="inline-name">
     <xsl:apply-templates/>
-    <xsl:if test="../given-names[../@name-style = 'eastern'] | ../suffix">
+    <!-- <xsl:if test="../given-names[../@name-style = 'eastern'] | ../suffix">
       <xsl:text> </xsl:text>
     </xsl:if>
+    -->
     <xsl:if test="../given-names[not(../@name-style = 'eastern')] | ../suffix">
       <xsl:text>, </xsl:text>
     </xsl:if>
