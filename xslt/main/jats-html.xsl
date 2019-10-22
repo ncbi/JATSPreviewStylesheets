@@ -3847,6 +3847,7 @@ or pipeline) parameterized.
          a cross-reference -->
     <xsl:param name="auto-number-fn"
       select="not(ancestor::table-wrap//fn/label | ancestor::table-wrap//fn/@symbol)"/>
+<!--
     <xsl:call-template name="make-label-text">
       <xsl:with-param name="auto" select="$auto-number-fn"/>
       <xsl:with-param name="warning" select="$warning"/>
@@ -3856,6 +3857,7 @@ or pipeline) parameterized.
         <xsl:text>]</xsl:text>
       </xsl:with-param>
     </xsl:call-template>
+-->
   </xsl:template>
 
 
