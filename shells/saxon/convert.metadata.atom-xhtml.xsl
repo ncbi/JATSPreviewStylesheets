@@ -21,9 +21,6 @@
     <released>
       <xsl:value-of select="substring-before(atom:entry/r:released,'T')"/>
     </released>
-    <category>
-      <xsl:value-of select="atom:entry/atom:category[@scheme eq 'http://schema.highwire.org/ItemSet/Item#type']/@term"/>
-    </category>
   </xsl:param>
   
   <xsl:template match="/">
