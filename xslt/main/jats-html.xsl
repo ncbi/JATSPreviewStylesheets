@@ -672,7 +672,7 @@ or pipeline) parameterized.
         </p>
       </xsl:if>
       <xsl:apply-templates
-        select="* except (name, degrees, role, addr-line[italic/xref[matches(@xlink:href, 'atom')]])"/>
+        select="* except (name, degrees, role, addr-line[italic/xref[matches(@xlink:href, 'atom')]], x)"/>
       <xsl:if test="address/addr-line[italic/xref[matches(@xlink:href, 'atom')]]">
         <!-- <p><xsl:apply-templates select="address/addr-line[italic/xref[matches(@xlink:href,'atom')]]"/></p> -->
         <xsl:apply-templates select="address/addr-line[italic/xref[matches(@xlink:href, 'atom')]]"/>
