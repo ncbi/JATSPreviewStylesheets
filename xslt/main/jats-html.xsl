@@ -4613,6 +4613,13 @@ or pipeline) parameterized.
         </div>
         <xsl:apply-templates select="answer-set"/>
       </xsl:if>
+      <!-- per HWPTRIAGE-4446, sometimes answers tagged within question, sometimes outside -->
+      <xsl:if test="question/answer">
+        <xsl:apply-templates select="question/answer"/>
+      </xsl:if>
+      <xsl:if test="answer">
+        <xsl:apply-templates select="answer"/>
+      </xsl:if>      
     </div>
   </xsl:template>
 
