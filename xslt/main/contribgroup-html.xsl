@@ -9,17 +9,19 @@
   <xsl:output encoding="UTF-8"/>
 
   <xsl:template match="/">
-    <xsl:choose>
-      <xsl:when test="book">
-        <xsl:apply-templates select="(//contrib-group[parent::book-meta])[1]" mode="contrib-group"/>
-      </xsl:when>
-      <xsl:when test="book-part">
-        <xsl:apply-templates select="(//contrib-group[parent::book-part-meta])[1]" mode="contrib-group"/>
-      </xsl:when>
-      <xsl:when test="article">
-        <xsl:apply-templates select="(//contrib-group[parent::article-meta])[1]" mode="contrib-group"/>
-      </xsl:when>
-    </xsl:choose>
+    <div>
+      <xsl:choose>
+        <xsl:when test="book">
+          <xsl:apply-templates select="//contrib-group[parent::book-meta]" mode="contrib-group"/>
+        </xsl:when>
+        <xsl:when test="book-part">
+          <xsl:apply-templates select="//contrib-group[parent::book-part-meta]" mode="contrib-group"/>
+        </xsl:when>
+        <xsl:when test="article">
+          <xsl:apply-templates select="//contrib-group[parent::article-meta]" mode="contrib-group"/>
+        </xsl:when>
+      </xsl:choose>
+    </div>
   </xsl:template>
 
 </xsl:stylesheet>
