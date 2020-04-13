@@ -3884,6 +3884,8 @@ or pipeline) parameterized.
       select="
         not($in-scope-notes/label |
         $in-scope-notes/@symbol)"/>
+    <!-- 
+      HWPTRIAGE-4510: sgrworks doesn't want [#] auto labels 
     <xsl:call-template name="make-label-text">
       <xsl:with-param name="auto" select="$auto-number-fn"/>
       <xsl:with-param name="warning" select="$warning"/>
@@ -3894,7 +3896,7 @@ or pipeline) parameterized.
         <xsl:text>]</xsl:text>
         <xsl:apply-templates select="@fn-type"/>
       </xsl:with-param>
-    </xsl:call-template>
+    </xsl:call-template> -->
   </xsl:template>
 
   <xsl:template match="fn/@fn-type[. = 'abbr']" priority="2">
