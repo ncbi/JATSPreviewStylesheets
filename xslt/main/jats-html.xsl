@@ -2713,7 +2713,7 @@ or pipeline) parameterized.
   <xsl:template match="x[parent::given-names or parent::surname][ancestor::mixed-citation]">
     <xsl:apply-templates/>
     <xsl:choose>
-      <xsl:when test="//@book-part-type eq 'reference-topic'"/>
+      <xsl:when test="//@book-part-type = 'reference-topic'"/>
       <xsl:otherwise>
         <!-- <xsl:text> </xsl:text> -->
       </xsl:otherwise>
@@ -2786,7 +2786,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:choose>
-      <xsl:when test="//@book-part-type eq 'reference-topic'"/>
+      <xsl:when test="//@book-part-type = 'reference-topic'"/>
       <xsl:otherwise>
         <xsl:if test="following-sibling::*[1][self::string-name]">
           <xsl:text>, </xsl:text>
