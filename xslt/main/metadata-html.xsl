@@ -81,7 +81,9 @@
       <xsl:if test="not($meta.abstract-url = '')">
         <meta name="citation_abstract_html_url" content="{$meta.abstract-url}"/>
       </xsl:if>
-      
+      <xsl:if test="not($meta.pdf-url = '')">
+        <meta name="citation_pdf_url" content="{$meta.pdf-url}"/>
+      </xsl:if>
       <xsl:apply-templates select="$book-atom//nlm:publisher/nlm:publisher-name" mode="hw"/>
       <xsl:apply-templates select="$book-atom//nlm:pub-id[@pub-id-type eq 'isbn']" mode="hw"/>
       <xsl:apply-templates select="(//book-title-group,//title-group)[1]" mode="hw"/>
