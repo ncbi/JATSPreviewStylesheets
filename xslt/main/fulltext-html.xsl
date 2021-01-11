@@ -13,15 +13,15 @@
     <xsl:choose>
       <xsl:when test="book">
         <div class="book">
-	  <xsl:apply-templates select="//front-matter"/>
-	  <xsl:apply-templates select="//book-back"/>
-	</div>
+          <xsl:apply-templates select="//front-matter"/>
+          <xsl:apply-templates select="//book-back"/>
+        </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'part']">
         <div class="part">
-	  <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'part']]"/>
-	  <!-- <xsl:apply-templates select="//book-part[@book-part-type eq 'chapter']"/> -->
-	</div>
+        <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'part']]"/>
+        <!-- <xsl:apply-templates select="//book-part[@book-part-type eq 'chapter']"/> -->
+      </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'section']">
         <div class="section">
@@ -31,44 +31,44 @@
       <!-- <xsl:when test="book-part[@book-part-type eq 'chapter']"> -->
       <xsl:when test="book-part[matches(@book-part-type, '^[Cc]hapter$')]">
         <div class="chapter">
-          <xsl:apply-templates select="//body"/>
-          <xsl:apply-templates select="//back"/>
-	</div>
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
+        </div>
       </xsl:when>
       <xsl:when test="book-part[matches(@book-part-type,'^case[\s-]study$')]">
         <div class="case-study">
-	  <xsl:apply-templates select="//body"/>
-          <xsl:apply-templates select="//back"/>
-	</div>
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
+        </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'introduction']">
         <div class="introduction">
-          <xsl:apply-templates select="//body"/>
-          <xsl:apply-templates select="//back"/>
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'conclusion']">
         <div class="conclusion">
-          <xsl:apply-templates select="//body"/>
-          <xsl:apply-templates select="//back"/>
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'reference']">
         <div class="reference-topic">
-          <xsl:apply-templates select="//body"/>
-          <xsl:apply-templates select="//back"/>
+          <xsl:apply-templates select="book-part/body"/>
+          <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
       <xsl:when test="book-part[@specific-use eq 'published-online']">
         <div class="back-matter">
-          <xsl:apply-templates select="//body"/>
+          <xsl:apply-templates select="book-part/body"/>
         </div>
       </xsl:when>
       <xsl:when test="article">
         <div class="article">
-	  <xsl:apply-templates select="//body"/>
-          <xsl:apply-templates select="//back"/>
-	</div>
+          <xsl:apply-templates select="article/body"/>
+          <xsl:apply-templates select="article/back"/>
+        </div>
       </xsl:when>
       <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword | front-matter-part"> 
         <xsl:apply-templates/>
