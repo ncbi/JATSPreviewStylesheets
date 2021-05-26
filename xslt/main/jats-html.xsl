@@ -2440,7 +2440,7 @@ or pipeline) parameterized.
 
   <xsl:template match="graphic | inline-graphic">
     <xsl:apply-templates/>
-    <img alt="{@xlink:href}">
+    <img alt="{replace(tokenize(@xlink:href,'/')[last()],'\.[^\.]*$','')}">
       <xsl:for-each select="alt-text">
         <xsl:attribute name="alt">
           <xsl:value-of select="normalize-space(string(.))"/>
