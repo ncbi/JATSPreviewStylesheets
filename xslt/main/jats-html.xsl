@@ -2358,7 +2358,17 @@ or pipeline) parameterized.
       <xsl:if test="label">
         <xsl:apply-templates select="label" mode="hw-label"/>
       </xsl:if>
-      <xsl:apply-templates/>
+      <xsl:variable name="long-desc-id" as="xs:string?" select="if (exists(.//long-desc)) then (.//long-desc/@id,concat('long-desc-',generate-id(.)))[1] else ()"/>
+      <xsl:apply-templates select="* except long-desc">
+        <xsl:with-param name="long-desc-id" as="xs:string?" tunnel="yes" select="$long-desc-id"/>
+      </xsl:apply-templates>
+     <xsl:if test="$long-desc-id">
+      <div class="long-desc" id="{$long-desc-id}">
+          <xsl:for-each select=".//long-desc">
+            <p><xsl:value-of select="."/></p>
+          </xsl:for-each>
+        </div>
+      </xsl:if>
       <xsl:apply-templates mode="footnote"
         select="self::table-wrap//fn[not(ancestor::table-wrap-foot)]"/>
     </div>
@@ -2439,8 +2449,12 @@ or pipeline) parameterized.
 
 
   <xsl:template match="graphic | inline-graphic">
-    <xsl:apply-templates/>
+    <xsl:param name="long-desc-id" as="xs:string?" tunnel="yes"/>
+    <xsl:apply-templates select="* except long-desc"/>
     <img alt="{replace(tokenize(@xlink:href,'/')[last()],'\.[^\.]*$','')}">
+      <xsl:if test="$long-desc-id">
+        <xsl:attribute name="longdesc" select="concat('#',$long-desc-id)"/>
+      </xsl:if>
       <xsl:for-each select="alt-text">
         <xsl:attribute name="alt">
           <xsl:value-of select="normalize-space(string(.))"/>
