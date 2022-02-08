@@ -2752,7 +2752,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:if test="not(following-sibling::*[1][self::x])">
-      <xsl:text>. </xsl:text>
+      <xsl:value-of select="if(ends-with(.,'?') or ends-with(.,'.')) then(' ') else('. ')"/>
     </xsl:if>
   </xsl:template>
 
@@ -2761,7 +2761,7 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </span>
     <xsl:if test="not(following-sibling::*[1][self::x])">
-      <xsl:text>. </xsl:text>
+      <xsl:value-of select="if(ends-with(.,'?') or ends-with(.,'.')) then(' ') else('. ')"/>
     </xsl:if>
   </xsl:template>
 
