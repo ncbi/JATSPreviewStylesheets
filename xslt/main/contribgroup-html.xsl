@@ -21,6 +21,9 @@
           <xsl:when test="article">
             <xsl:apply-templates select="//contrib-group[parent::article-meta]" mode="contrib-group"/>
           </xsl:when>
+          <xsl:when test="book-app">
+            <xsl:apply-templates select="//contrib-group[parent::book-part-meta]" mode="contrib-group"/>
+          </xsl:when>
         </xsl:choose>
       </div>
     </xsl:where-populated>
