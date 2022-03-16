@@ -2126,11 +2126,7 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
 
-  <xsl:template match="app/title">
-    <h2 class="app-title">
-      <xsl:apply-templates/>
-    </h2>
-  </xsl:template>
+  
 
   <xsl:template match="ref-list" name="ref-list">
     <div class="section references">
@@ -2189,7 +2185,7 @@ or pipeline) parameterized.
     </xsl:if>
   </xsl:template>
 
-
+  
   <xsl:template name="section-title"
     match="abstract/*/title | back[title]/*/title | back[not(title)]/*/*/title">
     <xsl:param name="contents">
@@ -2201,6 +2197,24 @@ or pipeline) parameterized.
         <xsl:copy-of select="$contents"/>
       </h3>
     </xsl:if>
+  </xsl:template>
+  <xsl:template match="back/app-group/app/title"><!-- SF 01190101 -->
+    <h2 class="app-title">
+      <xsl:if test="preceding-sibling::*[1][local-name()='label']">
+        <xsl:value-of select="preceding-sibling::*[1][local-name()='label']"/>
+        <xsl:text> </xsl:text>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </h2>
+  </xsl:template>
+  <xsl:template match="app/title">
+    <h2 class="app-title">
+      <xsl:if test="preceding-sibling::*[1][local-name()='label']">
+        <xsl:value-of select="preceding-sibling::*[1][local-name()='label']"/>
+        <xsl:text> </xsl:text>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </h2>
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level1' or not(ancestor::sec)]/title">
@@ -3507,12 +3521,12 @@ or pipeline) parameterized.
       </xsl:if>
     </li>
   </xsl:template>
-
-  <xsl:template match="app-group">
+  <!-- comment below template based SF 01190101 ticket   -->
+  <!--<xsl:template match="app-group"><xsl:comment></xsl:comment>
     <xsl:call-template name="backmatter-section">
       <xsl:with-param name="generated-title">Appendices</xsl:with-param>
     </xsl:call-template>
-  </xsl:template>
+  </xsl:template>-->
 
 
   <xsl:template match="back/bio">
@@ -3733,6 +3747,7 @@ or pipeline) parameterized.
             <xsl:apply-templates/>
           </div>
         </xsl:when>
+        <xsl:when test="name()='app'"></xsl:when><!-- SF 01190101 -->
         <xsl:otherwise>
           <span class="label">
             <xsl:copy-of select="$contents"/>
