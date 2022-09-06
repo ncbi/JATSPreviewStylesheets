@@ -14,6 +14,9 @@
       <xsl:when test="book">
         <div class="book">
           <xsl:apply-templates select="//front-matter"/>
+          <xsl:if test="//book-meta/book-id[@book-id-type eq 'publisher-id'] eq 'bps'">
+            <xsl:apply-templates select="//body"/>
+          </xsl:if>
           <xsl:apply-templates select="//book-back"/>
         </div>
       </xsl:when>
