@@ -76,6 +76,11 @@
       <xsl:when test="ack | dedication | preface | appendix | foreword | book-app | glossary | ref-list | foreword | front-matter-part"> 
         <xsl:apply-templates/>
       </xsl:when>
+      <xsl:when test="contains(base-uri(.),'/bpsworks/') and book-part[@id and @book-part-type]">
+        <div class="{book-part/@book-part-type}">
+          <xsl:apply-templates/>
+        </div>
+      </xsl:when>
       <xsl:otherwise/>
     </xsl:choose>
   </xsl:template>
