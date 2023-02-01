@@ -2219,30 +2219,45 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level1' or not(ancestor::sec)]/title">
     <h2 class="section-title">
+      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+      </xsl:if>
       <xsl:apply-templates/>
     </h2>
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level2' or count(ancestor::sec) eq 1]/title">
     <h3 class="section-title">
+      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+      </xsl:if>
       <xsl:apply-templates/>
     </h3>
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
     <h4 class="section-title">
+      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+      </xsl:if>
       <xsl:apply-templates/>
     </h4>
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
     <h5 class="section-title">
+      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+      </xsl:if>
       <xsl:apply-templates/>
     </h5>
   </xsl:template>
 
   <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
     <h6 class="section-title unmatched">
+      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+      </xsl:if>
       <xsl:apply-templates/>
     </h6>
   </xsl:template>
@@ -3018,6 +3033,8 @@ or pipeline) parameterized.
         <div class="label">
           <xsl:apply-templates/>
         </div>
+      </xsl:when>
+      <xsl:when test="parent::sec and following-sibling::title and contains(base-uri(.),'/tmsworks/')">
       </xsl:when>
       <xsl:otherwise>
         <span class="label">
