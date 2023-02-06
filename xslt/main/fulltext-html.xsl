@@ -1,4 +1,4 @@
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
@@ -81,16 +81,13 @@
           <xsl:apply-templates/>
         </div>
       </xsl:when>
+      <xsl:when test="sec[count(ancestor::sec) &lt; 3][@sec-type='section'] and contains(base-uri(.),'/tmsworks')">
+        <xsl:apply-templates/>
+      </xsl:when>
       <xsl:otherwise/>
     </xsl:choose>
   </xsl:template>
 
-  <!-- <xsl:template match="book-part[@book-part-type eq 'chapter']">
-    <div class="chapter">
-      <xsl:apply-templates select="body"/>
-      <xsl:apply-templates select="back"/>
-    </div>
-  </xsl:template> -->
 
   <xsl:template match="front-matter">
     <div class="front-matter">
