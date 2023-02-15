@@ -3647,7 +3647,9 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-
+<xsl:template match="fn/label" mode="tmsfnlabel">
+  <xsl:apply-templates/>
+</xsl:template>
 
   <xsl:template match="fn/p">
     <p>
@@ -3655,10 +3657,17 @@ or pipeline) parameterized.
       <xsl:if test="not(preceding-sibling::p)">
         <xsl:choose>
           <xsl:when test="preceding-sibling::label">
-            <span class="label">
-              <xsl:value-of select="../label"/>
-              <xsl:text> </xsl:text>
-            </span>
+            <xsl:choose>
+              <xsl:when test="contains(base-uri(.),'/tmsworks')">
+                <xsl:apply-templates select="../label" mode="tmsfnlabel"/><xsl:text> </xsl:text>
+              </xsl:when>
+              <xsl:otherwise>
+                <span class="label">
+                  <xsl:value-of select="../label"/>
+                  <xsl:text> </xsl:text>
+                </span>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:otherwise>
             <!-- drop an inline label text into the first p -->
