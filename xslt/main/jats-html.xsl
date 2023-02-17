@@ -2236,30 +2236,45 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
-    <h4 class="section-title">
-      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
-        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </h4>
+    <xsl:choose>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^ $')"></xsl:when>
+      <xsl:otherwise>
+        <h4 class="section-title">
+          <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+            <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+          </xsl:if>
+          <xsl:apply-templates/>
+        </h4>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
-    <h5 class="section-title">
-      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
-        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </h5>
+    <xsl:choose>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^ $')"></xsl:when>
+      <xsl:otherwise>
+        <h5 class="section-title">
+          <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+            <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+          </xsl:if>
+          <xsl:apply-templates/>
+        </h5>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
-    <h6 class="section-title unmatched">
-      <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
-        <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
-      </xsl:if>
-      <xsl:apply-templates/>
-    </h6>
+    <xsl:choose>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^ $')"></xsl:when>
+      <xsl:otherwise>
+        <h6 class="section-title unmatched">
+          <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+            <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+          </xsl:if>
+          <xsl:apply-templates/>
+        </h6>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="subsection-title"
