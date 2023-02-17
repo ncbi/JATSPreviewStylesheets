@@ -2606,6 +2606,9 @@ or pipeline) parameterized.
         </span>
       <xsl:text> </xsl:text>
       </xsl:for-each> -->
+      <xsl:if test="ancestor::list[1][@list-type='simple'] and contains(base-uri(.),'/tmsworks') and not(preceding-sibling::p) and preceding-sibling::*[1][name()='label']">
+        <xsl:value-of select="../label"/><xsl:text> </xsl:text>
+      </xsl:if>
       <xsl:apply-templates/>
     </p>
   </xsl:template>
@@ -3051,6 +3054,7 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="parent::sec and following-sibling::title and contains(base-uri(.),'/tmsworks/')">
       </xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks') and ancestor::list[1][@list-type='simple']"></xsl:when>
       <xsl:otherwise>
         <span class="label">
           <xsl:apply-templates/>
