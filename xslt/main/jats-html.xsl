@@ -2237,7 +2237,7 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
     <xsl:choose>
-      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^ $')"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^\s+$')"></xsl:when>
       <xsl:otherwise>
         <h4 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
@@ -2251,7 +2251,7 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
     <xsl:choose>
-      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^ $')"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^\s+$')"></xsl:when>
       <xsl:otherwise>
         <h5 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
@@ -2265,7 +2265,7 @@ or pipeline) parameterized.
 
   <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
     <xsl:choose>
-      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^ $')"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/') and matches(.,'^\s+$')"></xsl:when>
       <xsl:otherwise>
         <h6 class="section-title unmatched">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
