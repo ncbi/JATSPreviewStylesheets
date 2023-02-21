@@ -4,7 +4,6 @@
   xmlns:c="http://schema.highwire.org/Compound"
   xmlns:saxon="http://saxon.sf.net/"
   exclude-result-prefixes="#all">
-  
   <xsl:output method="xhtml" omit-xml-declaration="yes"
     encoding="utf-8" indent="no"
     include-content-type="no"/>
