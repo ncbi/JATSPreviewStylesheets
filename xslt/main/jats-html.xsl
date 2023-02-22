@@ -2090,7 +2090,7 @@ or pipeline) parameterized.
   <xsl:template match="sec">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks')">
-        <div class="section" id="{concat('actioncontainer_',@id)}">
+        <div class="section">
           <div id="{concat('print_',@id)}">
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates select="title"/>
@@ -2235,6 +2235,16 @@ or pipeline) parameterized.
   <xsl:template match="sec[@disp-level eq 'level1' or not(ancestor::sec)]/title">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/')">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+        <h2 class="section-title">
+          <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+            <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+          </xsl:if>
+          <xsl:apply-templates/>
+        </h2>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <h2 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
@@ -2249,6 +2259,16 @@ or pipeline) parameterized.
   <xsl:template match="sec[@disp-level eq 'level2' or count(ancestor::sec) eq 1]/title">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/')">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+          <h3 class="section-title">
+            <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates/>
+          </h3>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <h3 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
@@ -2263,6 +2283,16 @@ or pipeline) parameterized.
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/')">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+          <h4 class="section-title">
+            <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates/>
+          </h4>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <h4 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
@@ -2277,6 +2307,17 @@ or pipeline) parameterized.
   <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/')">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+          <h5 class="section-title">
+            <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates/>
+            <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" commentryData="{child::xref[@ref-type='section']/@rid}"/>
+          </h5>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <h5 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
@@ -2291,6 +2332,17 @@ or pipeline) parameterized.
   <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
+      <xsl:when test="contains(base-uri(.),'/tmsworks/')">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+          <h6 class="section-title unmatched">
+            <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
+              <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
+            </xsl:if>
+            <xsl:apply-templates/>
+            <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" commentryData="{child::xref[@ref-type='section']/@rid}"/>
+          </h6>
+        </div>
+      </xsl:when>
       <xsl:otherwise>
         <h6 class="section-title unmatched">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">

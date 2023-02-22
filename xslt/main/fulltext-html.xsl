@@ -34,9 +34,6 @@
       <!-- <xsl:when test="book-part[@book-part-type eq 'chapter']"> -->
       <xsl:when test="book-part[matches(@book-part-type, '^[Cc]hapter$')]">
         <div class="chapter">
-          <xsl:if test="contains(base-uri(.),'/tmsworks')">
-            <xsl:attribute name="id"><xsl:value-of select="concat('actioncontainer_',@id)"/></xsl:attribute>
-          </xsl:if>
           <xsl:apply-templates select="book-part/body"/>
           <xsl:apply-templates select="book-part/back"/>
         </div>
@@ -81,13 +78,12 @@
       </xsl:when>
       <xsl:when test="contains(base-uri(.),'/bpsworks/') and book-part[@id and @book-part-type]">
         <div class="{book-part/@book-part-type}">
-          <xsl:attribute name="id"><xsl:value-of select="concat('actioncontainer_',@id)"/></xsl:attribute>
           <div id="{concat('print_',@id)}">
           <xsl:apply-templates/>
           </div>
         </div>
       </xsl:when>
-      <xsl:when test="sec[count(ancestor::sec) &lt; 3][@sec-type='section'] and contains(base-uri(.),'/tmsworks')">
+      <xsl:when test="sec[count(ancestor::sec) &lt; 4][@sec-type='section'] and contains(base-uri(.),'/tmsworks')">
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise/>
