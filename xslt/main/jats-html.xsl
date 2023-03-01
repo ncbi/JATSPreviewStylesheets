@@ -2094,8 +2094,10 @@ or pipeline) parameterized.
           <div id="{concat('print_',@id)}">
             <xsl:call-template name="named-anchor"/>
             <xsl:apply-templates select="title"/>
+            <div class="toc-content">
             <xsl:apply-templates select="sec-meta"/>
             <xsl:apply-templates mode="drop-title"/>
+            </div>
           </div>
         </div>
       </xsl:when>
@@ -2236,16 +2238,16 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
         <h2 class="section-title">
           <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
             <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
           </xsl:if>
           <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
         </h2>
-        <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}">
+        <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
           <xsl:if test="child::xref[@ref-type='section']/@rid">
-            <xsl:attribute name="commentryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+            <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
             <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
           </xsl:if>
         </div>
@@ -2266,16 +2268,16 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h3 class="section-title">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
             </h3>
-            <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}">
+          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
               <xsl:if test="child::xref[@ref-type='section']/@rid">
-                <xsl:attribute name="commentryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+                <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
                 <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               </xsl:if>
             </div>
@@ -2296,16 +2298,16 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h4 class="section-title">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h4>
-            <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}">
+          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
               <xsl:if test="child::xref[@ref-type='section']/@rid">
-                <xsl:attribute name="commentryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+                <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
                 <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               </xsl:if>
             </div>
@@ -2326,16 +2328,16 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h5 class="section-title">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h5>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}">
+          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
             <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
             </xsl:if>
           </div>
@@ -2356,16 +2358,16 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
           <h6 class="section-title unmatched">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h6>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}">
+          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
             <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
+              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
               <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
             </xsl:if>
           </div>
