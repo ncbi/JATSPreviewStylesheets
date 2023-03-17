@@ -2233,8 +2233,10 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </h2>
   </xsl:template>
-
+  <xsl:variable name="tms" select="base-uri(.)" as="xs:string"/>
+  <xsl:variable name="tms_baseuri" select="concat('/tmsworks',replace(substring-after($tms,'tmsworks'),'.source.xml','/'))"/>
   <xsl:template match="sec[@disp-level eq 'level1' or not(ancestor::sec)]/title">
+    
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
@@ -2245,7 +2247,7 @@ or pipeline) parameterized.
           </xsl:if>
           <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
         </h2>
-        <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
+          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions" resourceDataPath="{concat($tms_baseuri,ancestor::book-part[@book-part-type='chapter']/@specific-use,'-',parent::sec/@sec-type,'/',parent::sec/@id,'.atom')}">
           <xsl:if test="child::xref[@ref-type='section']/@rid">
             <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
             <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
@@ -2268,10 +2270,12 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level2' or count(ancestor::sec) eq 1]/title">
+    <xsl:variable name="tmscontenttype" select="concat(ancestor::book-part[@book-part-type='chapter']/@specific-use,'-',parent::sec/@sec-type,'/')"/>
+    <xsl:variable name="tmsresource" select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/>
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading" resourceDataPath="{$tmsresource}">
           <h3 class="section-title">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
@@ -2279,6 +2283,7 @@ or pipeline) parameterized.
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
             </h3>
           <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
+              
               <xsl:if test="child::xref[@ref-type='section']/@rid">
                 <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
                 <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
@@ -2301,10 +2306,12 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level3' or count(ancestor::sec) eq 2]/title">
+    <xsl:variable name="tmscontenttype" select="concat(ancestor::book-part[@book-part-type='chapter']/@specific-use,'-',parent::sec/@sec-type,'/')"/>
+    <xsl:variable name="tmsresource" select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/>
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading" resourceDataPath="{$tmsresource}">
           <h4 class="section-title">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
@@ -2334,10 +2341,12 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="sec[@disp-level eq 'level4' or count(ancestor::sec) eq 3]/title">
+    <xsl:variable name="tmscontenttype" select="concat(ancestor::book-part[@book-part-type='chapter']/@specific-use,'-',parent::sec/@sec-type,'/')"/>
+    <xsl:variable name="tmsresource" select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/>
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading" resourceDataPath="{$tmsresource}">
           <h5 class="section-title">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
@@ -2367,10 +2376,19 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
+    <xsl:variable name="tmscontenttype" select="concat(ancestor::book-part[@book-part-type='chapter']/@specific-use,'-',parent::sec/@sec-type,'/')"/>
+    <xsl:variable name="tmsresource">
+      <xsl:choose>
+        <xsl:when test="count(ancestor::sec) eq 4"><xsl:value-of select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/></xsl:when>
+        <xsl:when test="count(ancestor::sec) eq 5"><xsl:value-of select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/></xsl:when>
+        <xsl:when test="count(ancestor::sec) eq 6"><xsl:value-of select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/></xsl:when>
+        <xsl:when test="count(ancestor::sec) eq 7"><xsl:value-of select="concat($tms_baseuri,$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/parent::sec/@id,'/',$tmscontenttype,parent::sec/@id,'.atom')"/></xsl:when>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
-        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading">
+        <div id="{concat('actioncontainer_',parent::sec/@id)}" class="toc-heading" resourceDataPath="{$tmsresource}">
           <h6 class="section-title unmatched">
             <xsl:if test="preceding-sibling::label and contains(base-uri(.),'/tmsworks/')">
               <xsl:value-of select="concat(preceding-sibling::label,' ')"/>
