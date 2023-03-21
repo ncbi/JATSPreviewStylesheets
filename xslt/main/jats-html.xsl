@@ -3491,17 +3491,39 @@ or pipeline) parameterized.
     </a>
   </xsl:template>
 
-
+  <xsl:template match="def[@class='def-hide']">
+    <div class="def-hide">
+      <xsl:apply-templates/>
+    </div>
+  </xsl:template>
   <xsl:template match="xref">
-    <a>
-      <xsl:attribute name="href"
-        select="
-          if (@xlink:href) then
+    <xsl:choose>
+      <xsl:when test="@ref-type='def' and contains(base-uri(.),'tmsworks')">
+        <a>
+          <!--<xsl:attribute name="href"
+            select="
+            if (@xlink:href) then
             @xlink:href
-          else
+            else
+            concat('#', @rid)"/>-->
+          <xsl:attribute name="class">ref-popover</xsl:attribute>
+          <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
+          <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
+          <xsl:attribute name="data-bs-content"></xsl:attribute>
+          <xsl:attribute name="data-rid" select="@rid"/>
+          <xsl:apply-templates/>
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <a>
+          <xsl:attribute name="href"
+            select="
+            if (@xlink:href) then
+            @xlink:href
+            else
             concat('#', @rid)"/>
-      <xsl:attribute name="data-rid" select="@rid"/>
-      <!-- <xsl:attribute name="data">
+          <xsl:attribute name="data-rid" select="@rid"/>
+          <!-- <xsl:attribute name="data">
         <xsl:if test="matches(@xlink:href,'atom://')">
 	  <xsl:variable name="domain" select="http://atom-dev.highwire.org/sgrworks.atom"/>
 	  <xsl:variable name="atom-id" select="substring-after(@xlink:ref,'sgrworks/')"/>
@@ -3512,8 +3534,11 @@ or pipeline) parameterized.
 	  <xsl:sequence select="doc($query)/atom:feed/atom:entry/atom:link[@rel eq 'self']/@href"/>
 	</xsl:if>
       </xsl:attribute> -->
-      <xsl:apply-templates/>
-    </a>
+          <xsl:apply-templates/>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
+    
   </xsl:template>
 
 
