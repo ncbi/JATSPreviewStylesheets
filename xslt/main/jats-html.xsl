@@ -3492,7 +3492,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="def[@class='def-hide']">
-    <div class="def-hide">
+    <div class="def-ref-content">
       <xsl:apply-templates/>
     </div>
   </xsl:template>
