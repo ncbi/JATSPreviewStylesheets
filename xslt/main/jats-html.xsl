@@ -3509,7 +3509,6 @@ or pipeline) parameterized.
           <xsl:attribute name="class">ref-popover</xsl:attribute>
           <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
           <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
-          <xsl:attribute name="data-bs-content"></xsl:attribute>
           <xsl:attribute name="data-rid" select="@rid"/>
           <xsl:apply-templates/>
         </a>
