@@ -3501,8 +3501,10 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="def[@class='def-hide']">
-    <div class="def-ref-content">
-      <xsl:apply-templates/>
+    <div hidden="true">
+      <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type='def']/@rid}">
+        <xsl:apply-templates/>
+      </div>
     </div>
   </xsl:template>
   <xsl:template match="xref">
@@ -3519,6 +3521,7 @@ or pipeline) parameterized.
           <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
           <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
           <xsl:attribute name="data-rid" select="@rid"/>
+          <xsl:attribute name="target-id" select="@rid"/>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
