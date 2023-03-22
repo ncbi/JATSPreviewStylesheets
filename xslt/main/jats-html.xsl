@@ -5001,14 +5001,29 @@ or pipeline) parameterized.
       <xsl:when test="$section eq true()">
         <xsl:for-each select="tokenize($queryurl,'\n')">
           <xsl:if test="ends-with(.,concat($linkid,'.atom'))">
-            <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid))"/>
+            <xsl:choose>
+              <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
+                <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid))"/>
+              </xsl:when>
+              <xsl:when test="contains(.,'/602-16/')">
+                <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid))"/>
+              </xsl:when>
+            </xsl:choose>
           </xsl:if>
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
         <xsl:for-each select="tokenize($queryurl,'\n')">
           <xsl:if test="if(starts-with($linkid,'p')) then(ends-with(.,concat(replace($linkid,'p','part'),'.atom'))) else(ends-with(.,concat($linkid,'.atom')))">
-            <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
+           <xsl:choose>
+             <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
+               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
+             </xsl:when>
+             <xsl:when test="contains(.,'/602-16/')">
+               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
+             </xsl:when>
+           </xsl:choose>
+            
           </xsl:if>
         </xsl:for-each>
       </xsl:otherwise>
