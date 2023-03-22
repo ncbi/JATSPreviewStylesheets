@@ -5018,7 +5018,7 @@ or pipeline) parameterized.
     <xsl:param name="resourceid"/>
     <xsl:for-each select="tokenize($queryurl,'\n')">
       <xsl:if test="if(starts-with($resourceid,'p')) then(ends-with(.,concat(replace($resourceid,'p','part'),'.atom'))) else(ends-with(.,concat($resourceid,'.atom')))">
-        <xsl:value-of select="."/>
+        <xsl:value-of select="if(contains(.,'/602-16/')) then(.) else(if(contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')) then(.) else())"/>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
