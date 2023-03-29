@@ -3509,7 +3509,7 @@ or pipeline) parameterized.
   </xsl:template>
   <xsl:template match="xref">
     <xsl:choose>
-      <xsl:when test="@ref-type='def' and contains(base-uri(.),'tmsworks')">
+      <xsl:when test="@ref-type=('def', 'glossary') and contains(base-uri(.),'tmsworks')">
         <a>
           <!--<xsl:attribute name="href"
             select="
@@ -3525,7 +3525,7 @@ or pipeline) parameterized.
           <xsl:apply-templates/>
         </a>
       </xsl:when>
-      <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
+      <xsl:when test="@ref-type=('sec','part','chapter','standard','bibref') and contains(base-uri(.),'tmsworks')">
         <xsl:variable name="ref-sec" select="/*/@id"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
@@ -5017,7 +5017,7 @@ or pipeline) parameterized.
           <xsl:if test="if(starts-with($linkid,'p')) then(ends-with(.,concat(replace($linkid,'p','part'),'.atom'))) else(ends-with(.,concat($linkid,'.atom')))">
            <xsl:choose>
              <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
-               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
+               <xsl:value-of select="if(starts-with($linkid,'bib_ref')) then(.) else(replace(substring-before(.,'.atom'),'tmsworks','content'))"/>
              </xsl:when>
              <xsl:when test="contains(.,'/602-16/')">
                <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
