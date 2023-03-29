@@ -3525,7 +3525,15 @@ or pipeline) parameterized.
           <xsl:apply-templates/>
         </a>
       </xsl:when>
-      <xsl:when test="@ref-type=('sec','part','chapter','standard','bibref') and contains(base-uri(.),'tmsworks')">
+      <xsl:when test="@ref-type=('bibref') and contains(base-uri(.),'tmsworks')">
+        <div class="ref-wrapper">
+          <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
+            <xsl:apply-templates/>
+          </a>
+          <div hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></div>
+        </div>
+      </xsl:when>
+      <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
         <xsl:variable name="ref-sec" select="/*/@id"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
