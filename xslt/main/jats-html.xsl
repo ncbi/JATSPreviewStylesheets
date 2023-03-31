@@ -3501,11 +3501,11 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="def[@class='def-hide']">
-    <div hidden="true">
-      <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
+    <span hidden="true">
+      <span class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
         <xsl:apply-templates/>
-      </div>
-    </div>
+      </span>
+    </span>
   </xsl:template>
   <xsl:template match="xref">
     <xsl:choose>
@@ -3526,12 +3526,12 @@ or pipeline) parameterized.
         </a>
       </xsl:when>
       <xsl:when test="@ref-type=('bibref') and contains(base-uri(.),'tmsworks')">
-        <div class="ref-wrapper">
+        <span class="ref-wrapper">
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
             <xsl:apply-templates/>
           </a>
-          <div hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></div>
-        </div>
+          <span hidden="true"><span class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></span></span>
+        </span>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
         <xsl:variable name="ref-sec" select="/*/@id"/>
@@ -3541,7 +3541,7 @@ or pipeline) parameterized.
               <xsl:value-of select="if (@xlink:href) then
                 @xlink:href
                 else
-                concat('#',$ref-sec, @rid)"/>
+                concat('#',@rid)"/>
             </xsl:when>
             <xsl:otherwise>
               <xsl:call-template name="tofindexternalchaperlink">
