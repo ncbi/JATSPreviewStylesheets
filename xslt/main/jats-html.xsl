@@ -3502,7 +3502,7 @@ or pipeline) parameterized.
 
   <xsl:template match="def[@class='def-hide']">
     <div hidden="true">
-      <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type='def']/@rid}">
+      <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
         <xsl:apply-templates/>
       </div>
     </div>
