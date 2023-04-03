@@ -3538,7 +3538,7 @@ or pipeline) parameterized.
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
             <xsl:apply-templates/>
           </a>
-          <span hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></span>
+          <div hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></div>
         </span>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
