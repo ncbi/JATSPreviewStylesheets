@@ -107,11 +107,11 @@ Footer text is emended, with name of transformation (stylesheet
 or pipeline) parameterized.
 
 -->
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ali="http://www.niso.org/schemas/ali/1.0/"
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:hwp="http://schema.highwire.org/Journal" xmlns:l="http://schema.highwire.org/Linking"
   xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-  exclude-result-prefixes="xlink mml xs">
+  exclude-result-prefixes="xlink mml xs ali">
 
 
   <!--<xsl:output method="xml" indent="no" encoding="UTF-8"
@@ -518,6 +518,14 @@ or pipeline) parameterized.
     <hr class="part-rule"/>
 
     <!-- end of big front-matter pull -->
+  </xsl:template>
+  
+  
+  <!-- ====================== FREE_TO_READ ========================= -->
+  <xsl:template match="ali:free_to_read">
+    <span class="free_to_read">
+      <!-- unhandled element: free_to_read -->
+    </span>
   </xsl:template>
 
   <!-- HW addition -->
@@ -3530,7 +3538,7 @@ or pipeline) parameterized.
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
             <xsl:apply-templates/>
           </a>
-          <span hidden="true"><span class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></span></span>
+          <span hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></span>
         </span>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
