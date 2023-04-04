@@ -525,6 +525,7 @@ or pipeline) parameterized.
   <xsl:template match="ali:free_to_read">
     <span class="free_to_read">
       <!-- unhandled element: free_to_read -->
+      <xsl:apply-templates/>
     </span>
   </xsl:template>
 
@@ -3534,12 +3535,12 @@ or pipeline) parameterized.
         </a>
       </xsl:when>
       <xsl:when test="@ref-type=('bibref') and contains(base-uri(.),'tmsworks')">
-        <span class="ref-wrapper">
+        <div class="ref-wrapper">
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
             <xsl:apply-templates/>
           </a>
           <div hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></div>
-        </span>
+        </div>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
         <xsl:variable name="ref-sec" select="/*/@id"/>
