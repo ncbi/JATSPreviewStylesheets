@@ -3,7 +3,8 @@
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:xi="https://www.w3.org/TR/xinclude/"
-  exclude-result-prefixes="xlink mml xi">
+  xmlns:ali="http://www.niso.org/schemas/ali/1.0/"
+  exclude-result-prefixes="xlink mml xi ali">
 
   <xsl:import href="jats-html.xsl"/>
 
@@ -22,18 +23,21 @@
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'part']">
         <div class="part">
+          <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
         <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'part']]"/>
         <!-- <xsl:apply-templates select="//book-part[@book-part-type eq 'chapter']"/> -->
       </div>
       </xsl:when>
       <xsl:when test="book-part[@book-part-type eq 'section']">
         <div class="section">
+          <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'section']]"/>
         </div>
       </xsl:when>
       <!-- <xsl:when test="book-part[@book-part-type eq 'chapter']"> -->
       <xsl:when test="book-part[matches(@book-part-type, '^[Cc]hapter$')]">
         <div class="chapter">
+          <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="book-part/body"/>
           <xsl:apply-templates select="book-part/back"/>
         </div>
