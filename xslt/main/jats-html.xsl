@@ -522,10 +522,9 @@ or pipeline) parameterized.
   
   
   <!-- ====================== FREE_TO_READ ========================= -->
-  <xsl:template match="ali:free_to_read">
+  <xsl:template match="ali:free_to_read" mode="free_to_read">
     <span class="free_to_read">
       <!-- unhandled element: free_to_read -->
-      <xsl:apply-templates/>
     </span>
   </xsl:template>
 
@@ -3510,11 +3509,9 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="def[@class='def-hide']">
-    <span hidden="true">
-      <span class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
-        <xsl:apply-templates/>
-      </span>
-    </span>
+    <div class="def-ref-content" id="{preceding-sibling::*[1][local-name()='xref'][@ref-type=('def','glossary')]/@rid}">
+      <xsl:apply-templates/>
+    </div>
   </xsl:template>
   <xsl:template match="xref">
     <xsl:choose>
@@ -3539,7 +3536,7 @@ or pipeline) parameterized.
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
             <xsl:apply-templates/>
           </a>
-          <div hidden="true"><div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div></div>
+          <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div>
         </div>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard') and contains(base-uri(.),'tmsworks')">
