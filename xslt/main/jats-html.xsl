@@ -2103,7 +2103,7 @@ or pipeline) parameterized.
         <div class="section">
           <div id="{concat('print_',@id)}">
             <xsl:call-template name="named-anchor"/>
-            <xsl:apply-templates select="title"/>
+            <xsl:apply-templates select="title[not(child::comment()='dummy-title')]"/>
             <div class="toc-content">
             <xsl:apply-templates select="sec-meta"/>
             <xsl:apply-templates mode="drop-title"/>
