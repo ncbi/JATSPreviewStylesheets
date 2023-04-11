@@ -3347,12 +3347,12 @@ or pipeline) parameterized.
   <xsl:template
     match="ext-link[not(matches(@specific-use, 'brightcove-(video|audio)'))] | uri | inline-supplementary-material">
     <xsl:choose>
-      <xsl:when test="@ext-link-typ=('reference') and contains(base-uri(.),'tmsworks')">
+      <xsl:when test="@ext-link-type='reference' and contains(base-uri(.),'/tmsworks/')">
         <div class="ref-wrapper">
           <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}">
             <xsl:apply-templates/>
           </a>
-          <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}"></div>
+          <div class="def-ref-content" id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}" reference-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}"></div>
         </div>
       </xsl:when>
       <xsl:otherwise>
