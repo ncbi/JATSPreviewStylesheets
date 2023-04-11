@@ -3349,10 +3349,10 @@ or pipeline) parameterized.
     <xsl:choose>
       <xsl:when test="@ext-link-type='reference' and contains(base-uri(.),'/tmsworks/')">
         <div class="ref-wrapper">
-          <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}">
+          <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@xlink:href,'bib_ref'))) else(@xlink:href)}">
             <xsl:apply-templates/>
           </a>
-          <div class="def-ref-content" id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}" reference-id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@rid,'bib_ref'))) else(@xlink:href)}"></div>
+          <div class="def-ref-content" id="{if(contains(@xlink:href,'bib_ref'))then(concat('ref_',substring-after(@xlink:href,'bib_ref'))) else(@xlink:href)}" reference-id="{if(contains(@xlink:href,'bib_ref'))then(substring-after(@xlink:href,'bib_ref')) else(substring-after(@xlink:href,'ref_'))}"></div>
         </div>
       </xsl:when>
       <xsl:otherwise>
