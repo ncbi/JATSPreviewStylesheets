@@ -2663,6 +2663,9 @@ or pipeline) parameterized.
       </xsl:for-each>
       <xsl:call-template name="assign-src"/>
     </img>
+    <xsl:if test="local-name() = 'graphic' and contains(base-uri(),'/tmsworks/')">
+      <div class="additional-markup"/>
+    </xsl:if>
   </xsl:template>
 
 
