@@ -5132,8 +5132,8 @@ or pipeline) parameterized.
         <xsl:for-each select="tokenize($queryurl,'\n')">
           <xsl:if test="if(starts-with($linkid,'p')) then(ends-with(.,concat(replace($linkid,'p','part'),'.atom'))) else(ends-with(.,concat($linkid,'.atom')))">
            <xsl:choose>
-             <xsl:when test="contains(.,'/402-16/part/') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
-               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','XXXXcontent')"/>
+             <xsl:when test="contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
+               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
              </xsl:when>
              <xsl:when test="contains(.,'/602-16/')">
                <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
