@@ -2398,7 +2398,7 @@ or pipeline) parameterized.
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="sec[count(ancestor::sec) &gt; 4]">
+  <xsl:template match="sec[count(ancestor::sec) gt 3]/title">
     <xsl:choose>
       <xsl:when test="contains(base-uri(.),'/tmsworks/') and (matches(child::comment()[1],'dummy-title$'))"></xsl:when>
       <xsl:when test="contains(base-uri(.),'/tmsworks/')">
@@ -2588,9 +2588,17 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="label" mode="hw-label">
-    <div class="label">
-      <xsl:apply-templates/>
-    </div>
+    <xsl:choose>
+      <xsl:when test="(parent::fig or parent::table-wrap) and contains(base-uri(.),'/tmsworks/')">
+        
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="label">
+          <xsl:apply-templates/>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
+    
   </xsl:template>
 
   <xsl:template match="caption">
@@ -2601,6 +2609,9 @@ or pipeline) parameterized.
 
   <xsl:template match="caption/title">
     <div class="caption-title">
+      <xsl:if test="contains(base-uri(.),'/tmsworks/')">
+        <span class="label"><xsl:value-of select="../preceding-sibling::label"/><xsl:text> </xsl:text></span>
+      </xsl:if>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
@@ -2743,9 +2754,14 @@ or pipeline) parameterized.
   <xsl:template match="p | license-p">
     <p>
       <xsl:if test="not(preceding-sibling::*)">
-        <xsl:attribute name="class">first</xsl:attribute>
+        <xsl:attribute name="class">first<xsl:value-of select="if(/*/@book-part-type='keywords') then(' keywords') else()"/></xsl:attribute>
       </xsl:if>
+      
       <xsl:call-template name="assign-id"/>
+      <xsl:if test="/*/@book-part-type='keywords' and preceding-sibling::p">
+        <xsl:attribute name="class">keywords</xsl:attribute>
+        <xsl:if test="preceding-sibling::p"><xsl:value-of select="'; '"/></xsl:if>
+      </xsl:if>
       <xsl:apply-templates select="@content-type"/>
       <xsl:apply-templates/>
     </p>
@@ -3213,6 +3229,9 @@ or pipeline) parameterized.
   <xsl:template match="label" name="label">
     <!-- other labels are displayed as blocks -->
     <xsl:choose>
+      <xsl:when test="(parent::fig or parent::table-wrap) and contains(base-uri(.),'/tmsworks/')">
+        
+      </xsl:when>
       <xsl:when test="parent::fig or parent::table-wrap">
         <div class="label">
           <xsl:apply-templates/>
