@@ -5118,12 +5118,12 @@ or pipeline) parameterized.
       </xsl:when>
       <xsl:when test="$standard != '' and $standardsubcontent = '' and $subcontenttypeid = ''">
         <xsl:for-each select="tokenize($atomurilist,'\n')">
-          <xsl:if test="ends-with(.,concat($standardsubcontent,'.atom'))">
+          <xsl:if test="ends-with(.,concat($standard,'.atom'))">
             <xsl:choose>
-              <xsl:when test="contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')">
+              <xsl:when test="contains(.,'/402-16')">
                 <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
               </xsl:when>
-              <xsl:when test="contains(.,'/602-16/')">
+              <xsl:when test="contains(.,'/602-16')">
                 <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
               </xsl:when>
             </xsl:choose>
