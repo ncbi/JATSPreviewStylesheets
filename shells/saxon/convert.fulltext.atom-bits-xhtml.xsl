@@ -22,15 +22,10 @@
         <xsl:variable name="source" as="document-node()" select="doc(resolve-uri(atom:entry/atom:link[@rel eq 'alternate'][@c:role eq 'http://schema.highwire.org/variant/source'][@type eq 'application/xml']/@href,base-uri(.)))"/>
         <!-- convert into HTML for display -->
         <xsl:variable name="step1" as="document-node()"
-          select="if(contains(base-uri(),'/tmsworks/')) then(
-          saxon:transform(
-          saxon:compile-stylesheet(doc('../../xslt/main/fulltext-ASCE7-html.xsl')),
-          $source,
-          $runtime-params/* )) else(
-          saxon:transform(
+          select="saxon:transform(
           saxon:compile-stylesheet(doc('../../xslt/main/fulltext-html.xsl')),
           $source,
-          $runtime-params/* ))"/>
+          $runtime-params/* )"/>
         <!-- cast into XHTML namespace
            (for example, if MathML is included)
          if this step is run, the output file should be

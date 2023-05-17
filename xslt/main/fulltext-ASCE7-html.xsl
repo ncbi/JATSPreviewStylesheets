@@ -90,6 +90,9 @@
       <xsl:when test="sec[count(ancestor::sec) &lt; 4][@sec-type='section'] and contains(base-uri(.),'/tmsworks')">
         <xsl:apply-templates/>
       </xsl:when>
+      <xsl:when test="/fig|/table-wrap">
+        <xsl:apply-templates/>
+      </xsl:when>
       <xsl:otherwise/>
     </xsl:choose>
   </xsl:template>
