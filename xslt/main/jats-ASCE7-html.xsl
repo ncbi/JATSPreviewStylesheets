@@ -2556,6 +2556,7 @@ or pipeline) parameterized.
         <!-- the test respects @position='float' as the default -->
         <!-- <xsl:attribute name="style">display: float; clear: both</xsl:attribute> -->
       </xsl:if>
+      <xsl:attribute name="data-parent-section"><xsl:text>#</xsl:text><xsl:value-of select="ancestor::sec[1]/@id"/></xsl:attribute>
       <!-- <xsl:call-template name="named-anchor"/> -->
       <!-- <xsl:apply-templates select="." mode="label"/> -->
       <xsl:if test="label">
@@ -2626,6 +2627,9 @@ or pipeline) parameterized.
 
   <xsl:template match="disp-formula | statement">
     <div class="{local-name()} panel">
+      <xsl:if test="local-name()='disp-formula'">
+        <xsl:attribute name="data-parent-section"><xsl:text>#</xsl:text><xsl:value-of select="ancestor::sec[1]/@id"/></xsl:attribute>
+      </xsl:if>
       <xsl:call-template name="named-anchor"/>
       <xsl:apply-templates select="." mode="label"/>
       <xsl:apply-templates/>
