@@ -2957,16 +2957,16 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template match="article-title[parent::mixed-citation]">
-    <xsl:if
+    <!--<xsl:if
       test="not(preceding-sibling::*[1][self::x] or preceding-sibling::*[1][self::string-name[given-names[x]]])">
       <xsl:text>. </xsl:text>
-    </xsl:if>
+    </xsl:if>-->
     <span class="cit-article-title">
       <xsl:apply-templates/>
     </span>
-    <xsl:if test="not(following-sibling::*[1][self::x])">
+    <!--<xsl:if test="not(following-sibling::*[1][self::x])">
       <xsl:value-of select="if(ends-with(.,'?') or ends-with(.,'.')) then(' ') else('. ')"/>
-    </xsl:if>
+    </xsl:if>-->
   </xsl:template>
 
   <xsl:template match="source[parent::mixed-citation]">
@@ -2990,9 +2990,9 @@ or pipeline) parameterized.
 
   <xsl:template match="collab[parent::mixed-citation]">
     <xsl:apply-templates/>
-    <xsl:if test="not(following-sibling::*[1][self::x or self::uri])">
+    <!--<xsl:if test="not(following-sibling::*[1][self::x or self::uri])">
       <xsl:text>. </xsl:text>
-    </xsl:if>
+    </xsl:if>-->
   </xsl:template>
 
   <xsl:template match="surname[ancestor::mixed-citation]">
@@ -3047,16 +3047,16 @@ or pipeline) parameterized.
     <span class="cit-lpage">
       <xsl:apply-templates/>
     </span>
-    <xsl:if test="not(following-sibling::*[1][self::x])">
+    <!--<xsl:if test="not(following-sibling::*[1][self::x])">
       <xsl:text>.</xsl:text>
-    </xsl:if>
+    </xsl:if>-->
   </xsl:template>
 
   <xsl:template match="chapter-title[parent::mixed-citation]">
     <xsl:apply-templates/>
-    <xsl:if test="not(following-sibling::*[1][self::x])">
+    <!--<xsl:if test="not(following-sibling::*[1][self::x])">
       <xsl:text>. </xsl:text>
-    </xsl:if>
+    </xsl:if>-->
   </xsl:template>
 
   <xsl:template match="publisher-loc[parent::mixed-citation]">
@@ -3064,9 +3064,9 @@ or pipeline) parameterized.
       <xsl:text> </xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
-    <xsl:if test="not(following-sibling::*[1][self::x])">
+    <!--<xsl:if test="not(following-sibling::*[1][self::x])">
       <xsl:text>. </xsl:text>
-    </xsl:if>
+    </xsl:if>-->
   </xsl:template>
 
   <xsl:template match="pub-id[parent::mixed-citation]">
