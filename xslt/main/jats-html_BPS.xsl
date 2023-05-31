@@ -2973,9 +2973,9 @@ or pipeline) parameterized.
     <span class="cit-source">
       <xsl:apply-templates/>
     </span>
-    <xsl:if test="not(following-sibling::*[1][self::x])">
+    <!--<xsl:if test="not(following-sibling::*[1][self::x])">
       <xsl:value-of select="if(ends-with(.,'?') or ends-with(.,'.')) then(' ') else('. ')"/>
-    </xsl:if>
+    </xsl:if>-->
   </xsl:template>
 
   <xsl:template match="comment[parent::mixed-citation]">
