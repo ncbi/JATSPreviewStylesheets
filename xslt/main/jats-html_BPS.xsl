@@ -2891,9 +2891,9 @@ or pipeline) parameterized.
 
   <xsl:template match="ref">
     <li class="row" id="{@id}">
-      <xsl:if test="mixed-citation/label or note/label or label">
+      <xsl:if test="mixed-citation/label or note/label">
         <div class="ref-label cell">
-          <xsl:apply-templates select="mixed-citation/label | note/label | label" mode="label"/>
+          <xsl:apply-templates select="mixed-citation/label | note/label" mode="label"/>
         </div>
       </xsl:if>
       <div class="ref-content cell">
@@ -2903,12 +2903,23 @@ or pipeline) parameterized.
   </xsl:template>
 
 
-  <xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
+  <!--<xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
     <div class="citation">
       <xsl:apply-templates select="node() except (label)"/>
     </div>
-  </xsl:template>
+  </xsl:template>-->
 
+  <xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
+    <div class="citation">
+      <xsl:if test="parent::ref/label">
+        <span class="label">
+          <xsl:value-of select="parent::ref/label"/>
+        </span>
+        <xsl:text> </xsl:text>
+      </xsl:if>
+      <xsl:apply-templates select="node() except (label)"/>
+    </div>
+  </xsl:template>
 
   <xsl:template match="x[parent::mixed-citation]">
     <!-- <xsl:choose>
