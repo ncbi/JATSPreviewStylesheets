@@ -2891,9 +2891,9 @@ or pipeline) parameterized.
 
   <xsl:template match="ref">
     <li class="row" id="{@id}">
-      <xsl:if test="mixed-citation/label or note/label">
+      <xsl:if test="mixed-citation/label or note/label or label">
         <div class="ref-label cell">
-          <xsl:apply-templates select="mixed-citation/label | note/label" mode="label"/>
+          <xsl:apply-templates select="mixed-citation/label | note/label | label" mode="label"/>
         </div>
       </xsl:if>
       <div class="ref-content cell">
