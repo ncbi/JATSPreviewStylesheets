@@ -3277,7 +3277,7 @@ or pipeline) parameterized.
         <xsl:attribute name="class" select="'no-striping'"/>
       </xsl:if>
       <xsl:apply-templates
-        select="@* except (@frame, @rules, @border, @cellpadding, @cellspacing, @span, @align, @valign)"
+        select="@* except (@frame, @rules, @border, @cellpadding, @cellspacing, @span, @valign)"
         mode="table-copy"/>
       <!-- <xsl:call-template name="named-anchor"/> -->
       <xsl:apply-templates/>
