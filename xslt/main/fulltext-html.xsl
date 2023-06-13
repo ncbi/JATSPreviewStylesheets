@@ -82,13 +82,8 @@
       </xsl:when>
       <xsl:when test="contains(base-uri(.),'/bpsworks/') and book-part[@id and @book-part-type]">
         <div class="{book-part/@book-part-type}">
-          <div id="{concat('print_',@id)}">
           <xsl:apply-templates/>
-          </div>
         </div>
-      </xsl:when>
-      <xsl:when test="sec[count(ancestor::sec) &lt; 4][@sec-type='section'] and contains(base-uri(.),'/tmsworks')">
-        <xsl:apply-templates/>
       </xsl:when>
       <xsl:otherwise/>
     </xsl:choose>

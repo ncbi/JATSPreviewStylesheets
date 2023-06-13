@@ -2908,7 +2908,7 @@ or pipeline) parameterized.
       <xsl:apply-templates select="node() except (label)"/>
     </div>
   </xsl:template>-->
-
+  
   <xsl:template match="ref/mixed-citation | ref/citation-alternatives/*" priority="0">
     <div class="citation">
       <xsl:if test="parent::ref/label">
@@ -2920,6 +2920,7 @@ or pipeline) parameterized.
       <xsl:apply-templates select="node() except (label)"/>
     </div>
   </xsl:template>
+
 
   <xsl:template match="x[parent::mixed-citation]">
     <!-- <xsl:choose>
