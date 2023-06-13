@@ -87,7 +87,7 @@
           </div>
         </div>
       </xsl:when>
-      <xsl:when test="sec[count(ancestor::sec) &lt; 4][@sec-type='section'] and contains(base-uri(.),'/tmsworks')">
+      <xsl:when test="sec[count(ancestor::sec) &lt; 4]">
         <xsl:apply-templates/>
       </xsl:when>
       <xsl:when test="/fig|/table-wrap">
