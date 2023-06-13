@@ -2709,6 +2709,9 @@ or pipeline) parameterized.
 
   <xsl:template priority="2" mode="list" match="list[@list-type = 'simple' or list-item/label]">
     <ul style="list-style-type: none">
+      <xsl:if test="@specific-use">
+        <xsl:attribute name="class" select="@specific-use"></xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates select="list-item"/>
     </ul>
   </xsl:template>
