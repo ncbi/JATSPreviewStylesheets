@@ -3577,10 +3577,10 @@ or pipeline) parameterized.
         </div>
       </xsl:when>
       <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list')">
-        <xsl:variable name="ref-sec" select="/*/@id"/>
+        <xsl:variable name="ref-sec" select="if(contains(/*/@id,'st')) then(substring-after(/*/@id,'st')) else(/*/@id)"/>
         <a>
           <xsl:attribute name="href"><xsl:choose>
-            <xsl:when test="starts-with(@rid,$ref-sec)">
+            <xsl:when test="if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))">
               <xsl:value-of select="if (@xlink:href) then
                 @xlink:href
                 else
@@ -3588,7 +3588,7 @@ or pipeline) parameterized.
             </xsl:when>
             <xsl:otherwise>
               <xsl:call-template name="tofindexternalchaperlink">
-                <xsl:with-param name="linkid"><xsl:value-of select="@rid"/></xsl:with-param>
+                <xsl:with-param name="linkid"><xsl:value-of select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/></xsl:with-param>
                 <xsl:with-param name="section"><xsl:value-of select="if(@ref-type=('sec','part','disp-formula', 'fig', 'table', 'list')) then(true()) else(false())"/></xsl:with-param>
                 <xsl:with-param name="contenttype"><xsl:value-of select="@ref-type"/></xsl:with-param>
               </xsl:call-template>
@@ -5135,6 +5135,9 @@ or pipeline) parameterized.
              <xsl:when test="contains(.,'/602-16/')">
                <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
              </xsl:when>
+             <xsl:otherwise>
+               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
+             </xsl:otherwise>
            </xsl:choose>
           </xsl:if>
         </xsl:for-each>
