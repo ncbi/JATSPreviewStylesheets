@@ -3341,7 +3341,7 @@ or pipeline) parameterized.
         <xsl:variable name="glos_std" select="tokenize(@xlink:href,'#')[1]"/>
         <xsl:variable name="glos_sec_id" select="tokenize(@xlink:href,'#')[2]"/>
         <xsl:variable name="glos_id" select="tokenize(@xlink:href,'#')[3]"/>
-        <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{$glos_id}" target-id="{$glos_id}"><xsl:apply-templates/></a>
+        <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover" data-rid="{concat($glos_std,'-',$glos_sec_id,'-',$glos_id)}" target-id="{concat($glos_std,'-',$glos_sec_id,'-',$glos_id)}"><xsl:apply-templates/></a>
         <xsl:call-template name="externaltermdeflink">
           <xsl:with-param name="standard_id"><xsl:value-of select="$glos_std"/></xsl:with-param>
           <xsl:with-param name="termdef_section_id"><xsl:value-of select="$glos_sec_id"/></xsl:with-param>
@@ -5070,7 +5070,7 @@ or pipeline) parameterized.
     <xsl:for-each select="tokenize($atomurilist,'\n')">
       <xsl:if test="ends-with(.,concat($termdef_section_id,'.atom'))">
         <xsl:variable name="markupservice" select="doc(concat('http://markup-svc-dev.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
-        <div class="def-ref-content" id="{$termdef_id}">
+        <div class="def-ref-content" id="{concat($standard_id,'-',$termdef_section_id,'-',$termdef_id)}">
           <xsl:apply-templates select="$markupservice//div[@class='def-item row'][child::div[1][@id=$termdef_id]]/div[2]"></xsl:apply-templates>
         </div>
       </xsl:if>
