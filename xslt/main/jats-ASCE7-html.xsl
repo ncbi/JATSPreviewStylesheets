@@ -3577,14 +3577,21 @@ or pipeline) parameterized.
   <xsl:template match="xref">
     <xsl:choose>
       <xsl:when test="@ref-type=('def', 'glossary')">
-        <a>
-          <xsl:attribute name="class">ref-popover</xsl:attribute>
-          <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
-          <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
-          <xsl:attribute name="data-rid" select="@rid"/>
-          <xsl:attribute name="target-id" select="@rid"/>
-          <xsl:apply-templates/>
-        </a>
+        <xsl:variable name="rid" select="@rid"/><xsl:choose>
+          <xsl:when test="not(preceding-sibling::xref[@ref-type=('def','glossary') and @rid=$rid])">
+            <a>
+              <xsl:attribute name="class">ref-popover</xsl:attribute>
+              <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
+              <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
+              <xsl:attribute name="data-rid" select="@rid"/>
+              <xsl:attribute name="target-id" select="@rid"/>
+              <xsl:apply-templates/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="@ref-type=('bibref')">
         <div class="ref-wrapper">
