@@ -5071,7 +5071,7 @@ or pipeline) parameterized.
       <xsl:if test="ends-with(.,concat($termdef_section_id,'.atom'))">
         <xsl:variable name="markupservice" select="doc(concat('http://markup-svc-dev.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
         <div class="def-ref-content" id="{concat($standard_id,'-',$termdef_section_id,'-',$termdef_id)}">
-          <xsl:apply-templates select="$markupservice//div[@class='def-item row'][child::div[1][@id=$termdef_id]]/div[2]"></xsl:apply-templates>
+          <xsl:apply-templates select="$markupservice//div[@class='def-item row'][child::div[1][@id=$termdef_id]]/div[2]/p"/>
         </div>
       </xsl:if>
       
