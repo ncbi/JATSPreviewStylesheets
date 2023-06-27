@@ -3619,7 +3619,7 @@ or pipeline) parameterized.
               </xsl:call-template>
             </xsl:otherwise>
           </xsl:choose></xsl:attribute>
-          <xsl:attribute name="data-rid" select="@rid"/>
+            <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
@@ -3632,17 +3632,6 @@ or pipeline) parameterized.
             else
             concat('#', @rid)"/>
           <xsl:attribute name="data-rid" select="@rid"/>
-          <!-- <xsl:attribute name="data">
-        <xsl:if test="matches(@xlink:href,'atom://')">
-	  <xsl:variable name="domain" select="http://atom-dev.highwire.org/sgrworks.atom"/>
-	  <xsl:variable name="atom-id" select="substring-after(@xlink:ref,'sgrworks/')"/>
-	  <xsl:variable name="stub" as="element(stub)">
-            <stub l:ref-type="atom" l:ref="{$atom-id}"/>
-          </xsl:variable>
-	  <xsl:variable name="query" select="concat($domain,l:stub-to-query($stub))"/>
-	  <xsl:sequence select="doc($query)/atom:feed/atom:entry/atom:link[@rel eq 'self']/@href"/>
-	</xsl:if>
-      </xsl:attribute> -->
           <xsl:apply-templates/>
         </a>
       </xsl:otherwise>
@@ -5191,6 +5180,4 @@ or pipeline) parameterized.
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
-  <xsl:template name="external"></xsl:template>
-  
 </xsl:stylesheet>
