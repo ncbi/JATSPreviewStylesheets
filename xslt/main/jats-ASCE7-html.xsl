@@ -3575,6 +3575,7 @@ or pipeline) parameterized.
     </div>
   </xsl:template>
   <xsl:template match="xref">
+    <xsl:variable name="rid" select="normalize-space(@rid)"/>
     <xsl:choose>
       <xsl:when test="@ref-type=('def', 'glossary')">
         <xsl:variable name="rid" select="@rid"/><xsl:choose>
@@ -3606,6 +3607,13 @@ or pipeline) parameterized.
         <a>
           <xsl:attribute name="href"><xsl:choose>
             <xsl:when test="if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))">
+              <xsl:value-of select="if (@xlink:href) then
+                @xlink:href
+                else
+                concat('#',@rid)"/>
+            </xsl:when>
+            <!--if the rid is available in the same section/part etc then just # the id-->
+            <xsl:when test="(//*[normalize-space(@id) = $rid])">
               <xsl:value-of select="if (@xlink:href) then
                 @xlink:href
                 else
