@@ -39,7 +39,8 @@
         <div class="chapter">
           <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="book-part/body"/>
-          <xsl:apply-templates select="book-part/back"/>
+          <!--Vishnu:- Not applying the back of chapter as it contains version, erratum, supplement. And that will be trasform seperately in section transformation-->
+          <!--<xsl:apply-templates select="book-part/back"/>-->
         </div>
       </xsl:when>
       <xsl:when test="book-part[matches(@book-part-type,'^case[\s-]study$')]">
