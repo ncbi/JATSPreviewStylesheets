@@ -18,7 +18,6 @@
           <xsl:if test="//book-meta/book-id[@book-id-type eq 'publisher-id'] eq 'bps'">
             <xsl:apply-templates select="//body"/>
           </xsl:if>
-		  <xsl:apply-templates select="//book-meta/aff" mode="bps_aff"/>
           <xsl:apply-templates select="//book-back"/>
         </div>
       </xsl:when>
@@ -40,14 +39,12 @@
         <div class="chapter">
           <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="book-part/body"/>
-		  <xsl:apply-templates select="//book-part/book-part-meta/contrib-group" mode="bps_aff"/>
           <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
       <xsl:when test="book-part[matches(@book-part-type,'^case[\s-]study$')]">
         <div class="case-study">
           <xsl:apply-templates select="book-part/body"/>
-		  <xsl:apply-templates select="book-part/book-part-meta/aff" mode="bps_aff"/>
           <xsl:apply-templates select="book-part/back"/>
         </div>
       </xsl:when>
@@ -112,26 +109,5 @@
   <xsl:template match="back">
     <xsl:apply-templates/>
   </xsl:template>
-
-  <xsl:template match="contrib-group[contains(base-uri(.),'bpsworks')]" mode="bps_aff">
-	<div class="author-affiliation">
-		<xsl:for-each select="node()">
-			<div class="author">
-				<xsl:apply-templates/>
-			</div>
-		</xsl:for-each>
-	</div>
-	</xsl:template>
-  
-  <xsl:template match="xref[@ref-type='aff'][contains(base-uri(.),'bpsworks')]">
-    <xsl:variable name="xrefrid" select="@rid"/>
-    <xsl:if test="//aff/@id=$xrefrid">
-      <span class="affiliation">
-        <xsl:apply-templates select="//aff[@id=$xrefrid]"/>
-      </span>
-    </xsl:if>
-  </xsl:template>
-  
-  <xsl:template match="xref[@ref-type='corresp'][contains(base-uri(.),'bpsworks')]"/>
 
 </xsl:stylesheet>
