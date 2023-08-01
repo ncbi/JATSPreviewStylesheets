@@ -128,6 +128,22 @@
 	</div>
 	</xsl:template>
   
+  <xsl:template match="contrib-group/contrib/name[contains(base-uri(.),'bpsworks')]">
+    <span class="name">
+      <xsl:if test="prefix">
+        <xsl:apply-templates select="prefix"/>
+        <xsl:text> </xsl:text>
+      </xsl:if>
+      <xsl:apply-templates select="given-names"/>
+      <xsl:text> </xsl:text>
+      <xsl:apply-templates select="surname"/>
+      <xsl:if test="suffix">
+        <xsl:text> </xsl:text>
+        <xsl:apply-templates select="suffix"/>
+      </xsl:if>
+    </span>
+  </xsl:template>
+  
   <xsl:template match="xref[@ref-type='aff'][contains(base-uri(.),'bpsworks')]">
     <xsl:variable name="xrefrid" select="@rid"/>
     <xsl:if test="//aff/@id=$xrefrid">
