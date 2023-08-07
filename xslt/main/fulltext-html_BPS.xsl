@@ -130,6 +130,7 @@
   
   <xsl:template match="contrib-group/contrib/name[contains(base-uri(.),'bpsworks')]">
     <span class="name">
+      <strong>
       <xsl:if test="prefix">
         <xsl:apply-templates select="prefix"/>
         <xsl:text> </xsl:text>
@@ -141,6 +142,7 @@
         <xsl:text> </xsl:text>
         <xsl:apply-templates select="suffix"/>
       </xsl:if>
+      </strong>
     </span>
   </xsl:template>
   
