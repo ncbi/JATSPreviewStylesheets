@@ -2403,9 +2403,9 @@ or pipeline) parameterized.
         </xsl:attribute>
         <xsl:variable name="versionApath"
           select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-ver/', $versionID, '.source.xml')"/>
-        <xsl:if test="doc-available($versionApath)">
+<!--        <xsl:if test="doc-available($versionApath)">-->
           <xsl:attribute name="versionApath" select="$versionApath"/>
-        </xsl:if>
+        <!--</xsl:if>-->
       </xsl:if>
       <xsl:if test="preceding-sibling::label/xref[@ref-type = 'err']/@rid">
         <xsl:variable name="versionID"
@@ -2415,9 +2415,9 @@ or pipeline) parameterized.
         </xsl:attribute>
         <xsl:variable name="errataApath"
           select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-err/', $versionID, '.source.xml')"/>
-        <xsl:if test="doc-available($errataApath)">
+<!--        <xsl:if test="doc-available($errataApath)">-->
           <xsl:attribute name="errataApath" select="$errataApath"/>
-        </xsl:if>
+        <!--</xsl:if>-->
       </xsl:if>
       <xsl:if test="preceding-sibling::label/xref[@ref-type = 'sup']/@rid">
         <xsl:variable name="versionID"
@@ -2428,9 +2428,9 @@ or pipeline) parameterized.
         
         <xsl:variable name="supplApath"
           select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-suppl/', $versionID, '.source.xml')"/>
-        <xsl:if test="doc-available($supplApath)">
+        <!--<xsl:if test="doc-available($supplApath)">-->
           <xsl:attribute name="supplApath" select="$supplApath"/>
-        </xsl:if>
+        <!--</xsl:if>-->
       </xsl:if>
     </div>
   </xsl:template>
