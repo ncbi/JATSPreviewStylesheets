@@ -2402,7 +2402,7 @@ or pipeline) parameterized.
           <xsl:value-of select="$versionID"/>
         </xsl:attribute>
         <xsl:variable name="versionApath"
-          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-ver/', $versionID, '.source.xml')"/>
+          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-ver/', $versionID, '.atom')"/>
 <!--        <xsl:if test="doc-available($versionApath)">-->
           <xsl:attribute name="versionApath" select="$versionApath"/>
         <!--</xsl:if>-->
@@ -2414,7 +2414,7 @@ or pipeline) parameterized.
           <xsl:value-of select="$versionID"/>
         </xsl:attribute>
         <xsl:variable name="errataApath"
-          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-err/', $versionID, '.source.xml')"/>
+          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-err/', $versionID, '.atom')"/>
 <!--        <xsl:if test="doc-available($errataApath)">-->
           <xsl:attribute name="errataApath" select="$errataApath"/>
         <!--</xsl:if>-->
@@ -2427,7 +2427,7 @@ or pipeline) parameterized.
         </xsl:attribute>
         
         <xsl:variable name="supplApath"
-          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-suppl/', $versionID, '.source.xml')"/>
+          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-suppl/', $versionID, '.atom')"/>
         <!--<xsl:if test="doc-available($supplApath)">-->
           <xsl:attribute name="supplApath" select="$supplApath"/>
         <!--</xsl:if>-->
