@@ -111,13 +111,14 @@ or pipeline) parameterized.
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mml="http://www.w3.org/1998/Math/MathML"
   xmlns:hwp="http://schema.highwire.org/Journal" xmlns:l="http://schema.highwire.org/Linking"
   xmlns:atom="http://www.w3.org/2005/Atom" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:c="http://schema.highwire.org/Compound"
-  xmlns:oasis="http://www.niso.org/standards/z39-96/ns/oasis-exchange/table"
+  xmlns:o="http://www.niso.org/standards/z39-96/ns/oasis-exchange/table"
   exclude-result-prefixes="xlink mml xs ali c">
 
 <!--<xsl:output method="xml" indent="no" encoding="UTF-8"
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>-->
 
+  <xsl:import href="../oasis-tables/oasis-table-html.xsl"/>
 
   <xsl:output doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
     doctype-system="http://www.w3.org/TR/html4/loose.dtd" encoding="UTF-8"/>
@@ -2242,20 +2243,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h2>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
-            <xsl:attribute name="resourceDataPath">
-              <xsl:call-template name="tmsresourcelink">
-                <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
-              </xsl:call-template>
-            </xsl:attribute>
-            <xsl:if test="child::xref[@ref-type='section']/@rid">
-              <xsl:attribute name="commentaryData"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:attribute name="scrollto"><xsl:value-of select="child::xref[@ref-type='section']/@rid"/></xsl:attribute>
-              <xsl:if test="contains(base-uri(.),'/standard-chapter/') or contains(base-uri(.),'/back-matter/')">
-                <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
-              </xsl:if>
-            </xsl:if>
-          </div>
+          <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2272,7 +2260,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h3>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
+          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
             <xsl:attribute name="resourceDataPath">
               <xsl:call-template name="tmsresourcelink">
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
@@ -2285,7 +2273,8 @@ or pipeline) parameterized.
                 <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
               </xsl:if>
             </xsl:if>
-          </div>
+          </div>-->
+        <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2302,7 +2291,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h4>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
+          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
             <xsl:attribute name="resourceDataPath">
               <xsl:call-template name="tmsresourcelink">
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
@@ -2315,7 +2304,8 @@ or pipeline) parameterized.
                 <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
               </xsl:if>
             </xsl:if>
-          </div>
+          </div>-->
+        <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2332,7 +2322,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h5>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
+          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
             <xsl:attribute name="resourceDataPath">
               <xsl:call-template name="tmsresourcelink">
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
@@ -2345,7 +2335,8 @@ or pipeline) parameterized.
                 <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
               </xsl:if>
             </xsl:if>
-          </div>
+          </div>-->
+        <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
@@ -2362,7 +2353,7 @@ or pipeline) parameterized.
             </xsl:if>
             <xsl:apply-templates select="*|text()|comment()|processing-instruction() except xref[@ref-type='section']"/>
           </h6>
-          <div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
+          <!--<div id="{concat('actions_',parent::sec/@id)}"  sectionData="{parent::sec/@id}" class="toc-actions">
             <xsl:attribute name="resourceDataPath">
               <xsl:call-template name="tmsresourcelink">
                 <xsl:with-param name="resourceid"><xsl:value-of select="parent::sec/@id"/></xsl:with-param>
@@ -2375,12 +2366,75 @@ or pipeline) parameterized.
                 <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
               </xsl:if>
             </xsl:if>
-          </div>
+          </div>-->
+        <xsl:call-template name="div_action_parentSectionInfo"/>
         </div>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template name="div_action_parentSectionInfo">
+    <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
+      class="toc-actions">
+      <xsl:attribute name="resourceDataPath">
+        <xsl:call-template name="tmsresourcelink">
+          <xsl:with-param name="resourceid">
+            <xsl:value-of select="parent::sec/@id"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:attribute>
+      <xsl:if test="child::xref[@ref-type = 'section']/@rid">
+        <xsl:attribute name="commentaryData">
+          <xsl:value-of select="child::xref[@ref-type = 'section']/@rid"/>
+        </xsl:attribute>
+        <xsl:attribute name="scrollto">
+          <xsl:value-of select="child::xref[@ref-type = 'section']/@rid"/>
+        </xsl:attribute>
+        <xsl:if
+          test="contains(base-uri(.), '/standard-chapter/') or contains(base-uri(.), '/back-matter/')">
+          <xsl:attribute name="data-scroll">commentary-section</xsl:attribute>
+        </xsl:if>
+      </xsl:if>
+      <xsl:if test="preceding-sibling::label/xref[@ref-type = 'ver']/@rid">
+        <xsl:variable name="versionID"
+          select="preceding-sibling::label/xref[@ref-type = 'ver']/@rid"/>
+        <xsl:attribute name="versionData">
+          <xsl:value-of select="$versionID"/>
+        </xsl:attribute>
+        <xsl:variable name="versionApath"
+          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-ver/', $versionID, '.source.xml')"/>
+        <xsl:if test="doc-available($versionApath)">
+          <xsl:attribute name="versionApath" select="$versionApath"/>
+        </xsl:if>
+      </xsl:if>
+      <xsl:if test="preceding-sibling::label/xref[@ref-type = 'err']/@rid">
+        <xsl:variable name="versionID"
+          select="preceding-sibling::label/xref[@ref-type = 'err']/@rid"/>
+        <xsl:attribute name="versionData">
+          <xsl:value-of select="$versionID"/>
+        </xsl:attribute>
+        <xsl:variable name="errataApath"
+          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-err/', $versionID, '.source.xml')"/>
+        <xsl:if test="doc-available($errataApath)">
+          <xsl:attribute name="errataApath" select="$errataApath"/>
+        </xsl:if>
+      </xsl:if>
+      <xsl:if test="preceding-sibling::label/xref[@ref-type = 'sup']/@rid">
+        <xsl:variable name="versionID"
+          select="preceding-sibling::label/xref[@ref-type = 'sup']/@rid"/>
+        <xsl:attribute name="supplData">
+          <xsl:value-of select="$versionID"/>
+        </xsl:attribute>
+        
+        <xsl:variable name="supplApath"
+          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-suppl/', $versionID, '.source.xml')"/>
+        <xsl:if test="doc-available($supplApath)">
+          <xsl:attribute name="supplApath" select="$supplApath"/>
+        </xsl:if>
+      </xsl:if>
+    </div>
+  </xsl:template>
+  
   <xsl:template name="subsection-title"
     match="abstract/*/*/title | back[title]/*/*/title | back[not(title)]/*/*/*/title">
     <xsl:param name="contents">
@@ -5187,247 +5241,6 @@ or pipeline) parameterized.
         <xsl:value-of select="if(contains(.,'/602-16/')) then(.) else(if(contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')) then(.) else())"/>
       </xsl:if>
     </xsl:for-each>
-  </xsl:template>
-<!-- OASIS Table -->
-
-  <!--
-    Stuff for oasis table handling
-  -->
-  <xsl:template match="oasis:table">
-    <xsl:variable name="table" as="node()+">
-      <xsl:apply-templates select="." mode="convert.oasis.table"/>
-    </xsl:variable>
-    <xsl:apply-templates select="$table" mode="#current"/>
-  </xsl:template>
-  
-  
-  <!--
-    Mode convert.oasis.table
-  -->
-  <xsl:template match="oasis:table" mode="convert.oasis.table">
-    <!-- The relevant attributes will be dealt with at the oasis:tgroup level, the rest ignored -->
-    <xsl:apply-templates mode="#current"/>
-  </xsl:template>
-  
-  <xsl:template match="oasis:tgroup" mode="convert.oasis.table">
-    <xsl:variable name="colgroup.nodes" as="node()*"
-      select="
-      oasis:colspec"/>
-    <xsl:variable name="content-type.nodes" as="node()*"
-      select="
-      @colsep,
-      @rowsep"/>
-    <xsl:variable name="ignore.nodes" as="node()*"
-      select="
-      (: this will be copied down from tbody and thead :) @align, 
-      (: there's no place to put this :) @cols,
-      (: we're going to ignore this in favor of parent::table/@id,
-      if this causes IDREF errors we may have to find a better place for it:) @id"/>
-    <table>
-      <xsl:call-template name="content-type-for-oasis">
-        <xsl:with-param name="content-type.nodes" select="$content-type.nodes"/>
-      </xsl:call-template>
-      <xsl:apply-templates
-        mode="#current"
-        select="
-        parent::oasis:table/@frame,
-        if (not(preceding-sibling::oasis:tgroup))
-        then parent::oasis:table/@id
-        else ()"/>
-      <xsl:if test="$colgroup.nodes">
-        <colgroup>
-          <xsl:apply-templates select="$colgroup.nodes" mode="#current"/>
-        </colgroup>
-      </xsl:if>
-      <xsl:apply-templates
-        mode="#current"
-        select="
-        (@*|node()) except ($colgroup.nodes,$content-type.nodes,$ignore.nodes)"/>
-    </table>
-  </xsl:template>
-  
-  <xsl:template match="oasis:colspec" mode="convert.oasis.table">
-    <xsl:variable name="content-type.nodes" as="node()*"
-      select="
-      @colsep,
-      @rowsep"/>
-    <col>
-      <xsl:call-template name="content-type-for-oasis">
-        <xsl:with-param name="content-type.nodes" as="node()*" select="$content-type.nodes"/>
-      </xsl:call-template>
-      <xsl:apply-templates select="(node()|@*) except ($content-type.nodes)" mode="#current"/>
-    </col>
-  </xsl:template>
-  
-  <xsl:template match="oasis:tbody" mode="convert.oasis.table">
-    <tbody>
-      <xsl:apply-templates
-        mode="#current"
-        select="
-        parent::oasis:tgroup/@align,
-        @*|node()"/>
-    </tbody>
-  </xsl:template>
-  
-  <xsl:template match="oasis:thead" mode="convert.oasis.table">
-    <thead>
-      <xsl:apply-templates
-        mode="#current"
-        select="
-        parent::oasis:tgroup/@align,
-        @*|node()"/>
-    </thead>
-  </xsl:template>
-  
-  <xsl:template match="oasis:row" mode="convert.oasis.table">
-    <xsl:variable name="content-type.nodes" as="node()*"
-      select="@rowsep"/>
-    <tr>
-      <xsl:call-template name="content-type-for-oasis">
-        <xsl:with-param name="content-type.nodes" as="node()*" select="$content-type.nodes"/>
-      </xsl:call-template>
-      <xsl:apply-templates
-        mode="convert.oasis.table"
-        select="
-        (@*|node()) except $content-type.nodes"/>
-    </tr>
-  </xsl:template>
-  
-  <xsl:template match="oasis:entry[ancestor::oasis:thead]" mode="convert.oasis.table" priority="2">
-    <th>
-      <xsl:next-match/>
-    </th>
-  </xsl:template>
-  
-  <xsl:template match="oasis:entry[not(ancestor::oasis:thead)]" mode="convert.oasis.table" priority="2">
-    <td>
-      <xsl:next-match/>
-    </td>
-  </xsl:template>
-  
-  <xsl:template match="oasis:entry" mode="convert.oasis.table" priority="1">
-    <xsl:variable name="colspan.nodes" as="node()*"
-      select="@namest,@nameend"/>
-    <xsl:variable name="content-type.nodes" as="node()*"
-      select="@colsep,@rowsep"/>
-    <xsl:if test="$colspan.nodes">
-      <xsl:call-template name="colspan-for-oasis">
-        <xsl:with-param name="colspan.nodes" as="node()+" select="$colspan.nodes"/>
-      </xsl:call-template>
-    </xsl:if>
-    <xsl:call-template name="content-type-for-oasis">
-      <xsl:with-param name="content-type.nodes" as="node()*" select="$content-type.nodes"/>
-    </xsl:call-template>
-    <xsl:apply-templates
-      mode="convert.oasis.table"
-      select="
-      (@*|node()) except ($content-type.nodes,$colspan.nodes)"/>
-  </xsl:template>
-  
-  <xsl:template match="oasis:entry/@morerows" mode="convert.oasis.table">
-    <xsl:attribute name="rowspan" select="xs:integer(.) + 1"/>
-  </xsl:template>
-  
-  <xsl:template match="@colname[ancestor::oasis:*]" mode="convert.oasis.table"/>
-  
-  <xsl:template match="@colnum[ancestor::oasis:*]" mode="convert.oasis.table"/>
-  
-  <xsl:template match="@colsep[ancestor::oasis:*]" mode="convert.oasis.table">
-    <xsl:variable name="colsep" as="xs:string" select="lower-case(normalize-space(.))"/>
-    <xsl:choose>
-      <xsl:when test="$colsep eq '0'">
-        <xsl:text>no-colsep</xsl:text>
-      </xsl:when>
-      <xsl:when test="$colsep eq '1'">
-        <xsl:text>colsep</xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:message select="'Warning: unhandled @colsep value:',$colsep"/>
-        <xsl:value-of select="concat('colsep-',$colsep)"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  
-  <xsl:template match="@colwidth[ancestor::oasis:*]" mode="convert.oasis.table">
-    <xsl:attribute name="width" select="."/>
-  </xsl:template>
-  
-  <xsl:template match="@frame[ancestor::oasis:*]" mode="convert.oasis.table">
-    <xsl:variable name="frame" as="xs:string" select="lower-case(normalize-space(.))"/>
-    <xsl:attribute name="frame">
-      <xsl:choose>
-        <xsl:when test="$frame eq 'all'">
-          <xsl:text>box</xsl:text>
-        </xsl:when>
-        <xsl:when test="$frame eq 'bottom'">
-          <xsl:text>below</xsl:text>
-        </xsl:when>
-        <xsl:when test="$frame eq 'none'">
-          <xsl:text>void</xsl:text>
-        </xsl:when>
-        <xsl:when test="$frame eq 'sides'">
-          <xsl:text>vsides</xsl:text>
-        </xsl:when>
-        <xsl:when test="$frame eq 'top'">
-          <xsl:text>above</xsl:text>
-        </xsl:when>
-        <xsl:when test="$frame eq 'topbot'">
-          <xsl:text>hsides</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:message terminate="yes" select="'Error: unhandled @frame value:',$frame"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:attribute>
-  </xsl:template>
-  
-  <xsl:template match="@rowsep[ancestor::oasis:*]"  mode="convert.oasis.table">
-    <xsl:variable name="rowsep" as="xs:string" select="lower-case(normalize-space(.))"/>
-    <xsl:choose>
-      <xsl:when test="$rowsep eq '0'">
-        <xsl:text>no-rowsep</xsl:text>
-      </xsl:when>
-      <xsl:when test="$rowsep eq '1'">
-        <xsl:text>rowsep</xsl:text>
-      </xsl:when>
-      <xsl:when test="$rowsep eq 'yes'">
-        <xsl:text>rowsep</xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:message select="'Warning: unhandled @rowsep value:',$rowsep"/>
-        <xsl:value-of select="concat('rowsep-',$rowsep)"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  
-  <xsl:template name="colspan-for-oasis">
-    <xsl:param name="colspan.nodes" as="node()+"/>
-    <xsl:variable name="namest" select="$colspan.nodes[. instance of attribute(namest)]"/>
-    <xsl:variable name="nameend" select="($colspan.nodes[. instance of attribute(nameend)],$colspan.nodes[. instance of attribute(namest)])[1]"/>
-    <xsl:variable name="start" as="xs:integer"
-      select="xs:integer((ancestor::oasis:tgroup//oasis:colspec[@colname eq $namest]/(@colnum,count(preceding-sibling::oasis:colspec)+1)[1],replace($namest,'[^\d]',''))[1])"/>
-    <xsl:variable name="end" as="xs:integer"
-      select="xs:integer((ancestor::oasis:tgroup//oasis:colspec[@colname eq $nameend]/(@colnum,count(preceding-sibling::oasis:colspec)+1)[1],replace($nameend,'[^\d]',''))[1])"/>
-    <xsl:attribute name="colspan" select="$end - $start + 1"/>
-  </xsl:template>
-  
-  <xsl:template name="content-type-for-oasis">
-    <xsl:param name="content-type.nodes" as="node()*"/>
-    <xsl:if test="$content-type.nodes">
-      <xsl:attribute name="content-type" separator=" ">
-        <xsl:apply-templates select="$content-type.nodes" mode="convert.oasis.table"/>
-      </xsl:attribute>
-    </xsl:if>
-  </xsl:template>
-  
-  <xsl:template match="@bgcolor" mode="convert.oasis.table">
-    <xsl:attribute name="style">background-color:<xsl:value-of select="."/></xsl:attribute>
-  </xsl:template>
-  
-  <xsl:template match="@*|node()" mode="convert.oasis.table">
-    <xsl:copy copy-namespaces="no">
-      <xsl:apply-templates select="@*|node()" mode="#current"/>
-    </xsl:copy>
   </xsl:template>
  
   
