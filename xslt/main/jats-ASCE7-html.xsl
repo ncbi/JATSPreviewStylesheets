@@ -2374,6 +2374,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template name="div_action_parentSectionInfo">
+    <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
       class="toc-actions">
       <xsl:attribute name="resourceDataPath">
@@ -2402,7 +2403,7 @@ or pipeline) parameterized.
           <xsl:value-of select="$versionID"/>
         </xsl:attribute>
         <xsl:variable name="versionApath"
-          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-ver/', $versionID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, '/standard-sec-ver/', $versionID, '.atom')"/>
 <!--        <xsl:if test="doc-available($versionApath)">-->
           <xsl:attribute name="versionApath" select="$versionApath"/>
         <!--</xsl:if>-->
@@ -2414,7 +2415,7 @@ or pipeline) parameterized.
           <xsl:value-of select="$versionID"/>
         </xsl:attribute>
         <xsl:variable name="errataApath"
-          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-err/', $versionID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, '/standard-sec-err/', $versionID, '.atom')"/>
 <!--        <xsl:if test="doc-available($errataApath)">-->
           <xsl:attribute name="errataApath" select="$errataApath"/>
         <!--</xsl:if>-->
@@ -2427,7 +2428,7 @@ or pipeline) parameterized.
         </xsl:attribute>
         
         <xsl:variable name="supplApath"
-          select="concat('/asceworks/', string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'), '/standard-sec-suppl/', $versionID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, '/standard-sec-suppl/', $versionID, '.atom')"/>
         <!--<xsl:if test="doc-available($supplApath)">-->
           <xsl:attribute name="supplApath" select="$supplApath"/>
         <!--</xsl:if>-->
