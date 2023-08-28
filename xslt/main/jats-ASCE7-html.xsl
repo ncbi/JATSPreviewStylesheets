@@ -3632,77 +3632,149 @@ or pipeline) parameterized.
   <xsl:template match="xref">
     <xsl:variable name="rid" select="normalize-space(@rid)"/>
     <xsl:choose>
-      <xsl:when test="@ref-type=('def', 'glossary')">
-        <xsl:variable name="rid" select="@rid"/><xsl:choose>
-          <xsl:when test="not(preceding-sibling::xref[@ref-type=('def','glossary') and @rid=$rid])">
+      <xsl:when test="contains(base-uri(),'tmsworks')">
+        <xsl:choose>
+          <xsl:when test="@ref-type=('def', 'glossary')">
+            <xsl:variable name="rid" select="@rid"/><xsl:choose>
+              <xsl:when test="not(preceding-sibling::xref[@ref-type=('def','glossary') and @rid=$rid])">
+                <a>
+                  <xsl:attribute name="class">ref-popover</xsl:attribute>
+                  <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
+                  <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
+                  <xsl:attribute name="data-rid" select="@rid"/>
+                  <xsl:attribute name="target-id" select="@rid"/>
+                  <xsl:apply-templates/>
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:when test="@ref-type=('bibref')">
+            <div class="ref-wrapper">
+              <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
+                <xsl:apply-templates/>
+              </a>
+              <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div>
+            </div>
+          </xsl:when>
+          <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list')">
+            <xsl:variable name="ref-sec" select="if(contains(/*/@id,'st')) then(substring-after(/*/@id,'st')) else(/*/@id)"/>
             <a>
-              <xsl:attribute name="class">ref-popover</xsl:attribute>
-              <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
-              <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
-              <xsl:attribute name="data-rid" select="@rid"/>
-              <xsl:attribute name="target-id" select="@rid"/>
+              <xsl:attribute name="href"><xsl:choose>
+                <xsl:when test="if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))">
+                  <xsl:value-of select="if (@xlink:href) then
+                    @xlink:href
+                    else
+                    concat('#',@rid)"/>
+                </xsl:when>
+                <!--if the rid is available in the same section/part etc then just # the id-->
+                <xsl:when test="(//*[normalize-space(@id) = $rid])">
+                  <xsl:value-of select="if (@xlink:href) then
+                    @xlink:href
+                    else
+                    concat('#',@rid)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="tofindexternalchaperlink">
+                    <xsl:with-param name="linkid"><xsl:value-of select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/></xsl:with-param>
+                    <xsl:with-param name="section"><xsl:value-of select="if(@ref-type=('sec','part','disp-formula', 'fig', 'table', 'list')) then(true()) else(false())"/></xsl:with-param>
+                    <xsl:with-param name="contenttype"><xsl:value-of select="@ref-type"/></xsl:with-param>
+                  </xsl:call-template>
+                </xsl:otherwise>
+              </xsl:choose></xsl:attribute>
+              <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
               <xsl:apply-templates/>
             </a>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:apply-templates/>
+            <a>
+              <xsl:attribute name="href"
+                select="
+                if (@xlink:href) then
+                @xlink:href
+                else
+                concat('#', @rid)"/>
+              <xsl:attribute name="data-rid" select="@rid"/>
+              <xsl:apply-templates/>
+            </a>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="@ref-type=('bibref')">
-        <div class="ref-wrapper">
-          <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
-            <xsl:apply-templates/>
-          </a>
-          <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div>
-        </div>
-      </xsl:when>
-      <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list')">
-        <xsl:variable name="ref-sec" select="if(contains(/*/@id,'st')) then(substring-after(/*/@id,'st')) else(/*/@id)"/>
-        <a>
-          <xsl:attribute name="href"><xsl:choose>
-            <xsl:when test="if(@ref-type='standard') then(starts-with(substring-after(@rid,'st'),$ref-sec)) else(starts-with(@rid,$ref-sec))">
-              <xsl:value-of select="if (@xlink:href) then
+      <xsl:when test="contains(base-uri(),'asceworks')">
+        <xsl:choose>
+          <xsl:when test="@ref-type=('def', 'glossary')">
+            <xsl:variable name="rid" select="@rid"/><xsl:choose>
+              <xsl:when test="not(preceding-sibling::xref[@ref-type=('def','glossary') and @rid=$rid])">
+                <a>
+                  <xsl:attribute name="class">ref-popover</xsl:attribute>
+                  <xsl:attribute name="data-bs-trigger">hover</xsl:attribute>
+                  <xsl:attribute name="data-bs-toggle">popover</xsl:attribute>
+                  <xsl:attribute name="data-rid" select="@rid"/>
+                  <xsl:attribute name="target-id" select="@rid"/>
+                  <xsl:apply-templates/>
+                </a>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:apply-templates/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:when test="@ref-type=('bibref')">
+            <div class="ref-wrapper">
+              <a class="ref-popover" data-bs-trigger="hover" data-bs-toggle="popover"  target-id="{concat('ref_',substring-after(@rid,'bib_ref'))}">
+                <xsl:apply-templates/>
+              </a>
+              <div class="def-ref-content" id="{concat('ref_',substring-after(@rid,'bib_ref'))}" reference-id="{substring-after(@rid,'bib_ref')}"></div>
+            </div>
+          </xsl:when>
+          <xsl:when test="@ref-type=('sec','part','chapter','standard','disp-formula', 'fig', 'table', 'list','ch')">
+            <xsl:variable name="reference-atom-query" select="hwp:getReferencedatom(concat('asceworks/standard/',$standardname), @rid)"/>
+            <!--<xsl:message>reference-atom-query:= <xsl:value-of select="$reference-atom-query"/></xsl:message>-->
+            <a>
+              <xsl:attribute name="href"><xsl:choose>
+                <xsl:when test="(//*[normalize-space(@id) = $rid])">
+                  <xsl:value-of select="if (@xlink:href) then
+                    @xlink:href
+                    else
+                    concat('#',@rid)"/>
+                </xsl:when>
+                
+                <!--if the rid is available in the same section/part etc then just # the id-->
+                
+                <xsl:otherwise>
+                  <xsl:value-of select="replace(substring-before($reference-atom-query,'.atom'),'/asceworks/','/content/')"/>
+                </xsl:otherwise>
+              </xsl:choose></xsl:attribute>
+              <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
+              <xsl:apply-templates/>
+            </a>
+          </xsl:when>
+          <xsl:otherwise>
+            <a>
+              <xsl:attribute name="href"
+                select="
+                if (@xlink:href) then
                 @xlink:href
                 else
-                concat('#',@rid)"/>
-            </xsl:when>
-            <!--if the rid is available in the same section/part etc then just # the id-->
-            <xsl:when test="(//*[normalize-space(@id) = $rid])">
-              <xsl:value-of select="if (@xlink:href) then
-                @xlink:href
-                else
-                concat('#',@rid)"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:call-template name="tofindexternalchaperlink">
-                <xsl:with-param name="linkid"><xsl:value-of select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/></xsl:with-param>
-                <xsl:with-param name="section"><xsl:value-of select="if(@ref-type=('sec','part','disp-formula', 'fig', 'table', 'list')) then(true()) else(false())"/></xsl:with-param>
-                <xsl:with-param name="contenttype"><xsl:value-of select="@ref-type"/></xsl:with-param>
-              </xsl:call-template>
-            </xsl:otherwise>
-          </xsl:choose></xsl:attribute>
-            <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
-          <xsl:apply-templates/>
-        </a>
+                concat('#', @rid)"/>
+              <xsl:attribute name="data-rid" select="@rid"/>
+              <xsl:apply-templates/>
+            </a>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
-      <xsl:otherwise>
-        <a>
-          <xsl:attribute name="href"
-            select="
-            if (@xlink:href) then
-            @xlink:href
-            else
-            concat('#', @rid)"/>
-          <xsl:attribute name="data-rid" select="@rid"/>
-          <xsl:apply-templates/>
-        </a>
-      </xsl:otherwise>
     </xsl:choose>
     
   </xsl:template>
 
-
+  <xsl:function name="hwp:getReferencedatom">
+    <xsl:param name="corpus"/>
+    <xsl:param name="slugID"/>
+    <!--<xsl:message>ReferecedAtom query:- <xsl:value-of select="concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID)"/></xsl:message>-->
+    <xsl:sequence select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID))[1]"></xsl:sequence>
+  </xsl:function>
 
   <!-- ============================================================= -->
   <!--  Formatting elements                                          -->
@@ -5244,5 +5316,5 @@ or pipeline) parameterized.
     </xsl:for-each>
   </xsl:template>
  
-  
+
 </xsl:stylesheet>
