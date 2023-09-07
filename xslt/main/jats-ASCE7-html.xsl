@@ -168,8 +168,8 @@ or pipeline) parameterized.
 
   <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
   <xsl:variable name="standardname" select="tokenize(substring-after(base-uri(),'/standard'),'/')[2]"/>
-  <xsl:variable name="queryurl" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standardname,'*.atom'))"/>
-  
+  <xsl:variable name="jcode" select="tokenize(base-uri(),'/')[4]"/>
+  <xsl:variable name="queryurl" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standardname,'*.atom'))"/>
   <!-- Keys -->
 
   <!-- To reduce dependency on a DTD for processing, we declare
@@ -2374,7 +2374,7 @@ or pipeline) parameterized.
   </xsl:template>
 
   <xsl:template name="div_action_parentSectionInfo">
-    <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), '/asceworks/'), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
+    <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), concat('/',$jcode,'/')), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
       class="toc-actions">
       <xsl:attribute name="resourceDataPath">
@@ -2409,15 +2409,24 @@ or pipeline) parameterized.
         <!--</xsl:if>-->
       </xsl:if>
       <xsl:if test="preceding-sibling::label/xref[@ref-type = 'err']/@rid">
-        <xsl:variable name="versionID"
+        <xsl:variable name="errataID"
           select="preceding-sibling::label/xref[@ref-type = 'err']/@rid"/>
-        <xsl:attribute name="versionData">
-          <xsl:value-of select="$versionID"/>
+        <xsl:attribute name="{if($jcode eq 'tmsworks') then('errataID') else('versionID')}">
+          <xsl:value-of select="$errataID"/>
         </xsl:attribute>
         <xsl:variable name="errataApath"
-          select="concat('/asceworks/', $originalSource, '/standard-sec-err/', $versionID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, '/standard-sec-err/', $errataID, '.atom')"/>
 <!--        <xsl:if test="doc-available($errataApath)">-->
-          <xsl:attribute name="errataApath" select="$errataApath"/>
+          <xsl:attribute name="errataApath"><xsl:choose>
+            <xsl:when test="$jcode eq 'tmsworks'">
+              <xsl:call-template name="errataLink">
+                <xsl:with-param name="errataID"><xsl:value-of select="$errataID"/></xsl:with-param>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$errataApath"/>
+            </xsl:otherwise>
+          </xsl:choose></xsl:attribute>
         <!--</xsl:if>-->
       </xsl:if>
       <xsl:if test="preceding-sibling::label/xref[@ref-type = 'sup']/@rid">
@@ -3772,7 +3781,6 @@ or pipeline) parameterized.
   <xsl:function name="hwp:getReferencedatom">
     <xsl:param name="corpus"/>
     <xsl:param name="slugID"/>
-    <!--<xsl:message>ReferecedAtom query:- <xsl:value-of select="concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID)"/></xsl:message>-->
     <xsl:sequence select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/extended-queries/getAtomwithCorpus_Slug.xqy&amp;corpus=',$corpus,'&amp;slugID=',$slugID))[1]"></xsl:sequence>
   </xsl:function>
 
@@ -5197,7 +5205,7 @@ or pipeline) parameterized.
     <xsl:param name="standard_id"/>
     <xsl:param name="termdef_section_id"/>
     <xsl:param name="termdef_id"/>
-    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standard_id,'*.atom'))"/>
+    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard_id,'*.atom'))"/>
     <xsl:for-each select="tokenize($atomurilist,'\n')">
       <xsl:if test="ends-with(.,concat($termdef_section_id,'.atom'))">
         <xsl:variable name="markupservice" select="doc(concat('http://markup-svc-dev.highwire.org/markup/drupal/fulltext?only-if-cached=true&amp;src=',.))"/>
@@ -5211,7 +5219,7 @@ or pipeline) parameterized.
     <xsl:param name="standard"/>
     <xsl:param name="standardsubcontent"/>
     <xsl:param name="subcontenttypeid"/>
-    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/tmsworks/standard/',$standard,'*.atom'))"/>
+    <xsl:variable name="atomurilist" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standard,'*.atom'))"/>
     <xsl:choose>
     <xsl:when test="$standard != '' and $standardsubcontent != '' and $subcontenttypeid != ''">
       <xsl:for-each select="tokenize($atomurilist,'\n')">
@@ -5223,6 +5231,9 @@ or pipeline) parameterized.
             <xsl:when test="contains(.,'/602-16/')">
               <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$subcontenttypeid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$subcontenttypeid))"/>
             </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),$jcode,'content'),'#',$subcontenttypeid)) else(concat(replace(substring-before(.,'/standard-section/'),$jcode,'content'),'#',$subcontenttypeid))"/>
+            </xsl:otherwise>
           </xsl:choose>
         </xsl:if>
       </xsl:for-each>
@@ -5237,6 +5248,9 @@ or pipeline) parameterized.
               <xsl:when test="contains(.,'/602-16/')">
                 <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
               </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="replace(substring-before(.,'.atom'),$jcode,'content')"/>
+              </xsl:otherwise>
             </xsl:choose>
           </xsl:if>
         </xsl:for-each>
@@ -5284,6 +5298,9 @@ or pipeline) parameterized.
               <xsl:when test="contains(.,'/602-16/')">
                 <xsl:value-of select="if($contenttype = ('disp-formula', 'fig', 'table', 'list')) then(concat(replace(substring-before(.,'.atom'),'tmsworks','content'),'#',$linkid)) else(if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),'tmsworks','content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),'tmsworks','content'),'#',$linkid)))"/>
               </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="if($contenttype = ('disp-formula', 'fig', 'table', 'list')) then(concat(replace(substring-before(.,'.atom'),$jcode,'content'),'#',$linkid)) else(if(contains(.,'commentary-section')) then(concat(replace(substring-before(.,'/commentary-section/'),$jcode,'content'),'#',$linkid)) else(concat(replace(substring-before(.,'/standard-section/'),$jcode,'content'),'#',$linkid)))"/>
+              </xsl:otherwise>
             </xsl:choose>
           </xsl:if>
         </xsl:for-each>
@@ -5299,7 +5316,7 @@ or pipeline) parameterized.
                <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
              </xsl:when>
              <xsl:otherwise>
-               <xsl:value-of select="replace(substring-before(.,'.atom'),'tmsworks','content')"/>
+               <xsl:value-of select="replace(substring-before(.,'.atom'),$jcode,'content')"/>
              </xsl:otherwise>
            </xsl:choose>
           </xsl:if>
@@ -5315,6 +5332,12 @@ or pipeline) parameterized.
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
- 
-
+  <xsl:template name="errataLink">
+    <xsl:param name="errataID"/>
+    <xsl:for-each select="tokenize($queryurl,'\n')">
+      <xsl:if test="ends-with(.,concat($errataID,'.atom'))">
+        <xsl:value-of select="."/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
 </xsl:stylesheet>
