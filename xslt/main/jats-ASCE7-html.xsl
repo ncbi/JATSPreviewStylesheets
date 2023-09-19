@@ -3588,6 +3588,25 @@ or pipeline) parameterized.
       </xsl:for-each>
       <xsl:apply-templates/>
     </span>
+    <!-- added for asce to add the information icon-->
+    <xsl:if test="(lower-case(normalize-space(@content-type)) = ('deletion','insertion')) and (matches(@specific-use,'^([0-9]{8})$'))">
+      <xsl:variable name="date">
+        <xsl:analyze-string select="@specific-use" regex="([0-9]{{4}})([0-9]{{2}})([0-9]{{2}})">
+          <xsl:matching-substring><xsl:value-of select="concat(regex-group(1),'-',regex-group(2),'-',regex-group(3))"/></xsl:matching-substring>
+        </xsl:analyze-string>
+      </xsl:variable>
+      <xsl:variable name="content-type">
+        <xsl:choose>
+          <xsl:when test="lower-case(normalize-space(@content-type)) = 'deletion'">
+            <xsl:value-of select="'Deleted on '"/>
+          </xsl:when>
+          <xsl:when test="lower-case(normalize-space(@content-type)) = 'insertion'">
+            <xsl:value-of select="'Added on '"/>
+          </xsl:when>
+        </xsl:choose>
+      </xsl:variable>
+      <i class="glyphicon glyphicon-info-sign" title="{concat($content-type, format-date($date, '[D1o] [MNn], [Y]', 'en', (), ()))}"></i>
+    </xsl:if>
   </xsl:template>
   
   
