@@ -3605,7 +3605,8 @@ or pipeline) parameterized.
           </xsl:when>
         </xsl:choose>
       </xsl:variable>
-      <i class="glyphicon glyphicon-info-sign" title="{concat($content-type, format-date($date, '[D1o] [MNn], [Y]', 'en', (), ()))}"></i>
+      <!--<i class="glyphicon glyphicon-info-sign" title="{concat($content-type, format-date($date, '[D1o] [MNn], [Y]', 'en', (), ()))}"></i>-->
+      <i class="feather-info" data-bs-toggle="tooltip" data-bs-placement="top" title="{concat($content-type, format-date($date, '[D1o] [MNn], [Y]', 'en', (), ()))}"></i>
     </xsl:if>
   </xsl:template>
   
