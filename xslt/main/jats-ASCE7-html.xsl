@@ -3607,6 +3607,10 @@ or pipeline) parameterized.
       </xsl:variable>
       <!--<i class="glyphicon glyphicon-info-sign" title="{concat($content-type, format-date($date, '[D1o] [MNn], [Y]', 'en', (), ()))}"></i>-->
       <i class="feather-info" data-bs-toggle="tooltip" data-bs-placement="top" title="{concat($content-type, format-date($date, '[D1o] [MNn], [Y]', 'en', (), ()))}"></i>
+      <xsl:choose>
+        <xsl:when test="following-sibling::*[1][@content-type = 'insertion']"><xsl:value-of select="' '"/></xsl:when>
+        <xsl:when test="following-sibling::*[1][@content-type = 'deletion']"><xsl:value-of select="' '"/></xsl:when>
+      </xsl:choose>
     </xsl:if>
   </xsl:template>
   
