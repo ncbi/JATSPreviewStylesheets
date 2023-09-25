@@ -2415,7 +2415,7 @@ or pipeline) parameterized.
           <xsl:value-of select="$errataID"/>
         </xsl:attribute>
         <xsl:variable name="errataApath"
-          select="concat('/asceworks/', $originalSource, '/standard-sec-err/', $errataID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, '/standard-sec-errata/', $errataID, '.atom')"/>
 <!--        <xsl:if test="doc-available($errataApath)">-->
           <xsl:attribute name="errataApath"><xsl:choose>
             <xsl:when test="$jcode eq 'tmsworks'">
