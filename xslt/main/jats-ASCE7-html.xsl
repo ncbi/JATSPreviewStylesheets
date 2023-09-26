@@ -2402,8 +2402,10 @@ or pipeline) parameterized.
         <xsl:attribute name="versionData">
           <xsl:value-of select="$versionID"/>
         </xsl:attribute>
+        <!--<xsl:variable name="versionApath"
+          select="concat('/asceworks/', $originalSource, '/standard-sec-ver/', $versionID, '.atom')"/>-->
         <xsl:variable name="versionApath"
-          select="concat('/asceworks/', $originalSource, '/standard-sec-ver/', $versionID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, if (starts-with($versionID,'sc')) then '/commentary-sec-ver/' else '/standard-sec-ver/', $versionID, '.atom')"/>
 <!--        <xsl:if test="doc-available($versionApath)">-->
           <xsl:attribute name="versionApath" select="$versionApath"/>
         <!--</xsl:if>-->
@@ -2415,7 +2417,7 @@ or pipeline) parameterized.
           <xsl:value-of select="$errataID"/>
         </xsl:attribute>
         <xsl:variable name="errataApath"
-          select="concat('/asceworks/', $originalSource, '/standard-sec-errata/', $errataID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, if (starts-with($errataID,'sc')) then '/commentary-sec-errata/' else '/standard-sec-errata/', $errataID, '.atom')"/>
 <!--        <xsl:if test="doc-available($errataApath)">-->
           <xsl:attribute name="errataApath"><xsl:choose>
             <xsl:when test="$jcode eq 'tmsworks'">
@@ -2430,14 +2432,14 @@ or pipeline) parameterized.
         <!--</xsl:if>-->
       </xsl:if>
       <xsl:if test="preceding-sibling::label/xref[@ref-type = 'sup']/@rid">
-        <xsl:variable name="versionID"
+        <xsl:variable name="supplID"
           select="preceding-sibling::label/xref[@ref-type = 'sup']/@rid"/>
         <xsl:attribute name="supplData">
-          <xsl:value-of select="$versionID"/>
+          <xsl:value-of select="$supplID"/>
         </xsl:attribute>
         
         <xsl:variable name="supplApath"
-          select="concat('/asceworks/', $originalSource, '/standard-sec-suppl/', $versionID, '.atom')"/>
+          select="concat('/asceworks/', $originalSource, if (starts-with($supplID,'sc')) then '/commentary-sec-suppl/' else '/standard-sec-suppl/', $supplID, '.atom')"/>
         <!--<xsl:if test="doc-available($supplApath)">-->
           <xsl:attribute name="supplApath" select="$supplApath"/>
         <!--</xsl:if>-->
