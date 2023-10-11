@@ -169,7 +169,8 @@ or pipeline) parameterized.
   <xsl:variable name="verbose" select="$report-warnings = 'yes'"/>
   <xsl:variable name="standardname" select="tokenize(substring-after(base-uri(),'/standard'),'/')[2]"/>
   <xsl:variable name="jcode" select="tokenize(base-uri(),'/')[4]"/>
-  <xsl:variable name="queryurl" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standardname,'*.atom'))"/>
+  <!--<xsl:variable name="queryurl" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standardname,'*.atom'))"/>-->
+  <xsl:variable name="queryurl" select="doc(concat('http://atom-dev.highwire.org/svc.atom?query-form=search&amp;canned-query=/hwc/list-extant-resources.xqy&amp;type=pattern&amp;pattern=/',$jcode,'/standard/',$standardname,'*.atom'))"/>
   <!-- Keys -->
 
   <!-- To reduce dependency on a DTD for processing, we declare
