@@ -5310,6 +5310,7 @@ or pipeline) parameterized.
     <xsl:variable name="part-base-uri" select="base-uri()"/>
     <xsl:choose>
       <xsl:when test="$section eq true()">
+        
         <xsl:for-each select="tokenize($queryurl,'\n')">
           <xsl:if test="if($contenttype = 'part') then(ends-with(.,concat(replace($fig_tbl_fn_eqn,'p','part'),'.atom'))) else(ends-with(.,concat($fig_tbl_fn_eqn,'.atom')))">
             <xsl:choose>
@@ -5353,9 +5354,12 @@ or pipeline) parameterized.
   </xsl:template>
   <xsl:template name="tmsresourcelink">
     <xsl:param name="resourceid"/>
-    <xsl:for-each select="tokenize($queryurl,'\n')">
-      <xsl:if test="if(starts-with($resourceid,'p')) then(ends-with(.,concat(replace($resourceid,'p','part'),'.atom'))) else(ends-with(.,concat($resourceid,'.atom')))">
+    <xsl:for-each select="tokenize($queryurl,'\n')"> 
+      <!--<xsl:if test="if(starts-with($resourceid,'p')) then(ends-with(.,concat(replace($resourceid,'p','part'),'.atom'))) else(ends-with(.,concat($resourceid,'.atom')))">
         <xsl:value-of select="if(contains(.,'/602-16/')) then(.) else(if(contains(.,'/402-16/part/part') or contains(.,'/402-16/front-matter/') or contains(.,'/402-16/back-matter/')) then(.) else())"/>
+      </xsl:if>-->
+      <xsl:if test="if(starts-with($resourceid,'p')) then(ends-with(.,concat(replace($resourceid,'p','part'),'.atom'))) else(ends-with(.,concat($resourceid,'.atom')))">
+        <xsl:value-of select="."/>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
