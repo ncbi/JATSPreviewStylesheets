@@ -2689,6 +2689,9 @@ or pipeline) parameterized.
     <xsl:param name="long-desc-id" as="xs:string?" tunnel="yes"/>
     <xsl:apply-templates select="* except long-desc"/>
     <img alt="{replace(tokenize(@xlink:href,'/')[last()],'\.[^\.]*$','')}">
+      <xsl:if test="@content-type = ('deletion','insertion')">
+        <xsl:attribute name="class" select="@content-type"/>
+      </xsl:if>
       <xsl:if test="$long-desc-id">
         <xsl:attribute name="longdesc" select="concat('#',$long-desc-id)"/>
       </xsl:if>
