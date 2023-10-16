@@ -3704,16 +3704,16 @@ or pipeline) parameterized.
               <xsl:attribute name="href">
                 <xsl:choose>
                   <xsl:when test="@ref-type='part'">
-                    <xsl:variable name="partid" select="concat(replace($rid,'p','part'),'.atom')"/>
+                    <xsl:variable name="partid" select="replace($rid,'p','part')"/>
                     <xsl:variable name="part-atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="$partid"/></xsl:with-param></xsl:call-template></xsl:variable>
                     <xsl:variable name="part-uri" select="resolve-uri($part-atomapath,base-uri())"/>
                     <xsl:variable name="part-doc" select="document($part-uri)//atom:link[@rel='http://schema.highwire.org/Compound#child' and @c:role='http://schema.highwire.org/ItemSet/Item'][1]/@href"/>
-                    <xsl:value-of select="replace(substring-before($part-doc,'.atom'),'tmsworks','content')"/>
+                    <xsl:value-of select="replace(substring-before($part-doc,'.atom'),$jcode,'content')"/>
                   </xsl:when>
                   <xsl:when test="@ref-type='chapter'">
                     <xsl:variable name="atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="@rid"/></xsl:with-param></xsl:call-template></xsl:variable>
                     <xsl:variable name="chapter-full-uri" select="resolve-uri($atomapath,base-uri())"/>
-                    <xsl:variable name="chapter-doc-ids" select="document(replace($chapter-full-uri,'.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
+                    <xsl:variable name="chapter-doc-ids" select="document(replace($chapter-full-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
                     <xsl:choose>
                       <xsl:when test="contains($atomapath,'commentary-chapter')">
                         <xsl:value-of select="replace(concat(substring-before($atomapath,'commentary-chapter'),'standard-chapter/',$chapter-doc-ids),$jcode,'content')"/>
@@ -3733,7 +3733,7 @@ or pipeline) parameterized.
                   <xsl:when test="@ref-type='sec'">
                     <xsl:variable name="sec-atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="@rid"/></xsl:with-param></xsl:call-template></xsl:variable>
                     <xsl:variable name="sec-full-uri" select="resolve-uri($sec-atomapath,base-uri())"/>
-                    <xsl:variable name="sec-doc-ids" select="document(replace($sec-full-uri,'.atom','.source.xml'))/*/title/xref/@rid"/>
+                    <xsl:variable name="sec-doc-ids" select="document(replace($sec-full-uri,'\.atom','.source.xml'))/*/title/xref/@rid"/>
                     <xsl:variable name="standard-sec-atomapath">
                       <xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="$rid"/></xsl:with-param></xsl:call-template>
                     </xsl:variable>
@@ -3749,7 +3749,7 @@ or pipeline) parameterized.
                   <xsl:when test="@ref-type=('disp-formula', 'fig', 'table', 'list')">
                     <xsl:variable name="atomapath"><xsl:call-template name="findatomapath"><xsl:with-param name="ids"><xsl:value-of select="@rid"/></xsl:with-param></xsl:call-template></xsl:variable>
                     <xsl:variable name="chapter-full-uri" select="resolve-uri($atomapath,base-uri())"/>
-                    <xsl:variable name="chapter-doc-ids" select="document(replace($chapter-full-uri,'.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
+                    <xsl:variable name="chapter-doc-ids" select="document(replace($chapter-full-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
                     <xsl:choose>
                       <xsl:when test="contains($atomapath,'commentary-chapter')">
                         <xsl:value-of select="replace(concat(substring-before($atomapath,'commentary-chapter'),'standard-chapter/',$chapter-doc-ids,'#',$rid),$jcode,'content')"/>
@@ -5390,13 +5390,13 @@ or pipeline) parameterized.
               </xsl:when>
               <xsl:when test="contains(.,'commentary-section')">
                 <xsl:variable name="section-uri" select="resolve-uri(.,$part-base-uri)"/>
-                <xsl:variable name="section-doc" select="document(replace($section-uri,'.atom','.source.xml'))/*/title/xref/@rid"/>
+                <xsl:variable name="section-doc" select="document(replace($section-uri,'\.atom','.source.xml'))/*/title/xref/@rid"/>
                 <xsl:variable name="section-commentary2standardurl" select="replace(substring-before(.,'commentary-section'),'commentary-','standard-')"/>
                 <xsl:value-of select="if($contenttype = ('disp-formula', 'fig', 'table', 'list')) then(concat(replace(substring-before(.,'.atom'),$jcode,'content'),'#',$linkid)) else(concat(replace($section-commentary2standardurl,$jcode,'content'),'#',$linkid))"/>
               </xsl:when>
               <xsl:when test="contains(.,'commentary-chapter')">
                 <xsl:variable name="comm-chapter-uri" select="resolve-uri(.,$part-base-uri)"/>
-                <xsl:variable name="comm-chapter-doc" select="document(replace($comm-chapter-uri,'.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
+                <xsl:variable name="comm-chapter-doc" select="document(replace($comm-chapter-uri,'\.atom','.source.xml'))//book-part/book-part-meta/title-group/title/xref/@rid"/>
                 <xsl:variable name="chapter-commentary2standardurl" select="replace(substring-before(.,tokenize(.,'/')[last()]),'commentary-','standard-')"/>
                 <xsl:value-of select="if($contenttype = ('disp-formula', 'fig', 'table', 'list')) then(concat(replace(substring-before(.,'.atom'),$jcode,'content'),'#',$linkid)) else(concat(replace($chapter-commentary2standardurl,$jcode,'content'),'#',$linkid))"/>
               </xsl:when>
