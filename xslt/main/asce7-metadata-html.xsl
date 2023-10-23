@@ -132,8 +132,13 @@
   <xsl:template name="og_image">
     <meta property="og:image">
       <xsl:attribute name="content">
-        <xsl:text>binary/</xsl:text>
-        <xsl:value-of select="substring-after($cover-source/supplementary-material/@xlink:href,'binary://')"/>
+        <xsl:choose>
+          <xsl:when test="$jcode = 'asceworks'"/>
+          <xsl:otherwise>
+            <xsl:text>binary/</xsl:text>
+            <xsl:value-of select="substring-after($cover-source/supplementary-material/@xlink:href,'binary://')"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:attribute>
     </meta>
   </xsl:template>
