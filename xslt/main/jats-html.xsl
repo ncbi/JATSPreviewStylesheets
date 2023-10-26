@@ -4640,10 +4640,12 @@ or pipeline) parameterized.
 
   <xsl:template match="question-wrap">
     <div class="question" id="{question/@id}">
-      <xsl:if test="question/p or question/option or answer-set">
+      <xsl:if test="question/p or question/option or answer-set or question/fig">
         <div class="question-text">
           <xsl:apply-templates select="question/label"/>
           <xsl:apply-templates select="question/p"/>
+          <!-- SPRINGRSC3-1567: Handale question/fig, due to drop fig element, sometimes fig tagged within question/fig. -->
+          <xsl:apply-templates select="question/* except(question/label | question/p | question/option | answer-set | question/answer | answer)"/>
           <xsl:if test="question/option">
             <ol class="answers-list">
               <xsl:apply-templates select="question/option"/>
