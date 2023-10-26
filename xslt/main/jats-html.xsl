@@ -4644,7 +4644,7 @@ or pipeline) parameterized.
         <div class="question-text">
           <xsl:apply-templates select="question/label"/>
           <xsl:apply-templates select="question/p"/>
-          <!-- SPRINGRSC3-1567: Handale question/fig, due to drop fig element, sometimes fig tagged within question/fig. -->
+          <!-- SPRINGRSC3-1567: Handle question/fig, due to drop fig element, sometimes fig tagged within question/fig. -->
           <xsl:apply-templates select="question/* except(question/label | question/p | question/option | answer-set | question/answer | answer)"/>
           <xsl:if test="question/option">
             <ol class="answers-list">
