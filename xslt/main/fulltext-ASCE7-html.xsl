@@ -34,9 +34,9 @@
           <xsl:apply-templates select="//body[not(child::*[self::xi:include])][parent::book-part[@book-part-type eq 'section']]"/>
         </div>
       </xsl:when>
-      <!-- <xsl:when test="book-part[@book-part-type eq 'chapter']"> -->
-      <xsl:when test="book-part[matches(@book-part-type, '^[Cc]hapter$')]">
-        <div class="chapter">
+      <!-- <xsl:when test="book-part[@book-part-type eq 'chapter/appendix']"> -->
+      <xsl:when test="book-part[lower-case(@book-part-type) = ('chapter','appendix')]">
+        <div class="{book-part/lower-case(@book-part-type)}">
           <xsl:apply-templates select="book-part/book-part-meta/permissions/ali:free_to_read" mode="free_to_read"/>
           <xsl:apply-templates select="book-part/body"/>
           <!--Vishnu:- Not applying the back of chapter as it contains version, erratum, supplement. And that will be trasform seperately in section transformation-->
