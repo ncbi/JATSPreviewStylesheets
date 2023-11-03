@@ -2376,7 +2376,7 @@ or pipeline) parameterized.
   <xsl:template name="div_action_parentSectionInfo">
     <xsl:variable name="originalSource" select="replace(string-join(tokenize(substring-after(base-uri(.), concat('/',$jcode,'/')), '/')[position() le 6], '/'),'.source.xml','')"></xsl:variable>
     <div id="{concat('actions_',parent::sec/@id)}" sectionData="{parent::sec/@id}"
-      class="toc-actions">
+      class="{if (parent::sec/lower-case(@specific-use) = 'printable') then 'toc-actions printable' else 'toc-actions'}">
       <xsl:attribute name="resourceDataPath">
         <xsl:call-template name="tmsresourcelink">
           <xsl:with-param name="resourceid">
