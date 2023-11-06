@@ -3818,17 +3818,23 @@ or pipeline) parameterized.
             <!--<xsl:message>reference-atom-query:= <xsl:value-of select="$reference-atom-query"/></xsl:message>-->
             <a>
               <xsl:attribute name="href"><xsl:choose>
+                <!--if the rid is available in the same section/part etc then just # the id-->
                 <xsl:when test="(//*[normalize-space(@id) = $rid])">
                   <xsl:value-of select="if (@xlink:href) then
                     @xlink:href
                     else
                     concat('#',@rid)"/>
                 </xsl:when>
-                
-                <!--if the rid is available in the same section/part etc then just # the id-->
-                
-                <xsl:otherwise>
+                <!--otherwise create a complete link path-->
+                <!--<xsl:otherwise>
                   <xsl:value-of select="replace(substring-before($reference-atom-query,'.atom'),'/asceworks/','/content/')"/>
+                </xsl:otherwise>-->
+                <xsl:otherwise>
+                  <xsl:variable name="contentApath" select="replace(substring-before($reference-atom-query,'.atom'),'/asceworks/','/content/')"/>
+                  <xsl:variable name="contentApathTokens" select="tokenize($contentApath,'/')"/>
+                  <xsl:variable name="content8Token" select="$contentApathTokens[8]"/>
+                  <xsl:variable name="link" select="if (count($contentApathTokens) > 8) then concat(substring-before($contentApath,$content8Token),$content8Token,'#',$contentApathTokens[last()]) else $contentApath"/>
+                  <xsl:value-of select="$link"/>
                 </xsl:otherwise>
               </xsl:choose></xsl:attribute>
               <xsl:attribute name="data-rid" select="if(@ref-type='standard') then(substring-after(@rid,'st')) else(@rid)"/>
