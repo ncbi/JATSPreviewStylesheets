@@ -2540,6 +2540,10 @@ or pipeline) parameterized.
       fn-group | license | long-desc | open-access | sig-block |
       table-wrap-foot | table-wrap-group">
     <div class="{local-name()}">
+      <xsl:if test="@id">
+        <xsl:apply-templates select="@id"/>
+        <xsl:attribute name="data-parent-section"><xsl:text>#</xsl:text><xsl:value-of select="ancestor::sec[1]/@id"/></xsl:attribute>
+      </xsl:if>
       <xsl:apply-templates/>
     </div>
   </xsl:template>
