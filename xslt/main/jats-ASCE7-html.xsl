@@ -2622,14 +2622,30 @@ or pipeline) parameterized.
       <xsl:apply-templates/>
     </div>
   </xsl:template>
-  <xsl:template match="caption/p">
+  <!--<xsl:template match="caption/p">
     <div class="caption-title">
       <xsl:if test="../preceding-sibling::label">
         <span class="label"><xsl:value-of select="../preceding-sibling::label"/><xsl:text> </xsl:text></span>
       </xsl:if>
       <xsl:apply-templates/>
     </div>
+  </xsl:template>-->
+  
+  <!--generating caption title if title is not available in cation-->
+  <xsl:template match="caption/p">
+    <xsl:choose>
+      <xsl:when test="../title[normalize-space()]">
+        <xsl:apply-templates></xsl:apply-templates>
+      </xsl:when>
+      <xsl:otherwise>
+        <div class="caption-title">
+          <span class="label"><xsl:value-of select="../preceding-sibling::label"/><xsl:text> </xsl:text></span>          
+          <xsl:apply-templates/>
+        </div>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
+  
   <xsl:template match="caption/title">
     <div class="caption-title">
       <xsl:if test="../preceding-sibling::label">
